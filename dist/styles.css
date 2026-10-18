@@ -50,7 +50,7 @@ h1 span { color: #c6d89b; }
 .hero-foot p { margin: 0; }
 .hero-foot #latest-change { font-weight: 600; }
 
-.module-index { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin: 28px 0 18px; }
+.module-index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 28px 0 18px; }
 .module-card { min-width: 0; display: flex; flex-direction: column; gap: 10px; padding: 21px 19px 19px; border: 1px solid #dbe9e0; border-radius: 15px; background: #fff; box-shadow: 0 8px 22px rgba(20, 54, 48, .035); text-decoration: none; transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease; }
 .module-card:hover { border-color: #9fcbbb; transform: translateY(-2px); box-shadow: var(--shadow); }
 .module-number { color: #4c7a6b; font: 600 11px ui-monospace, 'Cascadia Code', Consolas, monospace; letter-spacing: .04em; }
@@ -61,11 +61,15 @@ h1 span { color: #c6d89b; }
 .intro-strip { display: flex; align-items: flex-start; gap: 12px; margin: 0 0 42px; padding: 15px 19px; border: 1px solid #dce9d9; border-radius: 13px; background: #e7f0e8; color: #52655c; font-size: 12px; line-height: 1.75; }
 .intro-strip p { margin: 0; }
 .intro-icon { flex: 0 0 19px; height: 19px; display: grid; place-items: center; margin-top: 1px; border-radius: 50%; background: #d9e4ba; color: #31544c; font: 700 12px Georgia, serif; }
+.economic-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 26px; }
+.economic-nav a { display: inline-flex; min-height: 44px; align-items: center; padding: 8px 13px; border: 1px solid #d3e4d8; border-radius: 99px; background: #fff; color: var(--ink); font-size: 12px; text-decoration: none; }
+.economic-nav a:hover { border-color: var(--teal); }
 .dashboard-section { padding: 29px; margin-bottom: 26px; border: 1px solid #dbe8df; border-radius: 16px; background: #fff; box-shadow: var(--shadow); scroll-margin-top: 112px; }
 .section-heading { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 10px; }
 .section-kicker { margin: 0 0 9px; color: #36806b; font: 600 11px ui-monospace, 'Cascadia Code', Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
 h2 { margin-bottom: 0; color: var(--ink); font-size: clamp(24px, 3.5vw, 32px); line-height: 1.25; letter-spacing: -.04em; font-weight: 600; }
 .section-note { margin-bottom: 3px; color: #5c6e64; font-size: 11px; line-height: 1.65; text-align: right; }
+.section-note .source-link { justify-content: flex-end; }
 .section-lead { margin: 10px 0 15px; color: #5c6e64; font-size: 13px; }
 .section-coverage { display: inline-flex; flex-wrap: wrap; gap: 7px; margin: 0 0 20px; padding: 6px 10px; border: 1px solid #dce9de; border-radius: 99px; background: #f1f7f0; color: #537367; font-size: 11px; }
 .section-coverage span { color: #214a3d; font: 600 11px ui-monospace, 'Cascadia Code', Consolas, monospace; font-variant-numeric: tabular-nums; }
@@ -125,6 +129,27 @@ h2 { margin-bottom: 0; color: var(--ink); font-size: clamp(24px, 3.5vw, 32px); l
 .economy-card-value { margin: 0 0 13px; font: 600 clamp(21px, 3vw, 29px) ui-monospace, 'Cascadia Code', 'Microsoft JhengHei', Consolas, monospace; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
 .economy-card-value small { font: 500 12px 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; white-space: nowrap; }
 .economy-card .source-link { max-width: 100%; overflow-wrap: anywhere; }
+.indicator-chart, .trade-pair { margin: 0; padding: 0; list-style: none; }
+.indicator-chart { display: grid; gap: 16px; }
+.indicator-row { display: grid; grid-template-columns: minmax(105px, 140px) minmax(0, 1fr) 128px; align-items: center; gap: 6px 14px; min-width: 0; }
+.indicator-row > strong, .trade-label { font-size: 12px; font-weight: 600; }
+.indicator-bar { height: 18px; overflow: hidden; border-radius: 4px; background: #f1f5f0; }
+.indicator-bar > span { display: block; height: 100%; background: var(--teal); }
+.indicator-bar.exports > span { background: var(--blue); }
+.indicator-value { font: 600 12px ui-monospace, 'Cascadia Code', 'Microsoft JhengHei', Consolas, monospace; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.indicator-basis { grid-column: 2 / 4; min-width: 0; margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; overflow-wrap: anywhere; }
+.indicator-meta { grid-column: 2 / 4; display: flex; flex-wrap: wrap; align-items: center; gap: 0 12px; min-width: 0; }
+.indicator-meta .source-link { max-width: 100%; overflow-wrap: anywhere; }
+.indicator-axis { display: grid; grid-template-columns: minmax(105px, 140px) minmax(0, 1fr) 128px; gap: 14px; margin-top: 10px; color: var(--muted); font: 10px ui-monospace, 'Cascadia Code', Consolas, monospace; }
+.indicator-axis-track { grid-column: 2; display: flex; justify-content: space-between; }
+.indicator-card .indicator-basis, .indicator-card .indicator-meta { display: block; }
+.indicator-card .indicator-basis { margin-bottom: 6px; }
+.indicator-card .indicator-meta .status-line { margin-bottom: 3px; }
+.trade-month { display: grid; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.trade-month > strong { font-size: 13px; }
+.trade-month:last-child { border-bottom: 0; padding-bottom: 0; }
+.trade-pair { display: grid; gap: 8px; }
+.trade-chart { gap: 22px; }
 .method-note { display: flex; gap: 16px; align-items: flex-start; max-width: 730px; margin: 38px auto 66px; padding: 22px 25px; border: 1px solid #dfe8d9; border-radius: 15px; background: #e7f0e8; }
 .method-symbol { flex: 0 0 33px; height: 33px; display: grid; place-items: center; border-radius: 10px; background: #dfe8c9; color: #517069; font-size: 19px; }
 .method-note h2 { margin-bottom: 7px; font-size: 16px; letter-spacing: -.02em; }
@@ -180,6 +205,13 @@ h2 { margin-bottom: 0; color: var(--ink); font-size: clamp(24px, 3.5vw, 32px); l
   .economy-value { margin-top: 4px; }
   .economy-axis { margin-right: 0; margin-left: 64px; }
   .economy-cards { grid-template-columns: 1fr; }
+  .indicator-row { grid-template-columns: minmax(0, 1fr) 128px; gap: 6px 10px; }
+  .indicator-row > strong, .trade-label { grid-column: 1 / -1; }
+  .indicator-row .economy-bar, .indicator-row .indicator-bar { grid-column: 1; }
+  .indicator-value { grid-column: 2; }
+  .indicator-basis, .indicator-meta { grid-column: 1 / -1; }
+  .indicator-axis { grid-template-columns: minmax(0, 1fr) 128px; gap: 10px; }
+  .indicator-axis-track { grid-column: 1; }
   .method-note { margin-bottom: 45px; padding: 18px; }
   .site-footer { min-height: 70px; font-size: 10px; }
 }
