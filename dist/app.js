@@ -1,5 +1,4 @@
 import { records } from './population-data.js';
-import { economy } from './economic-data.js';
 
 const countFormat = new Intl.NumberFormat('zh-HK', { maximumFractionDigits: 0 });
 const numberFormat = new Intl.NumberFormat('zh-HK', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -83,7 +82,7 @@ function renderResidents() {
   document.querySelector('#residents-chart').innerHTML = `<div class="residents-key">${legend}</div><div class="composition-list">${cards}</div>`;
 }
 
-function renderEconomy() {
+function renderEconomy(economy) {
   const maximum = Math.max(1, Math.ceil(Math.max(...economy.annualRealGrowth.map(row => Math.abs(row.percent)))));
   const signed = percent => `${percent > 0 ? '+' : percent < 0 ? '−' : ''}${numberFormat.format(Math.abs(percent))}%`;
   const direction = percent => percent < 0 ? '下跌' : percent > 0 ? '增長' : '持平';
@@ -127,10 +126,95 @@ function renderEconomy() {
   }).join('');
 }
 
+const periodLabel = period => period.startMonth ? `${period.year} 年 ${period.startMonth}–${period.endMonth} 月` :
+  period.quarter ? `${period.year} 年第 ${period.quarter} 季` : period.month ? `${period.year} 年 ${period.month} 月` : `${period.year} 年`;
+const formattedValue = row => row.unit === '%' || row.unit.startsWith('指數') ? numberFormat.format(row.value) : countFormat.format(row.value);
+const indicatorMeta = row => `<p class="indicator-basis">${escapeHtml(row.basis)}</p><div class="indicator-meta">${status(row, row.status === '臨時數字' ? 'provisional' : '')}${sourceAnchor(row.source)}</div>`;
+const indicatorCard = (title, row, display = `${formattedValue(row)} ${escapeHtml(row.unit)}`) => `<article class="economy-card indicator-card">
+  <h4>${escapeHtml(title)}</h4><p class="economy-period">${escapeHtml(periodLabel(row.period))}</p>
+  <p class="economy-card-value">${display}</p>${indicatorMeta(row)}
+</article>`;
+
+function renderInflation(data) {
+  const maximum = Math.max(1, Math.ceil(Math.max(...data.annual.map(row => Math.abs(row.value)))));
+  document.querySelector('#inflation-annual').innerHTML = `<ul class="indicator-chart">${data.annual.map(row => `
+    <li class="indicator-row"><strong>${escapeHtml(periodLabel(row.period))}</strong>
+      <div class="economy-bar" aria-hidden="true"><span class="economy-fill ${row.value < 0 ? 'negative' : 'positive'}" style="width:${Math.abs(row.value) / maximum * 50}%"></span></div>
+      <span class="indicator-value">${row.value > 0 ? '+' : row.value < 0 ? '−' : ''}${numberFormat.format(Math.abs(row.value))}%</span>
+      ${indicatorMeta(row)}</li>`).join('')}</ul>
+    <div class="indicator-axis" aria-hidden="true"><div class="indicator-axis-track"><span>−${maximum}%</span><span>0%</span><span>+${maximum}%</span></div></div>`;
+  document.querySelector('#inflation-latest').innerHTML = [
+    indicatorCard('綜合消費物價指數按年變動', data.latestYoY, `+${numberFormat.format(data.latestYoY.value)}%`),
+    indicatorCard('綜合消費物價指數水平', data.latestIndex),
+  ].join('');
+}
+
+function renderUnemployment(data) {
+  document.querySelector('#unemployment-chart').innerHTML = `<ul class="indicator-chart">${data.rolling.map(row => `
+    <li class="indicator-row"><strong>${escapeHtml(periodLabel(row.period))}</strong>
+      <div class="indicator-bar" aria-hidden="true"><span style="width:${row.value / 5 * 100}%"></span></div>
+      <span class="indicator-value">${numberFormat.format(row.value)}%</span>${indicatorMeta(row)}</li>`).join('')}</ul>
+    <div class="indicator-axis" aria-hidden="true"><div class="indicator-axis-track"><span>0%</span><span>5%</span></div></div>`;
+}
+
+function renderEarnings(data) {
+  document.querySelector('#earnings-chart').innerHTML = `<ul class="indicator-chart">${data.total.map(row => `
+    <li class="indicator-row"><strong>${escapeHtml(periodLabel(row.period))}</strong>
+      <div class="indicator-bar" aria-hidden="true"><span style="width:${row.value / 25000 * 100}%"></span></div>
+      <span class="indicator-value">${countFormat.format(row.value)} ${escapeHtml(row.unit)}</span>${indicatorMeta(row)}</li>`).join('')}</ul>
+    <div class="indicator-axis" aria-hidden="true"><div class="indicator-axis-track"><span>0</span><span>25,000 港元／月</span></div></div>`;
+  document.querySelector('#earnings-latest').innerHTML = [
+    indicatorCard('合計', data.total.at(-1)), indicatorCard('男性', data.male), indicatorCard('女性', data.female),
+  ].join('');
+}
+
+function renderTrade(data) {
+  const maximum = 800000;
+  document.querySelector('#trade-chart').innerHTML = `<ul class="indicator-chart trade-chart">${data.monthly.map(pair => `
+    <li class="trade-month"><strong>${escapeHtml(periodLabel(pair.imports.period))}</strong><ul class="trade-pair">
+      ${[['進口', pair.imports], ['整體出口', pair.exports]].map(([label, row]) => `
+        <li class="indicator-row"><span class="trade-label">${escapeHtml(periodLabel(row.period))} · ${label}</span>
+          <div class="indicator-bar ${label === '整體出口' ? 'exports' : ''}" aria-hidden="true"><span style="width:${row.value / maximum * 100}%"></span></div>
+          <span class="indicator-value">${countFormat.format(row.value)} ${escapeHtml(row.unit)}</span>${indicatorMeta(row)}</li>`).join('')}
+    </ul></li>`).join('')}</ul><div class="indicator-axis" aria-hidden="true"><div class="indicator-axis-track"><span>0</span><span>800,000 百萬港元</span></div></div>`;
+  document.querySelector('#trade-latest').innerHTML = [
+    indicatorCard('進口貨值按年變動', data.importYoY, `+${numberFormat.format(data.importYoY.value)}%`),
+    indicatorCard('整體出口貨值按年變動', data.exportYoY, `+${numberFormat.format(data.exportYoY.value)}%`),
+    indicatorCard('商品貿易差額', data.balance, `逆差 ${countFormat.format(Math.abs(data.balance.value))} ${escapeHtml(data.balance.unit)}`),
+  ].join('');
+}
+
+function showIndicatorError(key, error) {
+  console.error(`${key} indicator failed`, error);
+  const section = document.querySelector(`#${key}`);
+  section.querySelectorAll('.loading').forEach(node => {
+    node.outerHTML = '<p class="loading">此項數據暫時無法顯示，請使用本節的政府統計處原表連結。</p>';
+  });
+}
+
+const indicatorRenderers = [
+  ['inflation', renderInflation], ['unemployment', renderUnemployment],
+  ['earnings', renderEarnings], ['trade', renderTrade],
+];
+
 renderLatest();
 renderTotals();
 renderComposition('#age-chart', 'age', ageGroups);
 renderComposition('#sex-chart', 'sex', sexes);
 renderResidents();
-renderEconomy();
+import('./economic-data.js?v=20261018-indicators').then(({ economy }) => {
+  renderEconomy(economy);
+}).catch(error => {
+  console.error('GDP failed', error);
+  document.querySelectorAll('#economy .loading').forEach(node => {
+    node.outerHTML = '<p class="loading">本地生產總值數據暫時無法顯示。<a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=310-30001" target="_blank" rel="noreferrer">政府統計處資料 ↗</a></p>';
+  });
+});
+import('./indicator-data.js?v=20261018-indicators').then(({ getIndicator }) => {
+  for (const [key, render] of indicatorRenderers) {
+    try { render(getIndicator(key)); } catch (error) { showIndicatorError(key, error); }
+  }
+}).catch(error => {
+  for (const [key] of indicatorRenderers) showIndicatorError(key, error);
+});
 
