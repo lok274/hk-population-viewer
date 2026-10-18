@@ -1,4 +1,5 @@
 import { records } from './population-data.js';
+import { economy } from './economic-data.js';
 
 const countFormat = new Intl.NumberFormat('zh-HK', { maximumFractionDigits: 0 });
 const numberFormat = new Intl.NumberFormat('zh-HK', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
@@ -82,8 +83,54 @@ function renderResidents() {
   document.querySelector('#residents-chart').innerHTML = `<div class="residents-key">${legend}</div><div class="composition-list">${cards}</div>`;
 }
 
+function renderEconomy() {
+  const maximum = Math.max(1, Math.ceil(Math.max(...economy.annualRealGrowth.map(row => Math.abs(row.percent)))));
+  const signed = percent => `${percent > 0 ? '+' : percent < 0 ? '−' : ''}${numberFormat.format(Math.abs(percent))}%`;
+  const direction = percent => percent < 0 ? '下跌' : percent > 0 ? '增長' : '持平';
+  const annualRows = economy.annualRealGrowth.map(row => `
+    <div class="economy-row">
+      <strong class="economy-year">${row.year} 年</strong>
+      <div class="economy-bar" role="img" aria-label="${row.year} 年實質本地生產總值${direction(row.percent)} ${signed(row.percent)}，橫軸由負 ${maximum}% 至正 ${maximum}%">
+        <span class="economy-fill ${row.percent < 0 ? 'negative' : 'positive'}" style="width:${Math.abs(row.percent) / maximum * 50}%"></span>
+      </div>
+      <span class="economy-value">${direction(row.percent)} ${signed(row.percent)}</span>
+      <div class="economy-row-meta">${status(row)}${sourceAnchor(row.source)}</div>
+    </div>`).join('');
+  document.querySelector('#economy-annual').innerHTML = `
+    <div class="economy-chart">${annualRows}</div>
+    <div class="economy-axis" aria-hidden="true"><span>−${maximum}%</span><span>0%</span><span>+${maximum}%</span></div>`;
+
+  const annual = economy.annualSnapshot;
+  document.querySelector('#economy-levels').innerHTML = [
+    ['currentPriceGdp', '本地生產總值（現價）'],
+    ['perCapitaGdp', '人均本地生產總值（現價）'],
+  ].map(([key, label]) => {
+    const slice = annual[key];
+    return `<article class="economy-card">
+      <h4>${label}</h4><p class="economy-period">${annual.year} 年</p>
+      <p class="economy-card-value">${countFormat.format(slice.value)} <small>${escapeHtml(slice.unit)}</small></p>
+      ${status(slice)}${sourceAnchor(slice.source)}
+    </article>`;
+  }).join('');
+
+  const quarter = economy.latestQuarter;
+  document.querySelector('#economy-quarter').innerHTML = [
+    ['yearOnYear', '按年增長', '與上年同季比較'],
+    ['seasonallyAdjustedQuarterOnQuarter', '經季節性調整按季增長', '與上一季比較'],
+  ].map(([key, label, basis]) => {
+    const slice = quarter[key];
+    return `<article class="economy-card">
+      <h4>${label}</h4><p class="economy-period">${quarter.year} 年第 ${quarter.quarter} 季 · ${basis}</p>
+      <p class="economy-card-value">${direction(slice.percent)} ${signed(slice.percent)}</p>
+      ${status(slice)}${sourceAnchor(slice.source)}
+    </article>`;
+  }).join('');
+}
+
 renderLatest();
 renderTotals();
 renderComposition('#age-chart', 'age', ageGroups);
 renderComposition('#sex-chart', 'sex', sexes);
 renderResidents();
+renderEconomy();
+

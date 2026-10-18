@@ -4,31 +4,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f4f6f2">
-    <meta name="description" content="查看全香港年中人口總數、年齡、性別及居民類別。">
-    <title>香港人口｜數據概覽</title>
+    <meta name="description" content="查看全香港人口及經濟數據，包括年中人口、實質經濟增長、本地生產總值與季度變化。">
+    <title>香港人口與經濟｜數據概覽</title>
     <link rel="stylesheet" href="./styles.css">
     <script type="module" src="./app.js"></script>
   </head>
   <body>
     <header class="site-header">
-      <a class="wordmark" href="#top" aria-label="香港人口數據概覽，回到頁首">
+      <a class="wordmark" href="#top" aria-label="香港人口與經濟數據概覽，回到頁首">
         <span class="wordmark-mark" aria-hidden="true">HK</span>
-        <span>香港人口<br><small>數據概覽</small></span>
+        <span>香港人口與經濟<br><small>數據概覽</small></span>
       </a>
       <nav aria-label="頁面章節">
         <a href="#total">總人口</a>
         <a href="#age">年齡</a>
         <a href="#sex">性別</a>
         <a href="#residents">居民類別</a>
+        <a href="#economy">經濟</a>
       </nav>
     </header>
 
     <main id="top">
       <section class="hero" aria-labelledby="page-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 年中人口</p>
-          <h1 id="page-title">香港人口<br><span>一眼看清變化</span></h1>
-          <p class="hero-intro">從總人口到年齡與居民組成，用官方數據認識全港人口。</p>
+          <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 人口與經濟</p>
+          <h1 id="page-title">香港人口與經濟<br><span>一眼看清變化</span></h1>
+          <p class="hero-intro">用官方數據認識全港人口組成及經濟變化。右方顯示最新年中總人口。</p>
         </div>
         <div class="hero-stat" id="latest-total" aria-live="polite">
           <p class="hero-stat-label">最新年中總人口</p>
@@ -64,6 +65,12 @@
           <strong>常住與流動居民</strong>
           <span class="module-purpose">比較兩類居民的人數與比例</span>
           <span class="module-coverage">資料年份　2025 · 2026 <span aria-hidden="true">↗</span></span>
+        </a>
+        <a class="module-card" href="#economy">
+          <span class="module-number">05 / 經濟</span>
+          <strong>本地生產總值</strong>
+          <span class="module-purpose">查看年度實質增長、現價金額與季度變化</span>
+          <span class="module-coverage">年度及季度數據 <span aria-hidden="true">↗</span></span>
         </a>
       </nav>
 
@@ -124,18 +131,44 @@
         <div class="chart-panel composition-panel" id="residents-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
       </section>
 
+      <section class="dashboard-section economy-section" id="economy" aria-labelledby="economy-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">05 / 經濟</p>
+            <h2 id="economy-title">香港經濟</h2>
+          </div>
+          <p class="section-note">本地生產總值<br>政府統計處數據</p>
+        </div>
+        <p class="section-lead">年度實質增長率、年度現價金額及季度增長率分別顯示；三者的單位和比較基準不同。</p>
+        <div class="economy-group">
+          <h3>年度實質本地生產總值增長率</h3>
+          <p>與上年全年比較，單位：%。橫軸以零為中心，左右兩邊的刻度相同。</p>
+          <div class="chart-panel" id="economy-annual" aria-live="polite"><p class="loading">載入圖表…</p></div>
+        </div>
+        <div class="economy-group">
+          <h3>年度現價金額</h3>
+          <p>本地生產總值總額與按人口平均的產出，分別按各自單位顯示。</p>
+          <div class="economy-cards" id="economy-levels" aria-live="polite"><p class="loading">載入數據…</p></div>
+        </div>
+        <div class="economy-group">
+          <h3>最新季度實質增長率</h3>
+          <p>按年與經季節性調整後按季的比較基準不同，單位同為%。</p>
+          <div class="economy-cards" id="economy-quarter" aria-live="polite"><p class="loading">載入數據…</p></div>
+        </div>
+      </section>
+
       <section class="method-note" aria-labelledby="method-title">
         <div class="method-symbol" aria-hidden="true">↗</div>
         <div>
           <h2 id="method-title">關於數字</h2>
-          <p>年齡和性別比例以各組人數除以該年總人口計算。2026 年人口總數為暫定數字；不同資料分項會分別標示狀態及來源。</p>
+          <p>年齡和性別比例以各組人數除以該年總人口計算。2026 年人口總數為暫定數字；部分經濟數字已修訂，資料狀態及來源會逐項標示。人均本地生產總值是平均每人的經濟產出，並非個人收入。</p>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <span>人口數據 · 全港</span>
-      <a href="https://www.censtatd.gov.hk/tc/map_ghs.html" target="_blank" rel="noreferrer">參考：政府統計處地區概覽 ↗</a>
+      <span>人口與經濟數據 · 全港</span>
+      <a href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer">參考：政府統計處 ↗</a>
     </footer>
   </body>
 </html>
