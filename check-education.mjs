@@ -160,7 +160,7 @@ for (const id of ['students-chart', 'schools-chart', 'attainment-chart', 'teache
 assert(markup.includes('<noscript>') && markup.includes('href="./index.html"'));
 assert(homepage.includes('href="./education.html"'));
 assert(!markup.includes('./app.js'), 'education never runs homepage renderer');
-assert(markup.includes('./styles.css?v=20261022-resources') && homepage.includes('./styles.css?v=20261022-resources'));
+assert(markup.includes('./styles.css?v=20261022-tech-nav') && homepage.includes('./styles.css?v=20261022-tech-nav'));
 assert(markup.includes('./education.js?v=20261022-resources') && renderer.includes('./education-data.js?v=20261022-resources'));
 assert(markup.includes('href="#teacher-ratios"') && markup.includes('href="#expenditure"'));
 console.log('Education checks passed for 78 official observations, statuses, periods, five tables, metadata, navigation and load failure.');
