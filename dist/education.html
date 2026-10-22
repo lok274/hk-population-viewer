@@ -4,26 +4,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#effaf6">
-  <meta name="description" content="用圖表認識香港的學生人數、學校數目及人口最高就讀程度。各項數字附學年、單位、狀態與官方來源。">
-  <title>香港教育概覽｜學生、學校與教育程度</title>
-  <link rel="stylesheet" href="./styles.css?v=20261022-education">
-  <script type="module" src="./education.js?v=20261022-education"></script>
+  <meta name="description" content="用圖表認識香港的學生人數、學校數目、人口教育程度、師生比例及政府教育開支。各項數字附期間、單位、狀態與官方來源。">
+  <title>香港教育概覽｜學生、學校、師生比例與政府開支</title>
+  <link rel="stylesheet" href="./styles.css?v=20261022-resources">
+  <script type="module" src="./education.js?v=20261022-resources"></script>
 </head>
 <body class="education-page">
   <a class="skip-link" href="#main">跳至主要內容</a>
   <header class="site-header"><div class="header-inner">
     <a class="wordmark" href="./index.html" aria-label="香港人口與經濟，返回首頁"><span class="wordmark-mark" aria-hidden="true">▥</span><span>HK 香港人口<small>人口、經濟與教育數據概覽</small></span></a>
-    <nav class="section-nav" aria-label="網站與教育章節"><a href="./index.html">人口與經濟</a><a href="./education.html" aria-current="page">教育概覽</a><a href="#students">學生</a><a href="#schools">學校</a><a href="#attainment">教育程度</a></nav>
+    <nav class="section-nav" aria-label="網站與教育章節"><a href="./index.html">人口與經濟</a><a href="./education.html" aria-current="page">教育概覽</a><a href="#students">學生</a><a href="#schools">學校</a><a href="#attainment">教育程度</a><a href="#teacher-ratios">師生比例</a><a href="#expenditure">政府開支</a></nav>
     <a class="official-link" href="https://www.edb.gov.hk/" target="_blank" rel="noreferrer">教育局 ↗</a>
   </div></header>
   <main id="main">
     <section class="hero" id="top" aria-labelledby="page-title">
-      <div class="hero-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全香港 · 教育概覽</p><h1 id="page-title">香港教育<br><span>從規模看清結構</span></h1><p class="hero-intro">學生人數如何變化？香港有多少學校？<br>用三組圖表認識教育規模與市民的就讀程度。</p></div>
-      <div class="education-guide"><p>由這裏開始</p><a href="#students"><span>01</span> 學生人數 <small>各學段的變化 ↓</small></a><a href="#schools"><span>02</span> 學校數目 <small>按學校類別比較 ↓</small></a><a href="#attainment"><span>03</span> 教育程度 <small>人口的最高就讀程度 ↓</small></a></div>
-      <div class="hero-foot"><p>學生及學校按學年；人口教育程度按曆年。</p><p id="education-version">資料核對日期載入中…</p></div>
+      <div class="hero-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全香港 · 教育概覽</p><h1 id="page-title">香港教育<br><span>從規模看清結構與資源</span></h1><p class="hero-intro">學生人數如何變化？香港有多少學校？<br>再看師生比例與政府教育開支，認識教育資源。</p></div>
+      <div class="education-guide"><p>由這裏開始</p><a href="#students"><span>01</span> 學生人數 <small>各學段的變化 ↓</small></a><a href="#schools"><span>02</span> 學校數目 <small>按學校類別比較 ↓</small></a><a href="#attainment"><span>03</span> 教育程度 <small>人口的最高就讀程度 ↓</small></a><a href="#teacher-ratios"><span>04</span> 師生比例 <small>每位教師對應多少學生 ↓</small></a><a href="#expenditure"><span>05</span> 政府教育開支 <small>實際開支與預算 ↓</small></a></div>
+      <div class="hero-foot"><p>學生、學校及師生比例按學年；人口教育程度按曆年；開支按財政年度。</p><p id="education-version">資料核對日期載入中…</p></div>
     </section>
     <div class="intro-strip"><span class="intro-icon" aria-hidden="true">i</span><p>人數和學校數目反映教育規模，單靠這些數字無法判斷教學質素。圖表只比較官方列載的期間，不補估中間年份。</p></div>
-    <noscript><div class="education-error"><p>請開啟 JavaScript 以查看教育圖表。你亦可直接閱讀<a href="https://www.censtatd.gov.hk/en/data/stat_report/product/B1010006/att/B10100062026AN26B0100.pdf">政府統計處教育數據</a>及<a href="https://www.edb.gov.hk/attachment/en/about-edb/publications-stat/figures/Enrol_2025.pdf">教育局學校統計</a>。</p></div></noscript>
+    <noscript><div class="education-error"><p>請開啟 JavaScript 以查看教育圖表。你亦可直接閱讀<a href="https://www.censtatd.gov.hk/en/data/stat_report/product/B1010006/att/B10100062026AN26B0100.pdf">政府統計處教育數據</a>、<a href="https://www.edb.gov.hk/en/about-edb/publications-stat/figures/index.html">教育局教育統計數字</a>及<a href="https://www.budget.gov.hk/2026/eng/pdf/e_budget_speech_2026-27.pdf">《2026–27年度財政預算案》</a>。</p></div></noscript>
     <div id="education-error" role="alert" hidden></div>
     <section class="dashboard-section" id="students" aria-labelledby="students-title">
       <div class="section-heading"><div><p class="section-kicker">01 / 學生規模</p><h2 id="students-title">各學段學生人數 <span class="chart-tag">分組直條圖</span></h2><p class="section-lead">比較約五年前、上一學年及最新學年，各學段共用由零開始的刻度。</p></div><p class="section-note">2020/21 · 2024/25 · 2025/26<br>單位 · 千人</p></div>
@@ -37,9 +37,17 @@
       <div class="section-heading"><div><p class="section-kicker">03 / 人口教育程度</p><h2 id="attainment-title">市民最高曾讀到哪一級？ <span class="chart-tag pink">百分比堆疊圖</span></h2><p class="section-lead">15 歲及以上人口的最高就讀程度，包括未完成的正式課程。</p></div><p class="section-note">2020 · 2024 · 2025 年<br>單位 · %</p></div>
       <div class="chart-panel" id="attainment-chart" aria-live="polite"><p class="loading">載入教育程度…</p></div>
     </section>
-    <section class="method-note" aria-labelledby="method-title"><span class="method-symbol" aria-hidden="true">▥</span><div><h2 id="method-title">讀圖與資料版本</h2><p>這是固定版本的官方統計整理，並非即時數字。每張圖下方可展開詳細數據，核對每項觀測的期間、單位、狀態、涵蓋範圍和來源。學年與曆年分開展示；學生統計與學校統計涵蓋範圍不同，不能直接計算平均每校學生人數。</p></div></section>
+    <section class="dashboard-section" id="teacher-ratios" aria-labelledby="teacher-ratios-title">
+      <div class="section-heading"><div><p class="section-kicker">04 / 教育資源</p><h2 id="teacher-ratios-title">一位教師對應多少學生？ <span class="chart-tag">師生比例</span></h2><p class="section-lead">按學校類別看六個學年的官方比例；這不是每班人數。</p></div><p class="section-note">2020/21–2025/26 學年<br>單位 · 學生／教師</p></div>
+      <div class="chart-panel" id="teacher-ratios-chart" aria-live="polite"><p class="loading">載入師生比例…</p></div>
+    </section>
+    <section class="dashboard-section" id="expenditure" aria-labelledby="expenditure-title">
+      <div class="section-heading"><div><p class="section-kicker">05 / 教育資源</p><h2 id="expenditure-title">政府花多少錢在教育？ <span class="chart-tag amber">實際開支與預算</span></h2><p class="section-lead">已發生的實際開支與其後兩年的預算分開看；金額以當時價格計算。</p></div><p class="section-note">2020/21–2026/27 財政年度<br>圖表 · 億港元；明細 · 百萬港元</p></div>
+      <div class="chart-panel" id="expenditure-chart" aria-live="polite"><p class="loading">載入政府教育開支…</p></div>
+    </section>
+    <section class="method-note" aria-labelledby="method-title"><span class="method-symbol" aria-hidden="true">▥</span><div><h2 id="method-title">讀圖與資料版本</h2><p>這是固定版本的官方統計整理，並非即時數字。每張圖下方可展開詳細數據，核對每項觀測的期間、單位、狀態、涵蓋範圍和來源。學年、曆年與財政年度分開展示；學生統計與學校統計涵蓋範圍不同，不能直接計算平均每校學生人數。</p></div></section>
     <div class="page-end"><a href="./index.html">← 返回人口與經濟首頁</a><a href="#top">回到頁首 ↑</a></div>
   </main>
-  <footer class="site-footer"><div><strong>香港教育數據概覽</strong><p>資料來自政府統計處及教育局。</p></div><a href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer">政府統計處 C&SD ↗</a></footer>
+  <footer class="site-footer"><div><strong>香港教育數據概覽</strong><p>資料來自政府統計處、教育局及《財政預算案》。</p></div><a href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer">政府統計處 C&SD ↗</a></footer>
 </body>
 </html>
