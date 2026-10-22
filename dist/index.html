@@ -1,226 +1,70 @@
 <!doctype html>
 <html lang="zh-Hant-HK">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f4f6f2">
-    <meta name="description" content="查看全香港人口、本地生產總值、通脹、失業率、就業收入和商品貿易官方數據。">
-    <title>香港人口與經濟｜數據概覽</title>
-    <link rel="stylesheet" href="./styles.css?v=20261018-indicators">
-    <script type="module" src="./app.js?v=20261018-indicators"></script>
-  </head>
-  <body>
-    <header class="site-header">
-      <a class="wordmark" href="#top" aria-label="香港人口與經濟數據概覽，回到頁首">
-        <span class="wordmark-mark" aria-hidden="true">HK</span>
-        <span>香港人口與經濟<br><small>數據概覽</small></span>
-      </a>
-      <nav aria-label="頁面章節">
-        <a href="#total">總人口</a>
-        <a href="#age">年齡</a>
-        <a href="#sex">性別</a>
-        <a href="#residents">居民類別</a>
-        <a href="#economy">經濟</a>
-      </nav>
-    </header>
-
-    <main id="top">
-      <section class="hero" aria-labelledby="page-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 人口與經濟</p>
-          <h1 id="page-title">香港人口與經濟<br><span>一眼看清變化</span></h1>
-          <p class="hero-intro">用官方數據認識全港人口、本地生產總值、物價、就業收入、失業率和商品貿易。右方顯示最新年中總人口。</p>
-        </div>
-        <div class="hero-stat" id="latest-total" aria-live="polite">
-          <p class="hero-stat-label">最新年中總人口</p>
-          <p class="hero-number">載入中…</p>
-        </div>
-        <div class="hero-foot">
-          <p id="latest-change">正在整理官方數據…</p>
-          <p>本頁所引用來源的年齡及性別分項截至 2025 年</p>
-        </div>
-      </section>
-
-      <nav class="module-index" aria-label="數據模組">
-        <a class="module-card" href="#total">
-          <span class="module-number">01 / 人口規模</span>
-          <strong>年中總人口</strong>
-          <span class="module-purpose">比較各年全港人口總數</span>
-          <span class="module-coverage">資料年份　2020 · 2024 · 2025 · 2026 <span aria-hidden="true">↗</span></span>
-        </a>
-        <a class="module-card" href="#age">
-          <span class="module-number">02 / 年齡組成</span>
-          <strong>人口年齡分布</strong>
-          <span class="module-purpose">查看不同年齡組別的比例</span>
-          <span class="module-coverage">資料年份　2020 · 2024 · 2025 <span aria-hidden="true">↗</span></span>
-        </a>
-        <a class="module-card" href="#sex">
-          <span class="module-number">03 / 性別組成</span>
-          <strong>人口性別分布</strong>
-          <span class="module-purpose">查看男性與女性的人口組成</span>
-          <span class="module-coverage">資料年份　2020 · 2024 · 2025 <span aria-hidden="true">↗</span></span>
-        </a>
-        <a class="module-card" href="#residents">
-          <span class="module-number">04 / 居民類別</span>
-          <strong>常住與流動居民</strong>
-          <span class="module-purpose">比較兩類居民的人數與比例</span>
-          <span class="module-coverage">資料年份　2025 · 2026 <span aria-hidden="true">↗</span></span>
-        </a>
-        <a class="module-card" href="#economy">
-          <span class="module-number">05 / 經濟</span>
-          <strong>本地生產總值</strong>
-          <span class="module-purpose">查看年度實質增長、現價金額與季度變化</span>
-          <span class="module-coverage">年度及季度數據 <span aria-hidden="true">↗</span></span>
-        </a>
-        <a class="module-card" href="#inflation">
-          <span class="module-number">06 / 通脹</span><strong>綜合消費物價指數</strong>
-          <span class="module-purpose">比較全年及最新月份的按年變動</span>
-          <span class="module-coverage">2020–2025 年 · 2026 年 8 月 <span aria-hidden="true">↗</span></span>
-        </a>
-        <a class="module-card" href="#unemployment">
-          <span class="module-number">07 / 勞工</span><strong>失業率</strong>
-          <span class="module-purpose">查看經季節性調整的三個月期間數字</span>
-          <span class="module-coverage">2026 年 1–8 月 <span aria-hidden="true">↗</span></span>
-        </a>
-        <a class="module-card" href="#earnings">
-          <span class="module-number">08 / 勞工</span><strong>就業收入中位數</strong>
-          <span class="module-purpose">比較第一季合計數字及 2026 年性別分項</span>
-          <span class="module-coverage">2021–2026 年第一季 <span aria-hidden="true">↗</span></span>
-        </a>
-        <a class="module-card" href="#trade">
-          <span class="module-number">09 / 貿易</span><strong>商品進出口</strong>
-          <span class="module-purpose">比較每月貨值、按年變動與官方逆差</span>
-          <span class="module-coverage">2026 年 1–8 月 <span aria-hidden="true">↗</span></span>
-        </a>
-      </nav>
-
-      <div class="intro-strip">
-        <span class="intro-icon" aria-hidden="true">i</span>
-        <p>各圖只列出來源有數字的期間，不推算缺失月份或季度。圖中每個數字均列明單位、比較基準、資料狀態和來源。</p>
-      </div>
-
-      <nav class="economic-nav" aria-label="經濟數據章節">
-        <a href="#economy">本地生產總值</a><a href="#inflation">通脹</a><a href="#unemployment">失業率</a><a href="#earnings">就業收入</a><a href="#trade">商品貿易</a>
-      </nav>
-
-      <section class="dashboard-section total-section" id="total" aria-labelledby="total-title">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">01 / 人口規模</p>
-            <h2 id="total-title">年中總人口</h2>
-          </div>
-          <p class="section-note">單位：人<br>每條橫條由零開始</p>
-        </div>
-        <p class="section-lead">2020、2024、2025 及 2026 年來源列載的年中數字</p>
-        <p class="section-coverage">資料年份 <span>2020 · 2024 · 2025 · 2026</span></p>
-        <div class="chart-panel" id="total-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
-      </section>
-
-      <section class="dashboard-section" id="age" aria-labelledby="age-title">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">02 / 年齡組成</p>
-            <h2 id="age-title">人口年齡分布</h2>
-          </div>
-          <p class="section-note">單位：人及佔總人口比例</p>
-        </div>
-        <p class="section-lead">按年齡組別查看人口數量和比例</p>
-        <p class="section-coverage">資料年份 <span>2020 · 2024 · 2025</span></p>
-        <div class="chart-panel composition-panel" id="age-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
-      </section>
-
-      <section class="dashboard-section" id="sex" aria-labelledby="sex-title">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">03 / 性別組成</p>
-            <h2 id="sex-title">人口性別分布</h2>
-          </div>
-          <p class="section-note">單位：人及佔總人口比例</p>
-        </div>
-        <p class="section-lead">按性別查看人口數量和比例</p>
-        <p class="section-coverage">資料年份 <span>2020 · 2024 · 2025</span></p>
-        <div class="chart-panel composition-panel" id="sex-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
-      </section>
-
-      <section class="dashboard-section residents-section" id="residents" aria-labelledby="residents-title">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">04 / 居民類別</p>
-          <h2 id="residents-title">常住居民與流動居民</h2>
-          </div>
-          <p class="section-note">單位：人<br>按各年總人口計算比例</p>
-        </div>
-        <p class="section-lead">居民類別數字與同年總人口相符</p>
-        <p class="section-coverage">資料年份 <span>2025 · 2026</span></p>
-        <div class="chart-panel composition-panel" id="residents-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
-      </section>
-
-      <section class="dashboard-section economy-section" id="economy" aria-labelledby="economy-title">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">05 / 經濟</p>
-            <h2 id="economy-title">香港經濟</h2>
-          </div>
-          <p class="section-note">本地生產總值<br>政府統計處數據</p>
-        </div>
-        <p class="section-lead">年度實質增長率、年度現價金額及季度增長率分別顯示；三者的單位和比較基準不同。</p>
-        <div class="economy-group">
-          <h3>年度實質本地生產總值增長率</h3>
-          <p>與上年全年比較，單位：%。橫軸以零為中心，左右兩邊的刻度相同。</p>
-          <div class="chart-panel" id="economy-annual" aria-live="polite"><p class="loading">載入圖表…</p></div>
-        </div>
-        <div class="economy-group">
-          <h3>年度現價金額</h3>
-          <p>本地生產總值總額與按人口平均的產出，分別按各自單位顯示。</p>
-          <div class="economy-cards" id="economy-levels" aria-live="polite"><p class="loading">載入數據…</p></div>
-        </div>
-        <div class="economy-group">
-          <h3>最新季度實質增長率</h3>
-          <p>按年與經季節性調整後按季的比較基準不同，單位同為%。</p>
-          <div class="economy-cards" id="economy-quarter" aria-live="polite"><p class="loading">載入數據…</p></div>
-        </div>
-      </section>
-
-      <section class="dashboard-section" id="inflation" aria-labelledby="inflation-title">
-        <div class="section-heading"><div><p class="section-kicker">06 / 通脹</p><h2 id="inflation-title">綜合消費物價指數</h2></div><p class="section-note"><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=510-60001" target="_blank" rel="noreferrer">政府統計處表 510-60001 ↗</a></p></div>
-        <p class="section-lead">正數表示物價水平較比較期上升。升幅較小，不代表物價下跌。</p>
-        <div class="economy-group"><h3>全年平均按年變動</h3><p>2020 至 2025 年。橫軸以零為中心，單位：%。</p><div class="chart-panel" id="inflation-annual" aria-live="polite"><p class="loading">載入圖表…</p></div></div>
-        <div class="economy-group"><h3>最新月份</h3><p>2026 年 8 月的按年變動和指數水平分開顯示。</p><div class="economy-cards" id="inflation-latest" aria-live="polite"><p class="loading">載入數據…</p></div></div>
-      </section>
-
-      <section class="dashboard-section" id="unemployment" aria-labelledby="unemployment-title">
-        <div class="section-heading"><div><p class="section-kicker">07 / 勞工</p><h2 id="unemployment-title">經季節性調整失業率</h2></div><p class="section-note"><span>單位：% · 橫條由零開始</span><br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=210-06101" target="_blank" rel="noreferrer">政府統計處表 210-06101 ↗</a></p></div>
-        <p class="section-lead">每個數字涵蓋連續三個月。相鄰期間有兩個月重疊，不能當成互不相關的單月數字。</p>
-        <div class="chart-panel" id="unemployment-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
-      </section>
-
-      <section class="dashboard-section" id="earnings" aria-labelledby="earnings-title">
-        <div class="section-heading"><div><p class="section-kicker">08 / 勞工</p><h2 id="earnings-title">每月就業收入中位數</h2></div><p class="section-note"><span>單位：港元／月 · 第一季數字</span><br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=210-06319" target="_blank" rel="noreferrer">政府統計處表 210-06319 ↗</a></p></div>
-        <p class="section-lead">中位數即將就業人士按收入排列後，排在中間位置的人所對應的收入。數字不包括農曆年花紅或雙糧，屬未扣除通脹的名義金額。</p>
-        <div class="economy-group"><h3>各年第一季合計</h3><div class="chart-panel" id="earnings-chart" aria-live="polite"><p class="loading">載入圖表…</p></div></div>
-        <div class="economy-group"><h3>2026 年第一季性別分項</h3><p>以下分別是合計、男性及女性的中位數，不能單靠這三個數字推斷同工薪酬差距。</p><div class="economy-cards" id="earnings-latest" aria-live="polite"><p class="loading">載入數據…</p></div></div>
-      </section>
-
-      <section class="dashboard-section" id="trade" aria-labelledby="trade-title">
-        <div class="section-heading"><div><p class="section-kicker">09 / 貿易</p><h2 id="trade-title">商品進出口</h2></div><p class="section-note"><span>單位：百萬港元 · 橫條由零開始</span><br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=410-50001" target="_blank" rel="noreferrer">政府統計處表 410-50001 ↗</a></p></div>
-        <p class="section-lead">進口以到岸價計算，整體出口以離岸價計算。每月兩條橫條使用同一刻度。</p>
-        <div class="economy-group"><h3>2026 年每月貨值</h3><div class="chart-panel" id="trade-chart" aria-live="polite"><p class="loading">載入圖表…</p></div></div>
-        <div class="economy-group"><h3>2026 年 8 月按年變動與商品貿易差額</h3><p>逆差採用官方表列數字。將四捨五入後的進出口分項相減，可能相差 1 百萬港元。</p><div class="economy-cards" id="trade-latest" aria-live="polite"><p class="loading">載入數據…</p></div></div>
-      </section>
-
-      <section class="method-note" aria-labelledby="method-title">
-        <div class="method-symbol" aria-hidden="true">↗</div>
-        <div>
-          <h2 id="method-title">關於數字</h2>
-          <p>年齡和性別比例以各組人數除以該年總人口計算。2026 年人口總數為暫定數字；部分本地生產總值數字已修訂。人均本地生產總值是平均每人的經濟產出，並非個人收入。通脹、失業率、就業收入和商品貿易均按各自的期間、單位及比較基準列出，資料狀態和官方來源隨每項數字顯示。</p>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <span>全港人口、本地生產總值、通脹、勞工與商品貿易數據</span>
-      <a href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer">參考：政府統計處 ↗</a>
-    </footer>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#effaf6">
+  <meta name="description" content="用不同圖表看清香港人口與經濟變化。保留數據期間、單位、狀態及官方來源。">
+  <title>香港人口與經濟｜用圖表看清變化</title>
+  <link rel="stylesheet" href="./styles.css?v=20261022-simple">
+  <script type="module" src="./app.js?v=20261022-simple"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="wordmark" href="#top" aria-label="香港人口與經濟，回到頁首"><span class="wordmark-mark" aria-hidden="true">▥</span><span>HK 香港人口<small>人口與經濟數據概覽</small></span></a>
+    <nav class="section-nav" aria-label="數據章節"><a href="#total">總人口</a><a href="#age">年齡</a><a href="#sex">性別</a><a href="#residents">居民</a><a href="#economy">GDP</a><a href="#inflation">通脹</a><a href="#unemployment">失業率</a><a href="#earnings">收入</a><a href="#trade">貿易</a></nav>
+    <a class="official-link" href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer"><span aria-hidden="true">●</span> 政府統計處 ↗</a>
+  </div></header>
+  <main id="main">
+    <section class="hero" id="top" aria-labelledby="page-title">
+      <div class="hero-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 年中人口</p><h1 id="page-title">香港人口與經濟<br><span>用圖表看清變化</span></h1><p class="hero-intro">從人口結構到物價與就業，用簡單圖表認識香港。<br class="desktop-break">每項數字保留年份、單位及官方來源。</p></div>
+      <div class="hero-stat" id="latest-total" aria-live="polite"><p class="hero-stat-label">年中總人口</p><p class="hero-number">載入中…</p></div>
+      <div class="hero-foot"><p id="latest-change">正在整理數據…</p><p>年齡及性別分項截至 2025 年</p></div>
+    </section>
+    <div class="intro-strip"><span class="intro-icon" aria-hidden="true">i</span><p>各圖使用各自有資料的年份。2026 年沒有年齡及性別分項；圖表下方可查看詳細數字、狀態與來源。</p></div>
+    <section class="dashboard-section" id="total" aria-labelledby="total-title">
+      <div class="section-heading"><div><p class="section-kicker">01 / 人口規模</p><h2 id="total-title">年中總人口趨勢 <span class="chart-tag">折線與數值卡</span></h2><p class="section-lead">來源列載的 4 個年份，保留真實時間間距。</p></div><p class="section-note">單位 · 人<br>縱軸未由零開始</p></div>
+      <div class="chart-panel" id="total-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="dashboard-section" id="age" aria-labelledby="age-title">
+      <div class="section-heading"><div><p class="section-kicker">02 / 年齡組成</p><h2 id="age-title">人口年齡分布 <span class="chart-tag blue">分組直條圖</span></h2><p class="section-lead">比較 2020、2024、2025 年各年齡組別佔比。</p></div><p class="section-note">單位 · 人及 %<br>四組共用 0–50% 刻度</p></div>
+      <div id="age-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="dashboard-section" id="sex" aria-labelledby="sex-title">
+      <div class="section-heading"><div><p class="section-kicker">03 / 性別組成</p><h2 id="sex-title">人口性別分布 <span class="chart-tag pink">環形圖</span></h2><p class="section-lead">按所選年份查看女性及男性的數量和比例。</p></div><div class="year-control"><label for="sex-year">資料年份</label><select id="sex-year"></select></div></div>
+      <div id="sex-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="dashboard-section" id="residents" aria-labelledby="residents-title">
+      <div class="section-heading"><div><p class="section-kicker">04 / 居民類別</p><h2 id="residents-title">常住居民與流動居民 <span class="chart-tag">半圓比例圖</span></h2><p class="section-lead">按同年總人口計算，對照兩類居民的結構。</p></div><p class="section-note">單位 · 人及 %<br>2025 · 2026 年中</p></div>
+      <div id="residents-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <div class="chapter-divider"><span>經濟與生活</span><p>不同指標分開讀，先看期間和比較基準。</p></div>
+    <section class="dashboard-section" id="economy" aria-labelledby="economy-title">
+      <div class="section-heading"><div><p class="section-kicker">05 / 經濟產出</p><h2 id="economy-title">本地生產總值 <span class="chart-tag">正負橫條圖</span></h2><p class="section-lead">實質增長、現價金額及季度變化，按各自基準顯示。</p></div><p class="section-note">年度 · 季度<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=310-30001" target="_blank" rel="noreferrer">增長原表 ↗</a> · <a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=310-31001" target="_blank" rel="noreferrer">現價原表 ↗</a></p></div>
+      <div class="economy-layout"><div class="chart-panel"><div class="panel-heading"><h3>年度實質增長</h3><span>與上年全年比較 · %</span></div><div id="economy-annual" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="economy-side"><div class="chart-panel"><div class="panel-heading"><h3>2025 年現價金額</h3></div><div class="metric-cards" id="economy-levels" aria-live="polite"><p class="loading">載入數據…</p></div><p class="small-note">人均 GDP 是平均每人的經濟產出，並非個人收入。</p></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年第 2 季實質增長</h3></div><div class="metric-cards" id="economy-quarter" aria-live="polite"><p class="loading">載入數據…</p></div></div></div></div>
+    </section>
+    <section class="dashboard-section" id="inflation" aria-labelledby="inflation-title">
+      <div class="section-heading"><div><p class="section-kicker">06 / 物價</p><h2 id="inflation-title">綜合消費物價指數 <span class="chart-tag blue">直條圖</span></h2><p class="section-lead">升幅放緩仍代表物價上升，不等於物價下跌。</p></div><p class="section-note">全年平均 · 最新月份<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=510-60001" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
+      <div class="indicator-layout"><div class="chart-panel"><div class="panel-heading"><h3>全年平均按年變動</h3><span>2020–2025 · %</span></div><div id="inflation-annual" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年 8 月</h3><span>月度觀測</span></div><div class="metric-cards" id="inflation-latest" aria-live="polite"><p class="loading">載入數據…</p></div></div></div>
+    </section>
+    <section class="dashboard-section" id="unemployment" aria-labelledby="unemployment-title">
+      <div class="section-heading"><div><p class="section-kicker">07 / 勞工</p><h2 id="unemployment-title">經季節性調整失業率 <span class="chart-tag">期間折線圖</span></h2><p class="section-lead">每點涵蓋連續三個月，相鄰期間有兩個月重疊。</p></div><p class="section-note">2026 年 · 單位 %<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=210-06101" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
+      <div class="chart-panel" id="unemployment-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="dashboard-section" id="earnings" aria-labelledby="earnings-title">
+      <div class="section-heading"><div><p class="section-kicker">08 / 就業收入</p><h2 id="earnings-title">每月就業收入中位數 <span class="chart-tag blue">直條圖</span></h2><p class="section-lead">將收入排序後位於中間的數字，不包括農曆年花紅及雙糧。</p></div><p class="section-note">港元／月 · 第一季<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=210-06319" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
+      <div class="indicator-layout"><div class="chart-panel"><div class="panel-heading"><h3>各年第一季合計</h3><span>2021–2026</span></div><div id="earnings-chart" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年第一季</h3><span>合計與性別分項</span></div><div class="metric-cards" id="earnings-latest" aria-live="polite"><p class="loading">載入數據…</p></div><p class="small-note">三個中位數不能單獨用來推斷同工薪酬差距。</p></div></div>
+    </section>
+    <section class="dashboard-section" id="trade" aria-labelledby="trade-title">
+      <div class="section-heading"><div><p class="section-kicker">09 / 商品貿易</p><h2 id="trade-title">商品進出口 <span class="chart-tag amber">並列直條圖</span></h2><p class="section-lead">進口按到岸價，整體出口按離岸價。兩者共用由零開始的刻度。</p></div><p class="section-note">2026 年 1–8 月<br>百萬港元<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=410-50001" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
+      <div class="chart-panel"><div id="trade-chart" aria-live="polite"><p class="loading">載入圖表…</p></div></div>
+      <div class="trade-summary metric-cards" id="trade-latest" aria-live="polite"><p class="loading">載入數據…</p></div>
+    </section>
+    <section class="method-note" aria-labelledby="method-title"><span class="method-symbol" aria-hidden="true">▥</span><div><h2 id="method-title">讀圖與數據說明</h2><p>各圖按所列年份及來源顯示，並非即時統計。人口原始單位為千人，圖中換算為人；比例按對應年份總人口計算。不同指標的統計期間、單位及比較基準各自獨立。展開各圖「詳細數據與來源」，可查看每項觀測的資料狀態和官方連結。</p></div></section>
+    <div class="page-end"><span><i class="live-dot" aria-hidden="true"></i> 全香港 · 按來源實際期間顯示</span><a href="#top">回到頁首 ↑</a></div>
+  </main>
+  <footer class="site-footer"><div><strong>香港人口與經濟數據概覽</strong><p>以政府統計處來源認識香港的變化。</p></div><a href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer">政府統計處 C&SD ↗</a></footer>
+</body>
 </html>
 
