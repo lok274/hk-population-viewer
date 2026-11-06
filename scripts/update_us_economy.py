@@ -340,7 +340,6 @@ def merge_rows(key, spec, current, previous):
     for period in periods:
         item = current[period]
         prior = old.get(period)
-        # Keep independently verified release metadata when the source value and explicit flags agree.
         if prior and item[0] == prior[0]:
             current_fields, prior_fields = item + [None] * 5, prior + [None] * 5
             same_provider = current_fields[4] == prior_fields[4]
