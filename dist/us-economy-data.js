@@ -505,10 +505,13 @@ export function getTopic(id) {
     const lows = series.targetLow.observations;
     const highs = series.targetHigh.observations;
     const start = (Number(snapshot.cutoffAt.slice(0, 4)) - 5) + snapshot.cutoffAt.slice(4);
-    if (lows.length !== highs.length || lows[0].period > start || lows[1].period <= start
+    const startIndex = lows.findLastIndex(row => row.period <= start);
+    if (lows.length !== highs.length || startIndex === -1
       || lows.some((low, index) => low.period !== highs[index].period || low.value > highs[index].value || low.period > snapshot.cutoffAt)) {
       throw new Error('Invalid federal funds target history');
     }
+    series.targetLow.observations = lows.slice(startIndex);
+    series.targetHigh.observations = highs.slice(startIndex);
   }
   return {id, series};
 }

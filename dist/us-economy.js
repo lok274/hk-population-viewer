@@ -155,9 +155,9 @@ function targetSteps(lowSeries, highSeries, cutoffAt) {
   const high = highSeries.observations;
   const top = Math.ceil(Math.max(...high.map(row => row.value)) / 2) * 2;
   const y = value => 154 - value / top * 138;
-  const x = period => 62 + (Math.max(startTime, plotTime(period)) - startTime) / (endTime - startTime) * 398;
+  const x = period => 62 + (plotTime(period) - startTime) / (endTime - startTime) * 398;
   const corners = rows => {
-    const positions = [[x(rows[0].period), y(rows[0].value)]];
+    const positions = [[62, y(rows[0].value)]];
     for (const [index, row] of rows.slice(1).entries()) {
       positions.push([x(row.period), y(rows[index].value)], [x(row.period), y(row.value)]);
     }
