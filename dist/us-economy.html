@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#effaf6">
+  <meta name="description" content="用圖表查看美國全國的 GDP、物價、就業、消費、貿易、利率及聯邦財政。每項數字附統計期間與官方來源。">
+  <title>美國經濟概覽｜十個主題看清變化</title>
+  <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
+  <link rel="stylesheet" href="./us-economy.css">
+  <script type="module" src="./us-economy.js"></script>
+</head>
+<body class="us-economy-page">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="wordmark" href="./index.html" aria-label="香港人口與經濟，返回首頁"><span class="wordmark-mark" aria-hidden="true">▥</span><span>HK 香港人口<small>人口與經濟數據概覽</small></span></a>
+      <a class="us-home" href="./index.html">← 返回首頁</a>
+    </div>
+  </header>
+  <main id="main" tabindex="-1">
+    <section class="us-hero" id="top" aria-labelledby="page-title">
+      <div class="us-hero-copy">
+        <p class="us-kicker">美國全國 · 官方統計</p>
+        <h1 id="page-title">美國經濟概覽</h1>
+        <p>先看經濟增長、物價、就業和利率，再按主題查看走勢與完整數據。各項指標按自己的發布時間更新。</p>
+      </div>
+      <p class="us-version" id="snapshot-version" role="status">固定快照 · 各項數據有獨立統計期間</p>
+      <div class="us-headlines" aria-label="四項重點指標">
+        <a href="#output" class="us-headline"><span>實質 GDP</span><strong id="headline-gdp">—</strong><small id="period-gdp">季度按季增長 · 年率化</small></a>
+        <a href="#prices" class="us-headline"><span>整體 CPI-U</span><strong id="headline-cpi">—</strong><small id="period-cpi">物價按年變動</small></a>
+        <a href="#labour" class="us-headline"><span>失業率 U-3</span><strong id="headline-jobs">—</strong><small id="period-jobs">住戶調查 · 月度季調</small></a>
+        <a href="#rates" class="us-headline"><span>聯邦基金目標區間</span><strong id="headline-policy">—</strong><small id="period-policy">按生效日</small></a>
+      </div>
+    </section>
+    <nav class="us-topics" aria-label="美國經濟主題">
+      <a href="#output"><span aria-hidden="true">01</span> 經濟產出</a>
+      <a href="#prices"><span aria-hidden="true">02</span> 物價</a>
+      <a href="#labour"><span aria-hidden="true">03</span> 就業與工資</a>
+      <a href="#households"><span aria-hidden="true">04</span> 收入與消費</a>
+      <a href="#retail"><span aria-hidden="true">05</span> 零售</a>
+      <a href="#housing"><span aria-hidden="true">06</span> 住宅</a>
+      <a href="#trade"><span aria-hidden="true">07</span> 對外貿易</a>
+      <a href="#rates"><span aria-hidden="true">08</span> 利率</a>
+      <a href="#production"><span aria-hidden="true">09</span> 工業與生產力</a>
+      <a href="#fiscal"><span aria-hidden="true">10</span> 聯邦財政</a>
+    </nav>
+    <noscript><p class="us-notice">開啟 JavaScript 可查看圖表和數據表。各主題的官方來源連結仍可使用。</p></noscript>
+
+    <section class="us-topic" id="output" aria-labelledby="output-title">
+      <p class="us-kicker">01 / 產出</p>
+      <h2 id="output-title">經濟產出</h2>
+      <p class="us-lead">GDP 衡量在美國境內生產的商品和服務價值。現價金額使用當年價格，實質增長扣除了價格變動。季度增長以年率表示，意思是這個季度的速度若持續一年，全年會變動多少。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.bea.gov/data/gdp/gross-domestic-product">BEA · GDP 統計 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="prices" aria-labelledby="prices-title">
+      <p class="us-kicker">02 / 通脹</p>
+      <h2 id="prices-title">物價</h2>
+      <p class="us-lead">CPI-U 追蹤城市消費者支付的價格，PCE 物價指數涵蓋個人消費開支，兩者的範圍和權重有別。核心指數排除食品和能源。按年變動只比較上年同一月份。2025 年 10 月沒有 CPI 數字，圖上留空。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.bls.gov/cpi/">BLS · CPI ↗</a> <a href="https://www.bea.gov/data/personal-consumption-expenditures-price-index">BEA · PCE 物價 ↗</a> <a href="https://www.bls.gov/cpi/additional-resources/2025-federal-government-shutdown-impact-cpi-faq.htm">CPI 缺數說明 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="labour" aria-labelledby="labour-title">
+      <p class="us-kicker">03 / 勞工</p>
+      <h2 id="labour-title">就業與工資</h2>
+      <p class="us-lead">失業率看勞動人口中有多少人失業，參與率看有多少人工作或求職。非農職位和平均時薪來自僱主調查，按月增加的職位是淨變化。2025 年 10 月的住戶調查缺數，僱主調查數字則有公布。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.bls.gov/news.release/empsit.htm">BLS · 就業形勢 ↗</a> <a href="https://www.bls.gov/cps/methods/2025-federal-government-shutdown-impact-cps.htm">住戶調查缺數說明 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="households" aria-labelledby="households-title">
+      <p class="us-kicker">04 / 家庭</p>
+      <h2 id="households-title">收入與消費</h2>
+      <p class="us-lead">實質消費和實質可支配收入扣除物價影響。兩項以季調年率顯示，可比較每月的消費和收入速度。儲蓄率是個人儲蓄佔可支配個人收入的比例。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.bea.gov/data/income-saving/personal-income">BEA · 個人收入與支出 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="retail" aria-labelledby="retail-title">
+      <p class="us-kicker">05 / 銷售</p>
+      <h2 id="retail-title">零售</h2>
+      <p class="us-lead">零售和餐飲銷售額以當月價格計算，反映價格和銷量的共同變化。Census 先用部分樣本公布初值，再用較完整的調查修訂。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.census.gov/retail/index.html">Census · 零售及餐飲服務 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="housing" aria-labelledby="housing-title">
+      <p class="us-kicker">06 / 建築</p>
+      <h2 id="housing-title">住宅</h2>
+      <p class="us-lead">住宅動工反映已開始興建的單位，建築許可反映獲批的單位。季調年率把當月速度換算成全年水平，當月實際動工或獲批的數量另有統計。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.census.gov/construction/nrc/data/series.html">Census · 住宅建築原表 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="trade" aria-labelledby="trade-title">
+      <p class="us-kicker">07 / 進出口</p>
+      <h2 id="trade-title">對外貿易</h2>
+      <p class="us-lead">出口及進口涵蓋商品與服務，按國際收支口徑和當月價格計算。貿易差額為負代表逆差。圖中使用官方公布的差額，四捨五入後的進出口金額相減可能略有不同。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.census.gov/foreign-trade/Press-Release/current_press_release/index.html">Census／BEA · 商品及服務貿易 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="rates" aria-labelledby="rates-title">
+      <p class="us-kicker">08 / 貨幣政策</p>
+      <h2 id="rates-title">利率</h2>
+      <p class="us-lead">聯邦基金目標區間由聯儲局設定，按生效日期改變。國債收益率反映市場定價，這裏用聯儲局公布的兩年期和十年期固定到期收益率月平均。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.federalreserve.gov/monetarypolicy/openmarket.htm">聯儲局 · 目標利率記錄 ↗</a> <a href="https://www.federalreserve.gov/releases/h15/">聯儲局 · H.15 利率 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="production" aria-labelledby="production-title">
+      <p class="us-kicker">09 / 產能</p>
+      <h2 id="production-title">工業與生產力</h2>
+      <p class="us-lead">工業生產反映製造業、採礦及公用事業的實質產量。產能使用率衡量已動用多少估計產能。非農商業勞動生產力看每小時實質產出，以官方按季年率化增長顯示。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://www.federalreserve.gov/releases/g17/">聯儲局 · G.17 工業統計 ↗</a> <a href="https://www.bls.gov/news.release/prod2.htm">BLS · 生產力與成本 ↗</a></p>
+    </section>
+
+    <section class="us-topic" id="fiscal" aria-labelledby="fiscal-title">
+      <p class="us-kicker">10 / 政府收支</p>
+      <h2 id="fiscal-title">聯邦財政</h2>
+      <p class="us-lead">美國聯邦財政年度於 9 月 30 日結束。當年支出多於收入便有赤字。總公共債務由公眾持有債務和政府內部持有債務組成，年度收支與某日的債務餘額分開顯示。</p>
+      <div class="us-content" data-topic-content></div>
+      <p class="us-sources"><a href="https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/">Treasury · 聯邦收支 ↗</a> <a href="https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/">Treasury · 每日債務 ↗</a></p>
+    </section>
+
+    <section class="us-notice" aria-labelledby="method-title">
+      <h2 id="method-title">如何讀這份快照</h2>
+      <p>各表列明單位、比較基準和官方來源。折線空白代表該期或比較期缺數。部分圖表會用較大的金額單位方便閱讀，表格保留原始單位。官方日後或會修訂數字。</p>
+    </section>
+    <div class="us-end"><a href="./index.html">← 返回人口與經濟首頁</a><a href="#top">回到頁首 ↑</a></div>
+  </main>
+</body>
+</html>
