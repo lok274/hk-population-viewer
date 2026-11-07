@@ -148,7 +148,7 @@ function signedBars(title, plot) {
 }
 
 function targetSteps(lowSeries, highSeries, cutoffAt) {
-  const start = (Number(cutoffAt.slice(0, 4)) - 5) + cutoffAt.slice(4);
+  const start = lowSeries.windowStart;
   const startTime = plotTime(start);
   const endTime = plotTime(cutoffAt);
   const low = lowSeries.observations;

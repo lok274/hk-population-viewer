@@ -1,0 +1,72 @@
+name: Refresh U.S. economy data
+
+on:
+  schedule:
+    - cron: '17 23 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: refresh-us-economy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Refresh and validate candidate
+        id: refresh
+        run: |
+          python scripts/update_us_economy.py --write
+          if ! git diff --quiet -- dist/us-economy-snapshot.js; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Keep validated snapshot
+        if: steps.refresh.outputs.changed == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: us-economy-snapshot
+          path: dist/us-economy-snapshot.js
+          if-no-files-found: error
+      - name: Propose data update
+        if: steps.refresh.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          existing=$(gh pr list --base "$BASE_BRANCH" --state open --json headRefName,url \
+            --jq '.[] | select(.headRefName | startswith("automation/us-economy/")) | .url')
+          if [[ -n "$existing" ]]; then
+            printf 'A data PR is already open: %s\n' "$existing"
+            exit 0
+          fi
+          branch="automation/us-economy/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- dist/us-economy-snapshot.js
+          git commit -m 'Refresh U.S. economic observations'
+          gh auth setup-git
+          git push origin "HEAD:refs/heads/$branch"
+          if ! gh pr create --base "$BASE_BRANCH" --head "$branch" \
+            --title 'Refresh U.S. economic observations' \
+            --body 'Updates the static snapshot from official sources. The workflow validated all 34 series. Review the observations and publication statuses before merging.'; then
+            echo '::error::Could not open the data PR. Check that repository Actions settings allow pull request creation. The validated snapshot is available as a workflow artifact.'
+            exit 1
+          fi
