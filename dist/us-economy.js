@@ -312,6 +312,7 @@ const renderers = {
 const unavailable = '<p class="us-notice">這個主題的快照暫時無法顯示。你仍可查看下方的官方來源。</p>';
 
 async function showDashboard() {
+  const initialHash = location.hash;
   let data;
   let meta;
   try {
@@ -335,6 +336,9 @@ async function showDashboard() {
       console.error('Unable to display U.S. economy topic ' + id, error);
       target.innerHTML = unavailable;
     }
+  }
+  if (initialHash && initialHash === location.hash && Object.hasOwn(renderers, initialHash.slice(1))) {
+    document.getElementById(initialHash.slice(1)).scrollIntoView();
   }
 }
 

@@ -10,17 +10,42 @@
   <link rel="stylesheet" href="./dashboard-ui.css">
   <script>if (['#economy', '#inflation', '#unemployment', '#earnings', '#trade'].includes(location.hash)) location.replace('./hk-economy.html' + location.hash);</script>
   <script type="module" src="./app.js?v=separate-economies"></script>
+  <link rel="stylesheet" href="./site-navigation.css?v=20261126">
+  <script defer src="./site-navigation.js?v=20261126"></script>
 </head>
-<body class="home-dashboard">
+<body class="home-dashboard" data-region="hub">
   <a class="skip-link" href="#main">跳至主要內容</a>
-  <header class="site-header"><div class="header-inner">
-    <a class="wordmark" href="#top" aria-label="香港人口與經濟，回到頁首"><span class="wordmark-mark" aria-hidden="true">▥</span><span>HK 香港人口<small>人口與經濟數據概覽</small></span></a>
-    <nav class="section-nav" aria-label="數據章節"><span class="nav-heading">人口結構</span><a href="#total">01　總人口</a><a href="#age">02　年齡分布</a><a href="#sex">03　性別分布</a><a href="#residents">04　居民類別</a><span class="nav-heading">各地經濟</span><a href="./hk-economy.html">香港經濟 ↗</a><a href="./us-economy.html">美國經濟 ↗</a><span class="nav-heading">更多概覽</span><a href="./education.html">教育概覽 ↗</a><a href="./industry.html">行業概覽 ↗</a><a href="./technology.html">科技發展 ↗</a></nav>
-    <a class="official-link" href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer"><span aria-hidden="true">●</span> 政府統計處 ↗</a>
-  </div></header>
+  <header class="global-header">
+    <div class="global-header-inner">
+      <a class="global-brand" href="./index.html#world-economies"><span class="global-brand-mark" aria-hidden="true">▥</span><span>各地人口與經濟<small>官方統計圖表總覽</small></span></a>
+      <nav class="global-regions" aria-label="國家與地區">
+        <a href="./index.html#world-economies" aria-current="page">各地總覽</a>
+        <span data-region-links><a href="./index.html#total">香港</a><a href="./us-economy.html">美國</a></span>
+      </nav>
+      <button class="search-trigger" type="button" data-open-search hidden>搜尋<span class="search-label">地區或主題</span></button>
+    </div>
+  </header>
+  <dialog class="site-search" id="site-search" aria-labelledby="site-search-title">
+    <div class="search-top"><h1 id="site-search-title">搜尋地區或主題</h1><form method="dialog"><button type="submit" aria-label="關閉搜尋">關閉 ✕</button></form></div>
+    <label for="site-search-input">輸入地區或主題</label>
+    <input type="search" id="site-search-input" placeholder="例如：香港、通脹、利率" autocomplete="off">
+    <p data-search-status role="status"></p>
+    <ul data-search-results></ul>
+  </dialog>
+  <nav class="hk-module-nav" aria-label="香港主題"><span>香港</span><a href="./index.html#total" aria-current="page">人口結構</a><a href="./hk-economy.html">香港經濟</a><a href="./education.html">教育概覽</a><a href="./industry.html">行業概覽</a><a href="./technology.html">科技發展</a></nav>
   <main id="main">
+    <section class="economy-directory" id="world-economies" aria-labelledby="world-economies-title">
+      <p class="section-kicker">官方統計 · 按地區探索</p>
+      <h1 id="world-economies-title">香港人口與各地經濟</h1>
+      <p>選擇地區，查看各自的數據、統計期間及官方來源。</p>
+      <div class="economy-links">
+        <a href="./index.html#total"><strong>香港 Hong Kong</strong><span>人口、經濟、教育、行業及科技</span><span aria-hidden="true">查看香港 →</span></a>
+        <a href="./us-economy.html"><strong>美國 United States</strong><span>十個主題的全國經濟數據</span><span aria-hidden="true">查看美國 →</span></a>
+      </div>
+    </section>
+    <nav class="page-chapters" aria-label="人口章節"><span>香港人口</span><a href="#total">總人口</a><a href="#age">年齡</a><a href="#sex">性別</a><a href="#residents">居民類別</a></nav>
     <section class="hero" id="top" aria-labelledby="page-title">
-      <div class="hero-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 年中人口</p><h1 id="page-title">香港人口與各地經濟<br><span>用圖表看清變化</span></h1><p class="hero-intro">先看香港人口結構，再選擇地區探索經濟數據。<br class="desktop-break">每項數字保留年份、單位及官方來源。</p></div>
+      <div class="hero-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 年中人口</p><h2 id="page-title">香港人口結構<br><span>用圖表看清變化</span></h2><p class="hero-intro">從人口規模、年齡和性別認識香港。<br class="desktop-break">每項數字保留年份、單位及官方來源。</p></div>
       <div class="hero-stat" id="latest-total" aria-live="polite"><p class="hero-stat-label">年中總人口</p><p class="hero-number">載入中…</p></div>
       <div class="hero-foot"><p id="latest-change">正在整理數據…</p><p>年齡及性別分項截至 2025 年</p></div>
     </section>
@@ -40,15 +65,6 @@
     <section class="dashboard-section" id="residents" aria-labelledby="residents-title">
       <div class="section-heading"><div><p class="section-kicker">04 / 居民類別</p><h2 id="residents-title">常住居民與流動居民 <span class="chart-tag">半圓比例圖</span></h2><p class="section-lead">按同年總人口計算，對照兩類居民的結構。</p></div><p class="section-note">單位 · 人及 %<br>2025 · 2026 年中</p></div>
       <div id="residents-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
-    </section>
-    <section class="economy-directory" id="world-economies" aria-labelledby="world-economies-title">
-      <p class="section-kicker">各地經濟</p>
-      <h2 id="world-economies-title">選擇地區</h2>
-      <p>選擇地區，查看各自的經濟指標、統計期間及官方來源。</p>
-      <div class="economy-links">
-        <a href="./hk-economy.html"><strong>香港經濟</strong><span>GDP、物價、就業及貿易</span><span aria-hidden="true">查看概覽 →</span></a>
-        <a href="./us-economy.html"><strong>美國經濟</strong><span>十個主題的全國經濟數據</span><span aria-hidden="true">查看概覽 →</span></a>
-      </div>
     </section>
     <section class="method-note" aria-labelledby="method-title"><span class="method-symbol" aria-hidden="true">▥</span><div><h2 id="method-title">讀圖與數據說明</h2><p>各圖按所列年份及來源顯示，並非即時統計。人口原始單位為千人，圖中換算為人；比例按對應年份總人口計算。不同指標的統計期間、單位及比較基準各自獨立。展開各圖「詳細數據與來源」，可查看每項觀測的資料狀態和官方連結。</p></div></section>
     <div class="page-end"><span><i class="live-dot" aria-hidden="true"></i> 全香港 · 按來源實際期間顯示</span><a href="#top">回到頁首 ↑</a></div>
