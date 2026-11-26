@@ -26,9 +26,9 @@ const regions = [
     id: 'us', label: '美國', english: 'United States', summary: '十個主題的全國經濟數據', href: './us-economy.html',
     topics: [
       ['美國經濟', './us-economy.html', '經濟'],
-      ['經濟產出', './us-economy.html#output', 'GDP'],
-      ['物價', './us-economy.html#prices', '通脹 CPI PCE'],
-      ['就業與工資', './us-economy.html#labour', '失業 就業 工資'],
+      ['經濟產出', './us-economy.html#output', 'GDP 消費 投資 政府 淨出口'],
+      ['物價', './us-economy.html#prices', '通脹 CPI PCE 食品 居住 住房 能源'],
+      ['就業與工資', './us-economy.html#labour', '失業 就業 工資 製造業 醫療 教育 專業 商業 政府'],
       ['收入與消費', './us-economy.html#households', '收入 消費 儲蓄'],
       ['零售', './us-economy.html#retail', '銷售'],
       ['住宅', './us-economy.html#housing', '房屋 建築'],

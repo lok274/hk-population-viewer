@@ -8,9 +8,9 @@
   <title>美國經濟概覽｜十個主題看清變化</title>
   <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
   <link rel="stylesheet" href="./us-economy.css">
-  <script type="module" src="./us-economy.js?v=20261126"></script>
+  <script type="module" src="./us-economy.js?v=20261126-stage1"></script>
   <link rel="stylesheet" href="./site-navigation.css?v=20261126">
-  <script defer src="./site-navigation.js?v=20261126"></script>
+  <script defer src="./site-navigation.js?v=20261126-stage1"></script>
 </head>
 <body class="us-economy-page" data-region="us">
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -64,6 +64,7 @@
       <p class="us-kicker">01 / 產出</p>
       <h2 id="output-title">經濟產出</h2>
       <p class="us-lead">GDP 衡量在美國境內生產的商品和服務價值。現價金額使用當年價格，實質增長扣除了價格變動。季度增長以年率表示，意思是這個季度的速度若持續一年，全年會變動多少。</p>
+      <p class="us-lead">GDP 組成列出個人消費、私人投資、政府消費及投資和淨出口。這些是現價季度年率水平，並非實質增長或對增長的貢獻；淨出口為負表示進口大於出口。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.bea.gov/data/gdp/gross-domestic-product">BEA · GDP 統計 ↗</a></p>
     </section>
@@ -71,7 +72,8 @@
     <section class="us-topic" id="prices" aria-labelledby="prices-title">
       <p class="us-kicker">02 / 通脹</p>
       <h2 id="prices-title">物價</h2>
-      <p class="us-lead">CPI-U 追蹤城市消費者支付的價格，PCE 物價指數涵蓋個人消費開支，兩者的範圍和權重有別。核心指數排除食品和能源。按年變動只比較上年同一月份。2025 年 10 月沒有 CPI 數字，圖上留空。</p>
+      <p class="us-lead">CPI-U 追蹤城市消費者支付的價格，PCE 物價指數涵蓋個人消費開支，兩者的範圍和權重有別。核心指數排除食品和能源。按年變動只比較上年同一月份。整體及核心 CPI 的 2025 年 10 月數字缺失，圖上留空。</p>
+      <p class="us-lead">食品、居住及能源分項有不同權重，升幅不能直接相加。2025 年 10 月缺數，令 2026 年 10 月的按年變動亦無法計算。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.bls.gov/cpi/">BLS · CPI ↗</a> <a href="https://www.bea.gov/data/personal-consumption-expenditures-price-index">BEA · PCE 物價 ↗</a> <a href="https://www.bls.gov/cpi/additional-resources/2025-federal-government-shutdown-impact-cpi-faq.htm">CPI 缺數說明 ↗</a></p>
     </section>
@@ -80,6 +82,7 @@
       <p class="us-kicker">03 / 勞工</p>
       <h2 id="labour-title">就業與工資</h2>
       <p class="us-lead">失業率看勞動人口中有多少人失業，參與率看有多少人工作或求職。非農職位和平均時薪來自僱主調查，按月增加的職位是淨變化。2025 年 10 月的住戶調查缺數，僱主調查數字則有公布。</p>
+      <p class="us-lead">行業圖表顯示製造業、私營教育及醫療、專業及商業服務和政府職位的按月淨變化。這些只是部分行業，不能相加當作全國新增職位。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.bls.gov/news.release/empsit.htm">BLS · 就業形勢 ↗</a> <a href="https://www.bls.gov/cps/methods/2025-federal-government-shutdown-impact-cps.htm">住戶調查缺數說明 ↗</a></p>
     </section>
@@ -120,6 +123,7 @@
       <p class="us-kicker">08 / 貨幣政策</p>
       <h2 id="rates-title">利率</h2>
       <p class="us-lead">聯邦基金目標區間由聯儲局設定，按生效日期改變。國債收益率反映市場定價，這裏用聯儲局公布的兩年期和十年期固定到期收益率月平均。</p>
+      <p class="us-lead">收益率差距由同月十年期減兩年期計算，以百分點表示。差距為負時，十年期收益率低於兩年期；單靠這個數字不能確定未來經濟走勢。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.federalreserve.gov/monetarypolicy/openmarket.htm">聯儲局 · 目標利率記錄 ↗</a> <a href="https://www.federalreserve.gov/releases/h15/">聯儲局 · H.15 利率 ↗</a></p>
     </section>
@@ -136,13 +140,14 @@
       <p class="us-kicker">10 / 政府收支</p>
       <h2 id="fiscal-title">聯邦財政</h2>
       <p class="us-lead">美國聯邦財政年度於 9 月 30 日結束。當年支出多於收入便有赤字。總公共債務由公眾持有債務和政府內部持有債務組成，年度收支與某日的債務餘額分開顯示。</p>
+      <p class="us-lead">赤字佔支出以官方全年赤字除以同財年支出計算；若有盈餘，圖上會顯示負數。這個比例不是赤字佔 GDP。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/">Treasury · 聯邦收支 ↗</a> <a href="https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/">Treasury · 每日債務 ↗</a></p>
     </section>
 
     <section class="us-notice" aria-labelledby="method-title">
       <h2 id="method-title">如何讀這份快照</h2>
-      <p>各表列明單位、比較基準和官方來源。折線空白代表該期或比較期缺數。部分圖表會用較大的金額單位方便閱讀，表格保留原始單位。官方日後或會修訂數字。</p>
+      <p>各表列明單位、比較基準和官方來源。按年變動、收益率差距及赤字佔支出由官方原始數值計算；折線空白代表該期或比較期缺數。部分按年圖只保留原始數據窗口，最早一年沒有上年同期可供比較。部分圖表會用較大的金額單位方便閱讀，表格保留原始單位。官方日後或會修訂數字。</p>
     </section>
     <div class="us-end"><a href="./index.html">← 返回人口與經濟首頁</a><a href="#top">回到頁首 ↑</a></div>
   </main>
