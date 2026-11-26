@@ -1,6 +1,6 @@
 const regions = [
   {
-    id: 'hk', label: '香港', english: 'Hong Kong', href: './index.html#total',
+    id: 'hk', label: '香港', english: 'Hong Kong', summary: '人口、經濟、教育、行業及科技', href: './index.html#total',
     topics: [
       ['人口結構', './index.html#total', '人口 總人口 population'],
       ['年齡分布', './index.html#age', '年齡'],
@@ -23,7 +23,7 @@ const regions = [
     ]
   },
   {
-    id: 'us', label: '美國', english: 'United States USA', href: './us-economy.html',
+    id: 'us', label: '美國', english: 'United States', summary: '十個主題的全國經濟數據', href: './us-economy.html',
     topics: [
       ['美國經濟', './us-economy.html', '經濟'],
       ['經濟產出', './us-economy.html#output', 'GDP'],
@@ -50,6 +50,24 @@ if (regionNav) {
     link.textContent = region.label;
     if (region.id === currentRegion) link.setAttribute('aria-current', 'location');
     regionNav.append(link);
+  }
+}
+
+const regionCards = document.querySelector('[data-region-cards]');
+if (regionCards) {
+  regionCards.replaceChildren();
+  for (const region of regions) {
+    const link = document.createElement('a');
+    const title = document.createElement('strong');
+    const description = document.createElement('span');
+    const action = document.createElement('span');
+    link.href = region.href;
+    title.textContent = `${region.label} ${region.english}`;
+    description.textContent = region.summary;
+    action.textContent = `查看${region.label} →`;
+    action.setAttribute('aria-hidden', 'true');
+    link.append(title, description, action);
+    regionCards.append(link);
   }
 }
 
