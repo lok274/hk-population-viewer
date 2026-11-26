@@ -68,6 +68,28 @@ function changes(series, months) {
   };
 }
 
+function pairedDifference(first, second, label, unit) {
+  const comparison = new Map(second.observations.map(row => [row.period, row]));
+  return {
+    label, unit, frequency: first.frequency, derived: true,
+    points: visible(first).map(row => {
+      const other = comparison.get(row.period);
+      return {...row, value: row.value === null || !other || other.value === null ? null : row.value - other.value};
+    }),
+  };
+}
+
+function deficitShare(balance, outlays) {
+  const comparison = new Map(outlays.observations.map(row => [row.period, row]));
+  return {
+    label: '赤字佔聯邦支出', unit: '%', frequency: balance.frequency, derived: true,
+    points: visible(balance).map(row => {
+      const other = comparison.get(row.period);
+      return {...row, value: row.value === null || !other || !other.value ? null : -row.value / other.value * 100};
+    }),
+  };
+}
+
 function plotTime(period) {
   if (period.includes('-Q')) return Date.UTC(Number(period.slice(0, 4)), (Number(period.at(-1)) - 1) * 3);
   return Date.parse(period);
@@ -213,32 +235,44 @@ function headline(id, value, period) {
   document.getElementById('period-' + id).textContent = period;
 }
 
-function renderOutput({gdpNominal, gdpAnnual, gdpQuarter}) {
+function renderOutput({gdpNominal, gdpAnnual, gdpQuarter, gdpConsumption, gdpInvestment, gdpGovernment, gdpNetExports}) {
   const latest = gdpQuarter.observations.at(-1);
   headline('gdp', formatted(latest.value, '%'), periodLabel(latest.period, gdpQuarter.frequency) + ' · 按季年率化 · ' + statusLabels[latest.status]);
   return topicContent([
     signedBars('季度實質 GDP · 按季年率化', levels(gdpQuarter)),
     signedBars('年度實質 GDP · 按年增長', levels(gdpAnnual)),
     lineChart('年度現價 GDP', [levels(gdpNominal, '萬億美元', 1_000_000)]),
-  ], [gdpQuarter, gdpAnnual, gdpNominal]);
+    lineChart('GDP 組成：個人消費', [levels(gdpConsumption, '萬億美元／年', 1_000_000)]),
+    lineChart('GDP 組成：私人投資及政府支出', [levels(gdpInvestment, '萬億美元／年', 1_000_000), levels(gdpGovernment, '萬億美元／年', 1_000_000)]),
+    signedBars('GDP 組成：商品及服務淨出口', levels(gdpNetExports, '萬億美元／年', 1_000_000)),
+  ], [gdpQuarter, gdpAnnual, gdpNominal, gdpConsumption, gdpInvestment, gdpGovernment, gdpNetExports]);
 }
 
-function renderPrices({cpi, coreCpi, pcePrices, corePcePrices}) {
+function renderPrices({cpi, coreCpi, cpiFood, cpiShelter, cpiEnergy, pcePrices, corePcePrices}) {
   const cpiChange = changes(cpi, 12);
   const coreCpiChange = changes(coreCpi, 12);
   const pceChange = changes(pcePrices, 12);
   const corePceChange = changes(corePcePrices, 12);
+  const foodChange = changes(cpiFood, 12);
+  const shelterChange = changes(cpiShelter, 12);
+  const energyChange = changes(cpiEnergy, 12);
   const latest = cpiChange.points.at(-1);
-  headline('cpi', formatted(latest.value, '%', true), periodLabel(latest.period, cpi.frequency) + ' · 按年');
+  headline('cpi', formatted(latest.value, '%', true), periodLabel(latest.period, cpi.frequency) + (latest.value === null ? ' · 按年缺少上年同月數據' : ' · 按年'));
   return topicContent([
     lineChart('CPI-U · 按年變動', [cpiChange, coreCpiChange]),
     lineChart('PCE 物價 · 按年變動', [pceChange, corePceChange]),
-  ], [[cpi, cpiChange], [coreCpi, coreCpiChange], [pcePrices, pceChange], [corePcePrices, corePceChange]]);
+    lineChart('食品及居住物價 · 按年變動', [foodChange, shelterChange]),
+    lineChart('能源物價 · 按年變動', [energyChange]),
+  ], [[cpi, cpiChange], [coreCpi, coreCpiChange], [cpiFood, foodChange], [cpiShelter, shelterChange], [cpiEnergy, energyChange], [pcePrices, pceChange], [corePcePrices, corePceChange]]);
 }
 
-function renderLabour({unemployment, participation, payroll, earnings}) {
+function renderLabour({unemployment, participation, payroll, earnings, jobsManufacturing, jobsEducationHealth, jobsProfessional, jobsGovernment}) {
   const payrollChange = changes(payroll, 1);
   const wageChange = changes(earnings, 12);
+  const manufacturingChange = changes(jobsManufacturing, 1);
+  const educationHealthChange = changes(jobsEducationHealth, 1);
+  const professionalChange = changes(jobsProfessional, 1);
+  const governmentChange = changes(jobsGovernment, 1);
   const latest = unemployment.observations.at(-1);
   headline('jobs', formatted(latest.value, '%'), periodLabel(latest.period, unemployment.frequency) + ' · 住戶調查');
   return topicContent([
@@ -247,29 +281,33 @@ function renderLabour({unemployment, participation, payroll, earnings}) {
     signedBars('非農就業職位 · 按月變化', payrollChange),
     lineChart('私營非農平均時薪', [levels(earnings)]),
     lineChart('平均時薪 · 按年變動', [wageChange]),
-  ], [unemployment, participation, [payroll, payrollChange], [earnings, wageChange]]);
+    lineChart('製造業及政府職位 · 按月變化', [manufacturingChange, governmentChange]),
+    lineChart('私營教育醫療及專業服務職位 · 按月變化', [educationHealthChange, professionalChange]),
+  ], [unemployment, participation, [payroll, payrollChange], [earnings, wageChange], [jobsManufacturing, manufacturingChange], [jobsEducationHealth, educationHealthChange], [jobsProfessional, professionalChange], [jobsGovernment, governmentChange]]);
 }
 
 function renderHouseholds({consumption, disposableIncome, saving}) {
   return topicContent([
     lineChart('實質消費與可支配收入 · 季調年率', [levels(consumption, '萬億鏈式美元（2017 年）', 1_000_000), levels(disposableIncome, '萬億鏈式美元（2017 年）', 1_000_000)]),
     lineChart('個人儲蓄率', [levels(saving)]),
-  ], [consumption, disposableIncome, saving]);
+    lineChart('實質消費與可支配收入 · 按年變動', [changes(consumption, 12), changes(disposableIncome, 12)]),
+  ], [[consumption, changes(consumption, 12)], [disposableIncome, changes(disposableIncome, 12)], saving]);
 }
 
 function renderRetail({retailSales}) {
-  return topicContent([lineChart('零售及餐飲服務銷售', [levels(retailSales, '十億美元', 1_000)])], [retailSales]);
+  return topicContent([lineChart('零售及餐飲服務銷售', [levels(retailSales, '十億美元', 1_000)]), lineChart('名義零售及餐飲銷售 · 按年變動', [changes(retailSales, 12)])], [[retailSales, changes(retailSales, 12)]]);
 }
 
 function renderHousing({starts, permits}) {
-  return topicContent([lineChart('私人住宅動工與建築許可 · 季調年率', [levels(starts), levels(permits)])], [starts, permits]);
+  return topicContent([lineChart('私人住宅動工與建築許可 · 季調年率', [levels(starts), levels(permits)]), lineChart('住宅動工與建築許可 · 按年變動', [changes(starts, 12), changes(permits, 12)])], [[starts, changes(starts, 12)], [permits, changes(permits, 12)]]);
 }
 
 function renderTrade({exports, imports, tradeBalance}) {
   return topicContent([
     lineChart('商品及服務進出口', [levels(exports, '十億美元', 1_000), levels(imports, '十億美元', 1_000)]),
     signedBars('官方貿易差額', levels(tradeBalance, '十億美元', 1_000)),
-  ], [exports, imports, tradeBalance]);
+    lineChart('商品及服務進出口 · 按年變動', [changes(exports, 12), changes(imports, 12)]),
+  ], [[exports, changes(exports, 12)], [imports, changes(imports, 12)], tradeBalance]);
 }
 
 function renderRates({targetLow, targetHigh, yield2, yield10}, cutoffAt) {
@@ -279,6 +317,7 @@ function renderRates({targetLow, targetHigh, yield2, yield10}, cutoffAt) {
   return topicContent([
     targetSteps(targetLow, targetHigh, cutoffAt),
     lineChart('兩年期與十年期國債收益率 · 月平均', [levels(yield2), levels(yield10)]),
+    signedBars('十年期減兩年期收益率 · 月平均差距', pairedDifference(yield10, yield2, '十年期減兩年期', '百分點')),
   ], [targetLow, targetHigh, yield2, yield10]);
 }
 
@@ -286,8 +325,9 @@ function renderProduction({industry, utilization, productivity}) {
   return topicContent([
     lineChart('工業生產指數', [levels(industry)]),
     lineChart('工業產能使用率', [levels(utilization)]),
+    lineChart('工業生產指數 · 按年變動', [changes(industry, 12)]),
     signedBars('非農商業勞動生產力 · 按季年率化', levels(productivity)),
-  ], [industry, utilization, productivity]);
+  ], [[industry, changes(industry, 12)], utilization, productivity]);
 }
 
 function renderFiscal({receipts, outlays, fiscalBalance, publicDebt, totalDebt, publicDebtDaily, totalDebtDaily}) {
@@ -298,6 +338,7 @@ function renderFiscal({receipts, outlays, fiscalBalance, publicDebt, totalDebt, 
   return topicContent([
     lineChart('聯邦政府財年收入與支出', [levels(receipts, '萬億美元', 1_000_000_000_000), levels(outlays, '萬億美元', 1_000_000_000_000)]),
     signedBars('財政年度盈餘或赤字', levels(fiscalBalance, '萬億美元', 1_000_000_000_000)),
+    signedBars('赤字佔聯邦支出 · 按財年計算', deficitShare(fiscalBalance, outlays)),
     lineChart('財政年度末債務', [levels(totalDebt, '萬億美元', 1_000_000_000_000), levels(publicDebt, '萬億美元', 1_000_000_000_000)]),
     '<div class="us-chart"><h3>最新每日債務</h3><ul class="us-legend">' + daily + '</ul></div>',
   ], [receipts, outlays, fiscalBalance, totalDebt, publicDebt, totalDebtDaily, publicDebtDaily]);
@@ -316,7 +357,7 @@ async function showDashboard() {
   let data;
   let meta;
   try {
-    data = await import('./us-economy-data.js');
+    data = await import('./us-economy-data.js?v=20261126-stage1');
     meta = data.getSnapshotMeta();
   } catch (error) {
     console.error('Unable to load the U.S. economy snapshot', error);

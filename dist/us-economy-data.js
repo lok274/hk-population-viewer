@@ -1,14 +1,21 @@
-import snapshot from './us-economy-snapshot.js';
+import snapshot from './us-economy-snapshot.js?v=20261126-stage1';
 
 const topics = {
   output: {
     gdpNominal: ['年度現價 GDP', 'annual', '百萬美元', '年度總量', '現價', '全年', 'gdpAnnual', 'NIPA 1.1.5／A191RC', 0, 0, 100_000_000],
     gdpAnnual: ['年度實質 GDP 增長', 'annual', '%', '年度總量', '實質', '與上年全年比較', 'gdpAnnual', 'NIPA 1.1.1／A191RL', 0, -100, 100],
     gdpQuarter: ['季度實質 GDP 增長', 'quarterly', '%', '經季節性調整', '實質', '按季變動，年率化', 'gdpQuarter', 'NIPA 1.1.1／A191RL', 0, -100, 100],
+    gdpConsumption: ['個人消費支出', 'quarterly', '百萬美元／年', '經季節性調整', '現價', '季度估算的年率水平', 'gdpQuarter', 'NIPA 1.1.5／DPCERC', 0, 0, 100_000_000],
+    gdpInvestment: ['私人國內總投資', 'quarterly', '百萬美元／年', '經季節性調整', '現價', '季度估算的年率水平', 'gdpQuarter', 'NIPA 1.1.5／A006RC', 0, 0, 100_000_000],
+    gdpGovernment: ['政府消費及總投資', 'quarterly', '百萬美元／年', '經季節性調整', '現價', '季度估算的年率水平', 'gdpQuarter', 'NIPA 1.1.5／A822RC', 0, 0, 100_000_000],
+    gdpNetExports: ['商品及服務淨出口', 'quarterly', '百萬美元／年', '經季節性調整', '現價', '出口減進口，季度估算的年率水平', 'gdpQuarter', 'NIPA 1.1.5／A019RC', 0, -100_000_000, 100_000_000],
   },
   prices: {
     cpi: ['整體 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者物價', '月度指數', 'cpi', 'CUUR0000SA0', 12, 1, 1_000],
     coreCpi: ['核心 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者物價（不計食品和能源）', '月度指數', 'cpi', 'CUUR0000SA0L1E', 12, 1, 1_000],
+    cpiFood: ['食品 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者食品物價', '月度指數', 'cpi', 'CUUR0000SAF1', 12, 1, 1_000],
+    cpiShelter: ['居住 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者居住物價', '月度指數', 'cpi', 'CUUR0000SAH1', 12, 1, 1_000],
+    cpiEnergy: ['能源 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者能源物價', '月度指數', 'cpi', 'CUUR0000SA0E', 12, 1, 1_000],
     pcePrices: ['整體 PCE 物價', 'monthly', '指數（2017 = 100）', '經季節性調整', '個人消費開支鏈式物價指數', '月度指數', 'income', 'NIPA 2.8.4／DPCERG', 12, 1, 1_000],
     corePcePrices: ['核心 PCE 物價', 'monthly', '指數（2017 = 100）', '經季節性調整', '個人消費開支鏈式物價指數（不計食品和能源）', '月度指數', 'income', 'NIPA 2.8.4／DPCCRG', 12, 1, 1_000],
   },
@@ -17,6 +24,10 @@ const topics = {
     participation: ['勞動人口參與率', 'monthly', '%', '經季節性調整', '不適用', '勞動人口佔 16 歲及以上非機構平民人口比例', 'employment', 'LNS11300000', 0, 0, 100],
     payroll: ['非農就業職位', 'monthly', '千個職位', '經季節性調整', '不適用', '月度職位水平', 'employment', 'CES0000000001', 1, 0, 500_000],
     earnings: ['私營非農平均時薪', 'monthly', '美元／小時', '經季節性調整', '名義工資', '所有私營非農僱員的月度平均時薪', 'employment', 'CES0500000003', 12, 0.01, 1_000],
+    jobsManufacturing: ['製造業職位', 'monthly', '千個職位', '經季節性調整', '不適用', '非農僱員職位月度水平', 'employment', 'CES3000000001', 1, 0, 500_000],
+    jobsEducationHealth: ['私營教育及醫療職位', 'monthly', '千個職位', '經季節性調整', '不適用', '非農僱員職位月度水平', 'employment', 'CES6500000001', 1, 0, 500_000],
+    jobsProfessional: ['專業及商業服務職位', 'monthly', '千個職位', '經季節性調整', '不適用', '非農僱員職位月度水平', 'employment', 'CES6000000001', 1, 0, 500_000],
+    jobsGovernment: ['政府職位', 'monthly', '千個職位', '經季節性調整', '不適用', '聯邦、州及地方政府非農僱員職位月度水平', 'employment', 'CES9000000001', 1, 0, 500_000],
   },
   households: {
     consumption: ['實質個人消費開支', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DPCERX', 0, 0, 100_000_000],
@@ -150,8 +161,8 @@ function readSeries(id, definition, data) {
     const [period, value, status = 'published', releaseDate = null, asOf = null, provider = null] = row;
     const position = ordinal(period, frequency);
     const missing = status === 'shutdown';
-    const expectedGap = period === '2025-10' && ['cpi', 'coreCpi', 'unemployment', 'participation'].includes(id);
-    const missingUrl = id === 'cpi' || id === 'coreCpi' ? missingSources.cpi : missingSources.unemployment;
+    const expectedGap = period === '2025-10' && (sourceId === 'cpi' || ['unemployment', 'participation'].includes(id));
+    const missingUrl = sourceId === 'cpi' ? missingSources.cpi : missingSources.unemployment;
     if (!Number.isFinite(position) || period > periodLimit || (previous !== undefined && (position <= previous || (fixed && position !== previous + 1)))
       || !statuses.has(status) || missing !== expectedGap
       || (missing ? value !== null || !officialUrl(missingUrl, agency) : !Number.isFinite(value) || value < min || value > max)
