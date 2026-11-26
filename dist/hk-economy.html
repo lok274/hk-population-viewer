@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="香港經濟數據概覽，涵蓋 GDP、物價、失業、收入及貿易。">
+  <title>香港經濟概覽</title>
+  <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
+  <link rel="stylesheet" href="./dashboard-ui.css">
+  <script type="module" src="./app.js?v=separate-economies"></script>
+</head>
+<body class="home-dashboard">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="wordmark" href="./index.html"><span class="wordmark-mark" aria-hidden="true">▥</span><span>經濟數據<small>香港與世界</small></span></a>
+    <nav class="section-nav" aria-label="香港經濟章節"><span class="nav-heading">香港經濟</span><a href="#economy">GDP</a><a href="#inflation">通脹</a><a href="#unemployment">失業率</a><a href="#earnings">就業收入</a><a href="#trade">商品貿易</a><span class="nav-heading">其他頁面</span><a href="./index.html">香港人口 ↗</a><a href="./us-economy.html">美國經濟 ↗</a></nav>
+    <a class="official-link" href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer">政府統計處 ↗</a>
+  </div></header>
+  <main id="main">
+    <section class="economy-intro" id="top"><p class="section-kicker">香港 · 官方統計</p><h1>香港經濟概覽</h1><p>從經濟產出到物價、就業收入和貿易，按各指標的期間及統計口徑閱讀。</p><a href="./index.html">← 返回首頁</a> <a href="./us-economy.html">查看美國經濟 ↗</a></section>
+    <section class="dashboard-section" id="economy" aria-labelledby="economy-title">
+      <div class="section-heading"><div><p class="section-kicker">01 / 經濟產出</p><h2 id="economy-title">本地生產總值 <span class="chart-tag">正負橫條圖</span></h2><p class="section-lead">實質增長、現價金額及季度變化，按各自基準顯示。</p></div><p class="section-note">年度 · 季度<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=310-30001" target="_blank" rel="noreferrer">增長原表 ↗</a> · <a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=310-31001" target="_blank" rel="noreferrer">現價原表 ↗</a></p></div>
+      <div class="economy-layout"><div class="chart-panel"><div class="panel-heading"><h3>年度實質增長</h3><span>與上年全年比較 · %</span></div><div id="economy-annual" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="economy-side"><div class="chart-panel"><div class="panel-heading"><h3>2025 年現價金額</h3></div><div class="metric-cards" id="economy-levels" aria-live="polite"><p class="loading">載入數據…</p></div><p class="small-note">人均 GDP 是平均每人的經濟產出，並非個人收入。</p></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年第 2 季實質增長</h3></div><div class="metric-cards" id="economy-quarter" aria-live="polite"><p class="loading">載入數據…</p></div></div></div></div>
+    </section>
+    <section class="dashboard-section" id="inflation" aria-labelledby="inflation-title">
+      <div class="section-heading"><div><p class="section-kicker">02 / 物價</p><h2 id="inflation-title">綜合消費物價指數 <span class="chart-tag blue">直條圖</span></h2><p class="section-lead">升幅放緩仍代表物價上升，不等於物價下跌。</p></div><p class="section-note">全年平均 · 最新月份<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=510-60001" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
+      <div class="indicator-layout"><div class="chart-panel"><div class="panel-heading"><h3>全年平均按年變動</h3><span>2020–2025 · %</span></div><div id="inflation-annual" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年 8 月</h3><span>月度觀測</span></div><div class="metric-cards" id="inflation-latest" aria-live="polite"><p class="loading">載入數據…</p></div></div></div>
+    </section>
+    <section class="dashboard-section" id="unemployment" aria-labelledby="unemployment-title">
+      <div class="section-heading"><div><p class="section-kicker">03 / 勞工</p><h2 id="unemployment-title">經季節性調整失業率 <span class="chart-tag">期間折線圖</span></h2><p class="section-lead">每點涵蓋連續三個月，相鄰期間有兩個月重疊。</p></div><p class="section-note">2026 年 · 單位 %<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=210-06101" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
+      <div class="chart-panel" id="unemployment-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="dashboard-section" id="earnings" aria-labelledby="earnings-title">
+      <div class="section-heading"><div><p class="section-kicker">04 / 就業收入</p><h2 id="earnings-title">每月就業收入中位數 <span class="chart-tag blue">直條圖</span></h2><p class="section-lead">將收入排序後位於中間的數字，不包括農曆年花紅及雙糧。</p></div><p class="section-note">港元／月 · 第一季<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=210-06319" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
+      <div class="indicator-layout"><div class="chart-panel"><div class="panel-heading"><h3>各年第一季合計</h3><span>2021–2026</span></div><div id="earnings-chart" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年第一季</h3><span>合計與性別分項</span></div><div class="metric-cards" id="earnings-latest" aria-live="polite"><p class="loading">載入數據…</p></div><p class="small-note">三個中位數不能單獨用來推斷同工薪酬差距。</p></div></div>
+    </section>
+    <section class="dashboard-section" id="trade" aria-labelledby="trade-title">
+      <div class="section-heading"><div><p class="section-kicker">05 / 商品貿易</p><h2 id="trade-title">商品進出口 <span class="chart-tag amber">並列直條圖</span></h2><p class="section-lead">進口按到岸價，整體出口按離岸價。兩者共用由零開始的刻度。</p></div><p class="section-note">2026 年 1–8 月<br>百萬港元<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=410-50001" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
+      <div class="chart-panel"><div id="trade-chart" aria-live="polite"><p class="loading">載入圖表…</p></div></div>
+      <div class="trade-summary metric-cards" id="trade-latest" aria-live="polite"><p class="loading">載入數據…</p></div>
+    </section>
+    <section class="method-note"><div><h2>讀圖與數據說明</h2><p>各指標使用各自的統計期間、單位及比較基準。展開「詳細數據與來源」可查看原表及資料狀態。</p></div></section>
+    <div class="page-end"><a href="#top">回到頁首 ↑</a></div>
+  </main>
+  <footer class="site-footer"><div><strong>香港經濟概覽</strong><p>數據來自政府統計處。</p></div><a href="./index.html">返回首頁 ↗</a></footer>
+</body>
+</html>

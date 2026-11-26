@@ -8,18 +8,19 @@
   <title>香港人口與經濟｜用圖表看清變化</title>
   <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
   <link rel="stylesheet" href="./dashboard-ui.css">
-  <script type="module" src="./app.js?v=20261022-simple"></script>
+  <script>if (['#economy', '#inflation', '#unemployment', '#earnings', '#trade'].includes(location.hash)) location.replace('./hk-economy.html' + location.hash);</script>
+  <script type="module" src="./app.js?v=separate-economies"></script>
 </head>
 <body class="home-dashboard">
   <a class="skip-link" href="#main">跳至主要內容</a>
   <header class="site-header"><div class="header-inner">
     <a class="wordmark" href="#top" aria-label="香港人口與經濟，回到頁首"><span class="wordmark-mark" aria-hidden="true">▥</span><span>HK 香港人口<small>人口與經濟數據概覽</small></span></a>
-    <nav class="section-nav" aria-label="數據章節"><span class="nav-heading">人口結構</span><a href="#total">01　總人口</a><a href="#age">02　年齡分布</a><a href="#sex">03　性別分布</a><a href="#residents">04　居民類別</a><span class="nav-heading">經濟與生活</span><a href="#economy">05　GDP</a><a href="#inflation">06　通脹</a><a href="#unemployment">07　失業率</a><a href="#earnings">08　就業收入</a><a href="#trade">09　商品貿易</a><span class="nav-heading">更多概覽</span><a href="./education.html">教育概覽 ↗</a><a href="./industry.html">行業概覽 ↗</a><a href="./technology.html">科技發展 ↗</a><a href="./us-economy.html">美國經濟 ↗</a></nav>
+    <nav class="section-nav" aria-label="數據章節"><span class="nav-heading">人口結構</span><a href="#total">01　總人口</a><a href="#age">02　年齡分布</a><a href="#sex">03　性別分布</a><a href="#residents">04　居民類別</a><span class="nav-heading">各地經濟</span><a href="./hk-economy.html">香港經濟 ↗</a><a href="./us-economy.html">美國經濟 ↗</a><span class="nav-heading">更多概覽</span><a href="./education.html">教育概覽 ↗</a><a href="./industry.html">行業概覽 ↗</a><a href="./technology.html">科技發展 ↗</a></nav>
     <a class="official-link" href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer"><span aria-hidden="true">●</span> 政府統計處 ↗</a>
   </div></header>
   <main id="main">
     <section class="hero" id="top" aria-labelledby="page-title">
-      <div class="hero-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 年中人口</p><h1 id="page-title">香港人口與經濟<br><span>用圖表看清變化</span></h1><p class="hero-intro">從人口結構到物價與就業，用簡單圖表認識香港。<br class="desktop-break">每項數字保留年份、單位及官方來源。</p></div>
+      <div class="hero-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 年中人口</p><h1 id="page-title">香港人口與各地經濟<br><span>用圖表看清變化</span></h1><p class="hero-intro">先看香港人口結構，再選擇地區探索經濟數據。<br class="desktop-break">每項數字保留年份、單位及官方來源。</p></div>
       <div class="hero-stat" id="latest-total" aria-live="polite"><p class="hero-stat-label">年中總人口</p><p class="hero-number">載入中…</p></div>
       <div class="hero-foot"><p id="latest-change">正在整理數據…</p><p>年齡及性別分項截至 2025 年</p></div>
     </section>
@@ -40,27 +41,14 @@
       <div class="section-heading"><div><p class="section-kicker">04 / 居民類別</p><h2 id="residents-title">常住居民與流動居民 <span class="chart-tag">半圓比例圖</span></h2><p class="section-lead">按同年總人口計算，對照兩類居民的結構。</p></div><p class="section-note">單位 · 人及 %<br>2025 · 2026 年中</p></div>
       <div id="residents-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
     </section>
-    <div class="chapter-divider"><span>經濟與生活</span><p>不同指標分開讀，先看期間和比較基準。 <a class="source-link" href="./us-economy.html">美國經濟概覽 ↗</a></p></div>
-    <section class="dashboard-section" id="economy" aria-labelledby="economy-title">
-      <div class="section-heading"><div><p class="section-kicker">05 / 經濟產出</p><h2 id="economy-title">本地生產總值 <span class="chart-tag">正負橫條圖</span></h2><p class="section-lead">實質增長、現價金額及季度變化，按各自基準顯示。</p></div><p class="section-note">年度 · 季度<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=310-30001" target="_blank" rel="noreferrer">增長原表 ↗</a> · <a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=310-31001" target="_blank" rel="noreferrer">現價原表 ↗</a></p></div>
-      <div class="economy-layout"><div class="chart-panel"><div class="panel-heading"><h3>年度實質增長</h3><span>與上年全年比較 · %</span></div><div id="economy-annual" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="economy-side"><div class="chart-panel"><div class="panel-heading"><h3>2025 年現價金額</h3></div><div class="metric-cards" id="economy-levels" aria-live="polite"><p class="loading">載入數據…</p></div><p class="small-note">人均 GDP 是平均每人的經濟產出，並非個人收入。</p></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年第 2 季實質增長</h3></div><div class="metric-cards" id="economy-quarter" aria-live="polite"><p class="loading">載入數據…</p></div></div></div></div>
-    </section>
-    <section class="dashboard-section" id="inflation" aria-labelledby="inflation-title">
-      <div class="section-heading"><div><p class="section-kicker">06 / 物價</p><h2 id="inflation-title">綜合消費物價指數 <span class="chart-tag blue">直條圖</span></h2><p class="section-lead">升幅放緩仍代表物價上升，不等於物價下跌。</p></div><p class="section-note">全年平均 · 最新月份<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=510-60001" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
-      <div class="indicator-layout"><div class="chart-panel"><div class="panel-heading"><h3>全年平均按年變動</h3><span>2020–2025 · %</span></div><div id="inflation-annual" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年 8 月</h3><span>月度觀測</span></div><div class="metric-cards" id="inflation-latest" aria-live="polite"><p class="loading">載入數據…</p></div></div></div>
-    </section>
-    <section class="dashboard-section" id="unemployment" aria-labelledby="unemployment-title">
-      <div class="section-heading"><div><p class="section-kicker">07 / 勞工</p><h2 id="unemployment-title">經季節性調整失業率 <span class="chart-tag">期間折線圖</span></h2><p class="section-lead">每點涵蓋連續三個月，相鄰期間有兩個月重疊。</p></div><p class="section-note">2026 年 · 單位 %<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=210-06101" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
-      <div class="chart-panel" id="unemployment-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
-    </section>
-    <section class="dashboard-section" id="earnings" aria-labelledby="earnings-title">
-      <div class="section-heading"><div><p class="section-kicker">08 / 就業收入</p><h2 id="earnings-title">每月就業收入中位數 <span class="chart-tag blue">直條圖</span></h2><p class="section-lead">將收入排序後位於中間的數字，不包括農曆年花紅及雙糧。</p></div><p class="section-note">港元／月 · 第一季<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=210-06319" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
-      <div class="indicator-layout"><div class="chart-panel"><div class="panel-heading"><h3>各年第一季合計</h3><span>2021–2026</span></div><div id="earnings-chart" aria-live="polite"><p class="loading">載入圖表…</p></div></div><div class="chart-panel"><div class="panel-heading"><h3>2026 年第一季</h3><span>合計與性別分項</span></div><div class="metric-cards" id="earnings-latest" aria-live="polite"><p class="loading">載入數據…</p></div><p class="small-note">三個中位數不能單獨用來推斷同工薪酬差距。</p></div></div>
-    </section>
-    <section class="dashboard-section" id="trade" aria-labelledby="trade-title">
-      <div class="section-heading"><div><p class="section-kicker">09 / 商品貿易</p><h2 id="trade-title">商品進出口 <span class="chart-tag amber">並列直條圖</span></h2><p class="section-lead">進口按到岸價，整體出口按離岸價。兩者共用由零開始的刻度。</p></div><p class="section-note">2026 年 1–8 月<br>百萬港元<br><a class="source-link" href="https://www.censtatd.gov.hk/tc/web_table.html?id=410-50001" target="_blank" rel="noreferrer">政府統計處原表 ↗</a></p></div>
-      <div class="chart-panel"><div id="trade-chart" aria-live="polite"><p class="loading">載入圖表…</p></div></div>
-      <div class="trade-summary metric-cards" id="trade-latest" aria-live="polite"><p class="loading">載入數據…</p></div>
+    <section class="economy-directory" id="world-economies" aria-labelledby="world-economies-title">
+      <p class="section-kicker">各地經濟</p>
+      <h2 id="world-economies-title">選擇地區</h2>
+      <p>選擇地區，查看各自的經濟指標、統計期間及官方來源。</p>
+      <div class="economy-links">
+        <a href="./hk-economy.html"><strong>香港經濟</strong><span>GDP、物價、就業及貿易</span><span aria-hidden="true">查看概覽 →</span></a>
+        <a href="./us-economy.html"><strong>美國經濟</strong><span>十個主題的全國經濟數據</span><span aria-hidden="true">查看概覽 →</span></a>
+      </div>
     </section>
     <section class="method-note" aria-labelledby="method-title"><span class="method-symbol" aria-hidden="true">▥</span><div><h2 id="method-title">讀圖與數據說明</h2><p>各圖按所列年份及來源顯示，並非即時統計。人口原始單位為千人，圖中換算為人；比例按對應年份總人口計算。不同指標的統計期間、單位及比較基準各自獨立。展開各圖「詳細數據與來源」，可查看每項觀測的資料狀態和官方連結。</p></div></section>
     <div class="page-end"><span><i class="live-dot" aria-hidden="true"></i> 全香港 · 按來源實際期間顯示</span><a href="#top">回到頁首 ↑</a></div>
