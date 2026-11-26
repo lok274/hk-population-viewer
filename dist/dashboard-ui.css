@@ -33,6 +33,14 @@
 .home-dashboard .chapter-divider{border-color:#e2e8f0;margin:38px 0 22px}
 .home-dashboard .chapter-divider>span{color:#0f172a;font-size:17px}
 .home-dashboard .chapter-divider p{color:#475569;font-size:13px}
+.home-dashboard .economy-intro,.home-dashboard .economy-directory{margin:0 0 28px}
+.home-dashboard .economy-intro p,.home-dashboard .economy-directory>p:not(.section-kicker){color:#475569;font-size:14px;line-height:1.7}
+.home-dashboard .economy-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px;margin-top:18px}
+.home-dashboard .economy-links a{display:flex;flex-direction:column;gap:8px;padding:22px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;color:#334155;text-decoration:none}
+.home-dashboard .economy-links a:hover,.home-dashboard .economy-links a:focus-visible{border-color:#047857;box-shadow:0 2px 8px #0478571a}
+.home-dashboard .economy-links strong{font-size:18px;color:#0f172a}
+.home-dashboard .economy-links span{font-size:13px}
+.home-dashboard .economy-links span:last-child{color:#047857;font-weight:700}
 .home-dashboard .method-note{border-color:#e2e8f0;background:#fff}
 .home-dashboard .site-footer{border-color:#e2e8f0}
 @media(min-width:1024px){

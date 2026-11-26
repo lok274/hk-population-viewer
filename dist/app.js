@@ -148,6 +148,7 @@ function showIndicatorError(key, error) {
 }
 
 const indicatorRenderers = [['inflation', renderInflation], ['unemployment', renderUnemployment], ['earnings', renderEarnings], ['trade', renderTrade]];
+if (document.querySelector('#latest-total')) {
 renderLatest();
 renderTotals();
 renderAge();
@@ -157,6 +158,8 @@ sexYear.value = String(records.filter(row => row.sex).at(-1).year);
 sexYear.addEventListener('change', () => renderSex(sexYear.value));
 renderSex(sexYear.value);
 renderResidents();
+}
+if (document.querySelector('#economy')) {
 import('./economic-data.js?v=20261022-simple').then(({ economy }) => renderEconomy(economy)).catch(error => {
   console.error('GDP failed', error);
   document.querySelectorAll('#economy .loading').forEach(node => {
@@ -170,5 +173,6 @@ import('./indicator-data.js?v=20261022-simple').then(({ getIndicator }) => {
 }).catch(error => {
   for (const [key] of indicatorRenderers) showIndicatorError(key, error);
 });
+}
 
 
