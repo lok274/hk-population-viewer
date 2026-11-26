@@ -8,16 +8,29 @@
   <title>美國經濟概覽｜十個主題看清變化</title>
   <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
   <link rel="stylesheet" href="./us-economy.css">
-  <script type="module" src="./us-economy.js"></script>
+  <script type="module" src="./us-economy.js?v=20261126"></script>
+  <link rel="stylesheet" href="./site-navigation.css?v=20261126">
+  <script defer src="./site-navigation.js?v=20261126"></script>
 </head>
-<body class="us-economy-page">
+<body class="us-economy-page" data-region="us">
   <a class="skip-link" href="#main">跳至主要內容</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="wordmark" href="./index.html" aria-label="香港人口與經濟，返回首頁"><span class="wordmark-mark" aria-hidden="true">▥</span><span>HK 香港人口<small>人口與經濟數據概覽</small></span></a>
-      <a class="us-home" href="./index.html">← 返回首頁</a>
+  <header class="global-header">
+    <div class="global-header-inner">
+      <a class="global-brand" href="./index.html#world-economies"><span class="global-brand-mark" aria-hidden="true">▥</span><span>各地人口與經濟<small>官方統計圖表總覽</small></span></a>
+      <nav class="global-regions" aria-label="國家與地區">
+        <a href="./index.html#world-economies">各地總覽</a>
+        <span data-region-links><a href="./index.html#total">香港</a><a href="./us-economy.html">美國</a></span>
+      </nav>
+      <button class="search-trigger" type="button" data-open-search hidden>搜尋<span class="search-label">地區或主題</span></button>
     </div>
   </header>
+  <dialog class="site-search" id="site-search" aria-labelledby="site-search-title">
+    <div class="search-top"><h1 id="site-search-title">搜尋地區或主題</h1><form method="dialog"><button type="submit" aria-label="關閉搜尋">關閉 ✕</button></form></div>
+    <label for="site-search-input">輸入地區或主題</label>
+    <input type="search" id="site-search-input" placeholder="例如：香港、通脹、利率" autocomplete="off">
+    <p data-search-status role="status"></p>
+    <ul data-search-results></ul>
+  </dialog>
   <main id="main" tabindex="-1">
     <section class="us-hero" id="top" aria-labelledby="page-title">
       <div class="us-hero-copy">
