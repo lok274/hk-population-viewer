@@ -1,4 +1,4 @@
-import snapshot from './us-economy-snapshot.js?v=20261126-stage1';
+import snapshot from './us-economy-snapshot.js?v=20261126-stage2';
 
 const topics = {
   output: {
@@ -33,29 +33,49 @@ const topics = {
     consumption: ['實質個人消費開支', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DPCERX', 0, 0, 100_000_000],
     disposableIncome: ['實質可支配個人收入', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.6／A067RX', 0, 0, 100_000_000],
     saving: ['個人儲蓄率', 'monthly', '%', '經季節性調整', '不適用', '個人儲蓄佔可支配個人收入比例', 'income', 'NIPA 2.6／A072RC', 0, -100, 100],
+    pceDurable: ['耐用品實質消費', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DDURRX', 0, 0, 100_000_000],
+    pceNondurable: ['非耐用品實質消費', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DNDGRX', 0, 0, 100_000_000],
+    pceServices: ['服務實質消費', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DSERRX', 0, 0, 100_000_000],
   },
   retail: {
-    retailSales: ['零售及餐飲服務銷售', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS／MARTS 44X72、SM', 0, 0, 5_000_000],
+    retailSales: ['零售及餐飲服務銷售', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／44X72', 0, 0, 5_000_000],
+    retailAuto: ['汽車及零件零售', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／441', 0, 0, 5_000_000],
+    retailFood: ['食品及飲料商店', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／445', 0, 0, 5_000_000],
+    retailNonstore: ['非店舖零售', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／454', 0, 0, 5_000_000],
+    retailDining: ['餐飲服務及飲食場所', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／722', 0, 0, 5_000_000],
   },
   housing: {
     starts: ['私人住宅動工', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Starts／美國總數', 0, 0, 10_000],
     permits: ['私人住宅建築許可', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Permits／美國總數', 0, 0, 10_000],
+    startsOne: ['單一住宅單位動工', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Starts／1 unit', 0, 0, 10_000],
+    startsFive: ['五個或以上單位住宅動工', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Starts／5 units or more', 0, 0, 10_000],
+    permitsOne: ['單一住宅單位建築許可', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Permits／1 unit', 0, 0, 10_000],
+    permitsFive: ['五個或以上單位住宅建築許可', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Permits／5 units or more', 0, 0, 10_000],
   },
   trade: {
     exports: ['商品及服務出口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月貨值及服務金額', 'trade', 'FT900 Exhibit 1／Exports', 0, 0, 2_000_000],
     imports: ['商品及服務進口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月貨值及服務金額', 'trade', 'FT900 Exhibit 1／Imports', 0, 0, 2_000_000],
     tradeBalance: ['官方貿易差額', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '官方公布的當月出口減進口', 'trade', 'FT900 Exhibit 1／Balance', 0, -2_000_000, 2_000_000],
+    goodsExports: ['商品出口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月金額', 'trade', 'FT900 Exhibit 1／GoodsExports', 0, 0, 2_000_000],
+    servicesExports: ['服務出口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月金額', 'trade', 'FT900 Exhibit 1／ServicesExports', 0, 0, 2_000_000],
+    goodsImports: ['商品進口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月金額', 'trade', 'FT900 Exhibit 1／GoodsImports', 0, 0, 2_000_000],
+    servicesImports: ['服務進口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月金額', 'trade', 'FT900 Exhibit 1／ServicesImports', 0, 0, 2_000_000],
   },
   rates: {
     targetLow: ['聯邦基金目標下限', 'effective', '%', '不適用', '不適用', 'FOMC 政策設定，按年報價', 'policy', 'FOMC／目標下限', 0, 0, 30],
     targetHigh: ['聯邦基金目標上限', 'effective', '%', '不適用', '不適用', 'FOMC 政策設定，按年報價', 'policy', 'FOMC／目標上限', 0, 0, 30],
     yield2: ['兩年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY02_N.M', 0, -10, 30],
     yield10: ['十年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY10_N.M', 0, -10, 30],
+    yield1: ['一年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY01_N.M', 0, -10, 30],
+    yield30: ['三十年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY30_N.M', 0, -10, 30],
   },
   production: {
     industry: ['工業生產', 'monthly', '指數（2017 = 100）', '經季節性調整', '實質產量', '月度指數', 'industry', 'G.17／IP.B50001.S', 0, 1, 1_000],
     utilization: ['工業產能使用率', 'monthly', '%', '經季節性調整', '不適用', '實際工業產量佔估計產能比例', 'industry', 'G.17／CAPUTL.B50001.S', 0, 0, 100],
     productivity: ['非農商業勞動生產力增長', 'quarterly', '%', '經季節性調整', '實質產出／工時', '按季變動，年率化', 'productivity', 'PRS85006092', 0, -100, 100],
+    industrialManufacturing: ['製造業生產', 'monthly', '指數（2017 = 100）', '經季節性調整', '實質產量', '月度指數', 'industry', 'G.17／IP.B00004.S', 0, 1, 1_000],
+    industrialMining: ['採礦業生產', 'monthly', '指數（2017 = 100）', '經季節性調整', '實質產量', '月度指數', 'industry', 'G.17／IP.G21.S', 0, 1, 1_000],
+    industrialUtilities: ['公用事業生產', 'monthly', '指數（2017 = 100）', '經季節性調整', '實質產量', '月度指數', 'industry', 'G.17／IP.G2211A2.S', 0, 1, 1_000],
   },
   fiscal: {
     receipts: ['聯邦政府收入', 'fiscal', '美元', '年度總量', '現價', '財政年度現金收入', 'budget', 'MTS 表 1／Receipts', 0, 0, 100_000_000_000_000],
@@ -65,6 +85,9 @@ const topics = {
     totalDebt: ['財年末總公共債務', 'fiscal', '美元', '不適用', '現價', '財年末或之前最後有資料的一天', 'debt', 'tot_pub_debt_out_amt', 0, 0, 100_000_000_000_000],
     publicDebtDaily: ['每日公眾持有債務', 'daily', '美元', '不適用', '現價', '最新已公布的工作日結餘', 'debt', 'debt_held_public_amt', 0, 0, 100_000_000_000_000],
     totalDebtDaily: ['每日總公共債務', 'daily', '美元', '不適用', '現價', '最新已公布的工作日結餘', 'debt', 'tot_pub_debt_out_amt', 0, 0, 100_000_000_000_000],
+    receiptsIndividual: ['個人所得稅淨收入', 'fiscal', '美元', '年度總量', '現價', '財政年度收入，扣除退款', 'budgetReceipts', 'MTS 表 4／120', 0, -100_000_000_000_000, 100_000_000_000_000],
+    receiptsCorporate: ['企業所得稅淨收入', 'fiscal', '美元', '年度總量', '現價', '財政年度收入，扣除退款', 'budgetReceipts', 'MTS 表 4／130', 0, -100_000_000_000_000, 100_000_000_000_000],
+    receiptsSocial: ['社會保險及退休金淨收入', 'fiscal', '美元', '年度總量', '現價', '財政年度收入，扣除退款', 'budgetReceipts', 'MTS 表 4／286', 0, -100_000_000_000_000, 100_000_000_000_000],
   },
 };
 
@@ -82,6 +105,7 @@ const sources = {
   yields: ['Federal Reserve', 'https://www.federalreserve.gov/releases/h15/', 'https://www.federalreserve.gov/releases/h15/data/FRB_h15_xml.zip'],
   industry: ['Federal Reserve', 'https://www.federalreserve.gov/releases/g17/current/default.htm', 'https://www.federalreserve.gov/releases/g17/data/FRB_g17_xml.zip'],
   budget: ['Treasury', 'https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/', 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_1'],
+  budgetReceipts: ['Treasury', 'https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/receipts-of-the-u-s-government/', 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_4'],
   debt: ['Treasury', 'https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/', 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny'],
 };
 
@@ -129,11 +153,11 @@ function ordinal(period, frequency) {
 function seriesSource(id, sourceId, code) {
   const [agency, url, download] = sources[sourceId];
   const dataUrl = sourceId === 'housing'
-    ? 'https://www.census.gov/construction/nrc/xls/' + id + '_cust.xlsx'
+    ? 'https://www.census.gov/construction/nrc/xls/' + (id.startsWith('starts') ? 'starts' : 'permits') + '_cust.xlsx'
     : sourceId === 'cpi' || sourceId === 'employment' || sourceId === 'productivity'
       ? 'https://data.bls.gov/timeseries/' + code
       : download ?? url;
-  const advanceUrl = id === 'retailSales' ? sources.retail[3] : undefined;
+  const advanceUrl = sourceId === 'retail' ? sources.retail[3] : undefined;
   return {agency, code, url, dataUrl, advanceUrl};
 }
 
@@ -168,8 +192,8 @@ function readSeries(id, definition, data) {
       || (missing ? value !== null || !officialUrl(missingUrl, agency) : !Number.isFinite(value) || value < min || value > max)
       || (releaseDate !== null && (!isDate(releaseDate) || releaseDate > data.cutoffAt))
       || (asOf !== null && (!isDate(asOf) || frequency !== 'fiscal' || !asOf.startsWith(period + '-09-') || asOf > data.cutoffAt))
-      || (provider !== null && (id !== 'retailSales' || provider !== 'MARTS' || !['advance', 'revised'].includes(status)))
-      || (id === 'retailSales' && status === 'advance' && provider !== 'MARTS')) {
+      || (provider !== null && (sourceId !== 'retail' || provider !== 'MARTS' || !['advance', 'revised'].includes(status)))
+      || (sourceId === 'retail' && status === 'advance' && provider !== 'MARTS')) {
       throw new Error('Invalid U.S. observation: ' + id + ' ' + period);
     }
     previous = position;

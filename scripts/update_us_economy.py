@@ -116,7 +116,7 @@ def bls(specs, cutoff, baseline):
     return result
 
 
-def retail_table(data, program):
+def retail_table(data, program, codes):
     with ZipFile(BytesIO(data)) as archive:
         with TextIOWrapper(archive.open(f"{program}-mf.csv"), encoding="utf-8-sig", newline="") as source:
             rows = list(csv.reader(source))
@@ -126,25 +126,38 @@ def retail_table(data, program):
             break
         month, year = row[1].split("-")
         add(months, row[0], f"{year}-{[name[:3] for name in MONTHS].index(month) + 1:02}")
-    result = {}
+    categories = {}
+    for row in rows[rows.index(["cat_idx", "cat_code", "cat_desc", "cat_indent"]) + 1:]:
+        if len(row) != 4 or not row[0].isdigit():
+            break
+        if row[1] in codes:
+            categories[row[0]] = row[1]
+    if set(categories.values()) != set(codes):
+        raise ValueError(f"{program} is missing requested retail categories")
+    result = {item: {} for item in codes}
     for row in rows:
-        if len(row) == 7 and row[1:6] == ["1", "1", "0", "1", "1"]:
-            add(result, months[row[0]], Decimal(row[-1]))
+        if len(row) == 7 and row[1] in categories and row[2:6] == ["1", "0", "1", "1"]:
+            add(result[categories[row[1]]], months[row[0]], Decimal(row[-1]))
     return result
 
 
-def retail(spec):
-    historical = retail_table(download(spec["dataUrl"]), "MRTS")
-    advance = retail_table(download(spec["advanceUrl"]), "MARTS")
-    newest, last_historical = max(advance), max(historical)
-    if newest <= last_historical:
-        return {period: observation(value) for period, value in historical.items()}
-    previous = (date.fromisoformat(newest + "-01") - timedelta(days=1)).isoformat()[:7]
-    if last_historical < previous:
-        raise ValueError(f"MRTS ends at {last_historical}, before the MARTS comparison month {previous}")
-    result = {period: observation(value) for period, value in historical.items()}
-    result[previous] = observation(advance[previous], "revised", provider="MARTS")
-    result[newest] = observation(advance[newest], "advance", provider="MARTS")
+def retail(specs):
+    sample = next(iter(specs.values()))
+    codes = [code(spec) for spec in specs.values()]
+    historical = retail_table(download(sample["dataUrl"]), "MRTS", codes)
+    advance = retail_table(download(sample["advanceUrl"]), "MARTS", codes)
+    result = {}
+    for key, spec in specs.items():
+        series = code(spec)
+        history, early = historical[series], advance[series]
+        newest, last_historical = max(early), max(history)
+        result[key] = {period: observation(value) for period, value in history.items()}
+        if newest > last_historical:
+            previous = (date.fromisoformat(newest + "-01") - timedelta(days=1)).isoformat()[:7]
+            if last_historical < previous:
+                raise ValueError(f"MRTS {series} ends at {last_historical}, before MARTS {previous}")
+            result[key][previous] = observation(early[previous], "revised", provider="MARTS")
+            result[key][newest] = observation(early[newest], "advance", provider="MARTS")
     return result
 
 
@@ -169,19 +182,28 @@ def sheet(data, number):
     return rows
 
 
-def housing(key, spec):
-    table = sheet(download(spec["dataUrl"]), 3)
-    title = "New Privately-Owned Housing Units Started" if key == "starts" else "New Privately-Owned Housing Units Authorized by Building Permits"
-    if (not table[0]["A"].startswith(title) or "Thousands of units" not in table[1]["A"]
-            or [row.get("A") for row in table[2:4]] != ["Seasonally adjusted annual rate", "Month"]
-            or [row.get("B") for row in table[3:5]] != ["United States", "Total"]):
-        raise ValueError("Unrecognized Census housing table")
-    result = {}
-    for row in table[5:]:
-        if row.get("A", "").isdigit():
-            period = (date(1899, 12, 30) + timedelta(days=int(row["A"]))).isoformat()[:7]
-            if row.get("B"):
-                add(result, period, observation(row["B"]))
+def housing(specs):
+    result = {key: {} for key in specs}
+    for group in ("starts", "permits"):
+        keys = [key for key in specs if key.startswith(group)]
+        table = sheet(download(specs[group]["dataUrl"]), 3)
+        title = "New Privately-Owned Housing Units Started" if group == "starts" else "New Privately-Owned Housing Units Authorized by Building Permits"
+        if (not table[0]["A"].startswith(title) or "Thousands of units" not in table[1]["A"]
+                or [row.get("A") for row in table[2:4]] != ["Seasonally adjusted annual rate", "Month"]
+                or [row.get("B") for row in table[3:5]] != ["United States", "Total"]
+                or " ".join(table[4].get("C", "").split()) != "1 unit"
+                or " ".join(table[4].get("E", "").split()) != "5 units or more"):
+            raise ValueError("Unrecognized Census housing table")
+        columns = {group: "B", group + "One": "C", group + "Five": "E"}
+        for row in table[5:]:
+            if row.get("A", "").isdigit():
+                period = (date(1899, 12, 30) + timedelta(days=int(row["A"]))).isoformat()[:7]
+                for key in keys:
+                    try:
+                        value = Decimal(row[columns[key]])
+                    except (KeyError, InvalidOperation):
+                        continue
+                    add(result[key], period, observation(value))
     return result
 
 
@@ -190,7 +212,7 @@ def trade(specs):
     if (not table[0]["A"].startswith("U.S. International Trade in Goods and Services")
             or not table[1]["A"].startswith("In millions of dollars. Seasonally adjusted")
             or [table[2].get(col) for col in "CFI"] != ["Balance", "Exports", "Imports"]
-            or [table[3].get(col) for col in "BEH"] != ["Total", "Total", "Total"]
+            or [table[3].get(col) for col in "BCDEFGHIJ"] != ["Total", "Goods (1)", "Services"] * 3
             or not any("Balance of Payments (BOP) Basis" in row.get("A", "") for row in table)):
         raise ValueError("Unrecognized Census goods and services table")
     year = None
@@ -201,7 +223,7 @@ def trade(specs):
             year = label
         if label in MONTHS and any(col in row for col in "BEH"):
             period = f"{year}-{MONTHS.index(label) + 1:02}"
-            for key, col in zip(("tradeBalance", "exports", "imports"), "BEH"):
+            for key, col in {"tradeBalance": "B", "exports": "E", "imports": "H", "goodsExports": "F", "servicesExports": "G", "goodsImports": "I", "servicesImports": "J"}.items():
                 add(result[key], period, observation(row[col]))
     return result
 
@@ -280,6 +302,20 @@ def budget(specs, cutoff):
     return result
 
 
+def budget_receipts(specs, cutoff):
+    url = next(iter(specs.values()))["dataUrl"]
+    names = {"120": "Total -- Individual Income Taxes", "130": "Corporation Income Taxes", "286": "Total -- Social Insurance and Retirement Receipts"}
+    ids = {code(spec): key for key, spec in specs.items()}
+    records = treasury(url, filter=f"record_calendar_month:eq:09,record_date:gte:{cutoff.year - 12}-09-30,record_date:lte:{cutoff},line_code_nbr:in:(120,130,286)", sort="record_date", **{"page[size]": 1000})
+    result = {key: {} for key in specs}
+    for row in records:
+        line = row["line_code_nbr"]
+        if line not in ids or row["classification_desc"] != names[line] or row["record_date"][:4] != row["record_fiscal_year"]:
+            raise ValueError("Unrecognized Treasury receipt classification")
+        add(result[ids[line]], row["record_fiscal_year"], observation(row["current_fytd_net_rcpt_amt"]))
+    return result
+
+
 def debt(specs, cutoff):
     url = specs["totalDebt"]["dataUrl"]
     fields = {"publicDebt": "debt_held_public_amt", "totalDebt": "tot_pub_debt_out_amt"}
@@ -307,13 +343,14 @@ def fetch_all(specs, cutoff, baseline):
         "gdpQuarter": lambda: nipa(groups["gdpQuarter"], cutoff),
         "income": lambda: nipa(groups["income"], cutoff),
         "BLS": lambda: bls(groups["cpi"] | groups["employment"] | groups["productivity"], cutoff, baseline),
-        "retail": lambda: {"retailSales": retail(specs["retailSales"])},
-        "housing": lambda: {key: housing(key, spec) for key, spec in groups["housing"].items()},
+        "retail": lambda: retail(groups["retail"]),
+        "housing": lambda: housing(groups["housing"]),
         "trade": lambda: trade(groups["trade"]),
         "yields": lambda: fed_xml(groups["yields"], "H15", cutoff),
         "industry": lambda: fed_xml(groups["industry"], "G17", cutoff),
         "policy": lambda: policy(specs["targetLow"]["url"], baseline["targetLow"][0][0], cutoff),
         "budget": lambda: budget(groups["budget"], cutoff),
+        "budgetReceipts": lambda: budget_receipts(groups["budgetReceipts"], cutoff),
         "debt": lambda: debt(groups["debt"], cutoff),
     }
     result = {}
