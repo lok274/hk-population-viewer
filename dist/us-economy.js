@@ -217,7 +217,7 @@ function sourceTable(series, comparison) {
     + '<p>' + [series.geography, series.unit, series.seasonalAdjustment, series.priceBasis, series.annualization].map(escapeHtml).join(' · ') + '</p>'
     + '<p class="us-sources"><a href="' + escapeHtml(source.url) + '">' + escapeHtml(source.agency) + ' 官方資料 ↗</a>'
     + '<a href="' + escapeHtml(source.dataUrl) + '">' + escapeHtml(source.code) + ' 原表 ↗</a>'
-    + extraSources.map(url => '<a href="' + escapeHtml(url) + '">' + (series.id === 'retailSales' ? 'MARTS 初值原表' : '缺數說明') + ' ↗</a>').join('')
+    + extraSources.map(url => '<a href="' + escapeHtml(url) + '">' + (series.source.advanceUrl === url ? 'MARTS 初值原表' : '缺數說明') + ' ↗</a>').join('')
     + '</p><p>來源核對於 ' + source.retrievedAt + '。未核實個別發布日期的欄位以「—」顯示。</p>'
     + '<div class="us-table-scroll" tabindex="0" role="region" aria-labelledby="us-table-' + series.id + '"><table aria-labelledby="us-table-' + series.id + '">'
     + '<thead><tr><th scope="col">統計期間</th><th scope="col">原始數值</th>'
@@ -286,31 +286,45 @@ function renderLabour({unemployment, participation, payroll, earnings, jobsManuf
   ], [unemployment, participation, [payroll, payrollChange], [earnings, wageChange], [jobsManufacturing, manufacturingChange], [jobsEducationHealth, educationHealthChange], [jobsProfessional, professionalChange], [jobsGovernment, governmentChange]]);
 }
 
-function renderHouseholds({consumption, disposableIncome, saving}) {
+function renderHouseholds({consumption, disposableIncome, saving, pceDurable, pceNondurable, pceServices}) {
   return topicContent([
     lineChart('實質消費與可支配收入 · 季調年率', [levels(consumption, '萬億鏈式美元（2017 年）', 1_000_000), levels(disposableIncome, '萬億鏈式美元（2017 年）', 1_000_000)]),
     lineChart('個人儲蓄率', [levels(saving)]),
     lineChart('實質消費與可支配收入 · 按年變動', [changes(consumption, 12), changes(disposableIncome, 12)]),
-  ], [[consumption, changes(consumption, 12)], [disposableIncome, changes(disposableIncome, 12)], saving]);
+    lineChart('耐用品及非耐用品 · 實質消費季調年率', [levels(pceDurable, '萬億鏈式美元（2017 年）', 1_000_000), levels(pceNondurable, '萬億鏈式美元（2017 年）', 1_000_000)]),
+    lineChart('服務 · 實質消費季調年率', [levels(pceServices, '萬億鏈式美元（2017 年）', 1_000_000)]),
+  ], [[consumption, changes(consumption, 12)], [disposableIncome, changes(disposableIncome, 12)], saving, pceDurable, pceNondurable, pceServices]);
 }
 
-function renderRetail({retailSales}) {
-  return topicContent([lineChart('零售及餐飲服務銷售', [levels(retailSales, '十億美元', 1_000)]), lineChart('名義零售及餐飲銷售 · 按年變動', [changes(retailSales, 12)])], [[retailSales, changes(retailSales, 12)]]);
+function renderRetail({retailSales, retailAuto, retailFood, retailNonstore, retailDining}) {
+  return topicContent([
+    lineChart('零售及餐飲服務銷售', [levels(retailSales, '十億美元', 1_000)]),
+    lineChart('名義零售及餐飲銷售 · 按年變動', [changes(retailSales, 12)]),
+    lineChart('汽車零售與食品飲料商店', [levels(retailAuto, '十億美元', 1_000), levels(retailFood, '十億美元', 1_000)]),
+    lineChart('非店舖零售與餐飲服務', [levels(retailNonstore, '十億美元', 1_000), levels(retailDining, '十億美元', 1_000)]),
+  ], [[retailSales, changes(retailSales, 12)], retailAuto, retailFood, retailNonstore, retailDining]);
 }
 
-function renderHousing({starts, permits}) {
-  return topicContent([lineChart('私人住宅動工與建築許可 · 季調年率', [levels(starts), levels(permits)]), lineChart('住宅動工與建築許可 · 按年變動', [changes(starts, 12), changes(permits, 12)])], [[starts, changes(starts, 12)], [permits, changes(permits, 12)]]);
+function renderHousing({starts, permits, startsOne, startsFive, permitsOne, permitsFive}) {
+  return topicContent([
+    lineChart('私人住宅動工與建築許可 · 季調年率', [levels(starts), levels(permits)]),
+    lineChart('住宅動工與建築許可 · 按年變動', [changes(starts, 12), changes(permits, 12)]),
+    lineChart('單一住宅單位 · 動工與許可季調年率', [levels(startsOne), levels(permitsOne)]),
+    lineChart('五個或以上單位住宅 · 動工與許可季調年率', [levels(startsFive), levels(permitsFive)]),
+  ], [[starts, changes(starts, 12)], [permits, changes(permits, 12)], startsOne, permitsOne, startsFive, permitsFive]);
 }
 
-function renderTrade({exports, imports, tradeBalance}) {
+function renderTrade({exports, imports, tradeBalance, goodsExports, goodsImports, servicesExports, servicesImports}) {
   return topicContent([
     lineChart('商品及服務進出口', [levels(exports, '十億美元', 1_000), levels(imports, '十億美元', 1_000)]),
     signedBars('官方貿易差額', levels(tradeBalance, '十億美元', 1_000)),
     lineChart('商品及服務進出口 · 按年變動', [changes(exports, 12), changes(imports, 12)]),
-  ], [[exports, changes(exports, 12)], [imports, changes(imports, 12)], tradeBalance]);
+    lineChart('商品進出口', [levels(goodsExports, '十億美元', 1_000), levels(goodsImports, '十億美元', 1_000)]),
+    lineChart('服務進出口', [levels(servicesExports, '十億美元', 1_000), levels(servicesImports, '十億美元', 1_000)]),
+  ], [[exports, changes(exports, 12)], [imports, changes(imports, 12)], tradeBalance, goodsExports, goodsImports, servicesExports, servicesImports]);
 }
 
-function renderRates({targetLow, targetHigh, yield2, yield10}, cutoffAt) {
+function renderRates({targetLow, targetHigh, yield1, yield2, yield10, yield30}, cutoffAt) {
   const low = targetLow.observations.at(-1);
   const high = targetHigh.observations.at(-1);
   headline('policy', dollar.format(low.value) + '–' + dollar.format(high.value) + '%', low.period + ' 生效');
@@ -318,19 +332,23 @@ function renderRates({targetLow, targetHigh, yield2, yield10}, cutoffAt) {
     targetSteps(targetLow, targetHigh, cutoffAt),
     lineChart('兩年期與十年期國債收益率 · 月平均', [levels(yield2), levels(yield10)]),
     signedBars('十年期減兩年期收益率 · 月平均差距', pairedDifference(yield10, yield2, '十年期減兩年期', '百分點')),
-  ], [targetLow, targetHigh, yield2, yield10]);
+    lineChart('一年期與兩年期國債收益率 · 月平均', [levels(yield1), levels(yield2)]),
+    lineChart('十年期與三十年期國債收益率 · 月平均', [levels(yield10), levels(yield30)]),
+  ], [targetLow, targetHigh, yield1, yield2, yield10, yield30]);
 }
 
-function renderProduction({industry, utilization, productivity}) {
+function renderProduction({industry, utilization, productivity, industrialManufacturing, industrialMining, industrialUtilities}) {
   return topicContent([
     lineChart('工業生產指數', [levels(industry)]),
     lineChart('工業產能使用率', [levels(utilization)]),
     lineChart('工業生產指數 · 按年變動', [changes(industry, 12)]),
     signedBars('非農商業勞動生產力 · 按季年率化', levels(productivity)),
-  ], [[industry, changes(industry, 12)], utilization, productivity]);
+    lineChart('製造業與採礦業生產', [levels(industrialManufacturing), levels(industrialMining)]),
+    lineChart('公用事業生產', [levels(industrialUtilities)]),
+  ], [[industry, changes(industry, 12)], utilization, productivity, industrialManufacturing, industrialMining, industrialUtilities]);
 }
 
-function renderFiscal({receipts, outlays, fiscalBalance, publicDebt, totalDebt, publicDebtDaily, totalDebtDaily}) {
+function renderFiscal({receipts, outlays, fiscalBalance, publicDebt, totalDebt, publicDebtDaily, totalDebtDaily, receiptsIndividual, receiptsCorporate, receiptsSocial}) {
   const daily = [totalDebtDaily, publicDebtDaily].map(series => {
     const plot = levels(series, '萬億美元', 1_000_000_000_000);
     return '<li><strong>' + escapeHtml(plot.label) + '</strong><span>' + lastValue(plot) + '</span></li>';
@@ -340,8 +358,10 @@ function renderFiscal({receipts, outlays, fiscalBalance, publicDebt, totalDebt, 
     signedBars('財政年度盈餘或赤字', levels(fiscalBalance, '萬億美元', 1_000_000_000_000)),
     signedBars('赤字佔聯邦支出 · 按財年計算', deficitShare(fiscalBalance, outlays)),
     lineChart('財政年度末債務', [levels(totalDebt, '萬億美元', 1_000_000_000_000), levels(publicDebt, '萬億美元', 1_000_000_000_000)]),
+    lineChart('個人所得稅與社會保險及退休金淨收入', [levels(receiptsIndividual, '萬億美元', 1_000_000_000_000), levels(receiptsSocial, '萬億美元', 1_000_000_000_000)]),
+    lineChart('企業所得稅淨收入', [levels(receiptsCorporate, '萬億美元', 1_000_000_000_000)]),
     '<div class="us-chart"><h3>最新每日債務</h3><ul class="us-legend">' + daily + '</ul></div>',
-  ], [receipts, outlays, fiscalBalance, totalDebt, publicDebt, totalDebtDaily, publicDebtDaily]);
+  ], [receipts, outlays, fiscalBalance, totalDebt, publicDebt, totalDebtDaily, publicDebtDaily, receiptsIndividual, receiptsCorporate, receiptsSocial]);
 }
 
 const renderers = {
@@ -357,7 +377,7 @@ async function showDashboard() {
   let data;
   let meta;
   try {
-    data = await import('./us-economy-data.js?v=20261126-stage1');
+    data = await import('./us-economy-data.js?v=20261126-stage2');
     meta = data.getSnapshotMeta();
   } catch (error) {
     console.error('Unable to load the U.S. economy snapshot', error);

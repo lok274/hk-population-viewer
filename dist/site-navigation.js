@@ -29,13 +29,13 @@ const regions = [
       ['經濟產出', './us-economy.html#output', 'GDP 消費 投資 政府 淨出口'],
       ['物價', './us-economy.html#prices', '通脹 CPI PCE 食品 居住 住房 能源'],
       ['就業與工資', './us-economy.html#labour', '失業 就業 工資 製造業 醫療 教育 專業 商業 政府'],
-      ['收入與消費', './us-economy.html#households', '收入 消費 儲蓄'],
-      ['零售', './us-economy.html#retail', '銷售'],
-      ['住宅', './us-economy.html#housing', '房屋 建築'],
-      ['對外貿易', './us-economy.html#trade', '進口 出口'],
-      ['利率', './us-economy.html#rates', '聯儲局 國債'],
-      ['工業與生產力', './us-economy.html#production', '工業 生產'],
-      ['聯邦財政', './us-economy.html#fiscal', '債務 赤字']
+      ['收入與消費', './us-economy.html#households', '收入 消費 儲蓄 耐用品 服務'],
+      ['零售', './us-economy.html#retail', '銷售 汽車 餐飲 網購 食品'],
+      ['住宅', './us-economy.html#housing', '房屋 建築 動工 許可'],
+      ['對外貿易', './us-economy.html#trade', '進口 出口 商品 服務'],
+      ['利率', './us-economy.html#rates', '聯儲局 國債 收益率'],
+      ['工業與生產力', './us-economy.html#production', '工業 生產 製造 採礦 公用事業'],
+      ['聯邦財政', './us-economy.html#fiscal', '債務 赤字 所得稅 收入 社會保險']
     ]
   }
 ];
