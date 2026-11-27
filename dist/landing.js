@@ -1,7 +1,7 @@
 import {records} from './population-data.js';
 import {economy} from './economic-data.js';
 import {getIndicator} from './indicator-data.js';
-import {getTopic} from './us-economy-data.js?v=20261126-stage2';
+import {getTopic} from './us-economy-data.js?v=20261127-livelihood';
 
 const preview = document.querySelector('[data-region-preview]');
 const metrics = document.querySelector('#preview-metrics');

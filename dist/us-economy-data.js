@@ -1,4 +1,4 @@
-import snapshot from './us-economy-snapshot.js?v=20261126-stage2';
+import snapshot from './us-economy-snapshot.js?v=20261127-livelihood';
 
 const topics = {
   output: {
@@ -16,14 +16,25 @@ const topics = {
     cpiFood: ['食品 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者食品物價', '月度指數', 'cpi', 'CUUR0000SAF1', 12, 1, 1_000],
     cpiShelter: ['居住 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者居住物價', '月度指數', 'cpi', 'CUUR0000SAH1', 12, 1, 1_000],
     cpiEnergy: ['能源 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者能源物價', '月度指數', 'cpi', 'CUUR0000SA0E', 12, 1, 1_000],
+    cpiFoodHome: ['家用食品 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者家用食品物價', '月度指數', 'cpi', 'CUUR0000SAF11', 12, 1, 1_000],
+    cpiFoodAway: ['外出用餐 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者外出用餐物價', '月度指數', 'cpi', 'CUUR0000SEFV', 12, 1, 1_000],
+    cpiTransport: ['交通 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者交通物價', '月度指數', 'cpi', 'CUUR0000SAT', 12, 1, 1_000],
+    cpiMedical: ['醫療 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者醫療物價', '月度指數', 'cpi', 'CUUR0000SAM', 12, 1, 1_000],
     pcePrices: ['整體 PCE 物價', 'monthly', '指數（2017 = 100）', '經季節性調整', '個人消費開支鏈式物價指數', '月度指數', 'income', 'NIPA 2.8.4／DPCERG', 12, 1, 1_000],
     corePcePrices: ['核心 PCE 物價', 'monthly', '指數（2017 = 100）', '經季節性調整', '個人消費開支鏈式物價指數（不計食品和能源）', '月度指數', 'income', 'NIPA 2.8.4／DPCCRG', 12, 1, 1_000],
   },
   labour: {
     unemployment: ['失業率 U-3', 'monthly', '%', '經季節性調整', '不適用', '失業人口佔勞動人口比例', 'employment', 'LNS14000000', 0, 0, 100],
     participation: ['勞動人口參與率', 'monthly', '%', '經季節性調整', '不適用', '勞動人口佔 16 歲及以上非機構平民人口比例', 'employment', 'LNS11300000', 0, 0, 100],
+    unemploymentMen: ['男性失業率（16 歲及以上）', 'monthly', '%', '經季節性調整', '不適用', '男性失業人口佔男性勞動人口比例', 'employment', 'LNS14000001', 0, 0, 100],
+    unemploymentWomen: ['女性失業率（16 歲及以上）', 'monthly', '%', '經季節性調整', '不適用', '女性失業人口佔女性勞動人口比例', 'employment', 'LNS14000002', 0, 0, 100],
+    unemploymentYouth: ['16 至 19 歲失業率', 'monthly', '%', '經季節性調整', '不適用', '該年齡組失業人口佔同組勞動人口比例', 'employment', 'LNS14000012', 0, 0, 100],
     payroll: ['非農就業職位', 'monthly', '千個職位', '經季節性調整', '不適用', '月度職位水平', 'employment', 'CES0000000001', 1, 0, 500_000],
     earnings: ['私營非農平均時薪', 'monthly', '美元／小時', '經季節性調整', '名義工資', '所有私營非農僱員的月度平均時薪', 'employment', 'CES0500000003', 12, 0.01, 1_000],
+    jobsConstruction: ['建造業職位', 'monthly', '千個職位', '經季節性調整', '不適用', '非農僱員職位月度水平', 'employment', 'CES2000000001', 1, 0, 500_000],
+    jobsLeisure: ['休閒及酒店餐飲職位', 'monthly', '千個職位', '經季節性調整', '不適用', '非農僱員職位月度水平', 'employment', 'CES7000000001', 1, 0, 500_000],
+    wageManufacturing: ['製造業平均時薪', 'monthly', '美元／小時', '經季節性調整', '名義工資', '所有僱員的月度平均時薪', 'employment', 'CES3000000003', 12, 0.01, 1_000],
+    wageLeisure: ['休閒及酒店餐飲平均時薪', 'monthly', '美元／小時', '經季節性調整', '名義工資', '所有僱員的月度平均時薪', 'employment', 'CES7000000003', 12, 0.01, 1_000],
     jobsManufacturing: ['製造業職位', 'monthly', '千個職位', '經季節性調整', '不適用', '非農僱員職位月度水平', 'employment', 'CES3000000001', 1, 0, 500_000],
     jobsEducationHealth: ['私營教育及醫療職位', 'monthly', '千個職位', '經季節性調整', '不適用', '非農僱員職位月度水平', 'employment', 'CES6500000001', 1, 0, 500_000],
     jobsProfessional: ['專業及商業服務職位', 'monthly', '千個職位', '經季節性調整', '不適用', '非農僱員職位月度水平', 'employment', 'CES6000000001', 1, 0, 500_000],
@@ -185,7 +196,7 @@ function readSeries(id, definition, data) {
     const [period, value, status = 'published', releaseDate = null, asOf = null, provider = null] = row;
     const position = ordinal(period, frequency);
     const missing = status === 'shutdown';
-    const expectedGap = period === '2025-10' && (sourceId === 'cpi' || ['unemployment', 'participation'].includes(id));
+    const expectedGap = period === '2025-10' && (sourceId === 'cpi' || (sourceId === 'employment' && code.startsWith('LNS')));
     const missingUrl = sourceId === 'cpi' ? missingSources.cpi : missingSources.unemployment;
     if (!Number.isFinite(position) || period > periodLimit || (previous !== undefined && (position <= previous || (fixed && position !== previous + 1)))
       || !statuses.has(status) || missing !== expectedGap

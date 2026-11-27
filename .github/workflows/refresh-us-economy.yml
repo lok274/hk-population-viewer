@@ -66,7 +66,7 @@ jobs:
           git push origin "HEAD:refs/heads/$branch"
           if ! gh pr create --base "$BASE_BRANCH" --head "$branch" \
             --title 'Refresh U.S. economic observations' \
-            --body 'Updates the static snapshot from official sources. The workflow validated all 34 series. Review the observations and publication statuses before merging.'; then
+            --body 'Updates the static snapshot from official sources. The workflow validated the snapshot. Review the observations and publication statuses before merging.'; then
             echo '::error::Could not open the data PR. Check that repository Actions settings allow pull request creation. The validated snapshot is available as a workflow artifact.'
             exit 1
           fi
