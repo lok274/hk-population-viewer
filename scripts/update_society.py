@@ -246,6 +246,18 @@ def refresh_hk(html):
 
 
 def refresh_us(html):
+    park_url = 'https://www.nps.gov/subjects/socialscience/visitor-use-statistics-dashboard.htm'
+    park_source = unescape(fetch(park_url).decode('utf-8-sig'))
+    heading = re.findall(r'<h2>\s*(\d{4})\s+Visitation At-A-Glance\s*</h2>', park_source, flags=re.I)
+    visits = re.findall(r'The National Park Service reported\s+([\d.]+)\s+million recreation visits in calendar year\s+(\d{4})\.', park_source, flags=re.I)
+    if len(heading) != 1 or len(visits) != 1 or heading[0] != visits[0][1]:
+        raise ValueError('Unexpected NPS annual visitation summary')
+    value, year = visits[0]
+    if not re.fullmatch(r'\d+(?:\.\d+)?', value) or not 1 <= float(value) <= 1000:
+        raise ValueError('Invalid NPS recreation visits')
+    card = stat_card('國家公園系統休閒到訪人次', f'{value} 百萬人次', f'{year} 曆年 · 國家公園系統的休閒到訪估算，包括歷史景點及紀念地；同一人多次到訪會重複計算。數字按官方摘要的百萬人次精度顯示。', year, park_url, '美國國家公園管理局 · 到訪統計')
+    html = replace_card(html, '國家公園系統休閒到訪人次', card, year, '2025')
+
     transit_url = 'https://data.transportation.gov/resource/wwdp-t4re.json'
     query = urlencode({'$select': 'report_year,count(*) as rows,count(unlinked_passenger_trips_upt) as reported,sum(unlinked_passenger_trips_upt) as trips', '$where': "time_period='Annual Total'", '$group': 'report_year', '$order': 'report_year DESC'})
     observations = json.loads(fetch(f'{transit_url}?{query}'))
