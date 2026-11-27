@@ -94,6 +94,42 @@
 .home-dashboard .economy-directory .section-kicker { color: #b6f1d4; }
 .home-dashboard .economy-directory h1 { color: #fff; margin: 0 0 8px; }
 .home-dashboard .economy-directory>p:not(.section-kicker) { color: #d4f5e2; }
+.world-map {
+  position: relative;
+  margin-top: 22px;
+  overflow: hidden;
+  border: 1px solid #8ebdaf;
+  border-radius: 16px;
+  background: #e8f4ef;
+}
+.world-map[hidden] { display: none; }
+.world-map svg { display: block; width: 100%; height: auto; }
+.world-land { fill: #b7cec4; stroke: #e8f4ef; stroke-width: .65; fill-rule: evenodd; }
+.world-region .world-land { fill: #2c916e; cursor: pointer; }
+.world-region:hover .world-land, .world-region:focus-visible .world-land { fill: #075f46; stroke: #033b2c; stroke-width: 2; }
+.world-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: #075f46;
+  box-shadow: 0 2px 8px #003c2b55;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.world-marker::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: #b9f6cf; }
+.world-marker:hover { background: #033f30; }
+.world-marker:focus-visible, .world-region:focus-visible { outline: 3px solid #164bde; outline-offset: 3px; }
+.home-dashboard .economy-directory > .world-map-source { margin: 8px 0 0; font-size: 12px; }
+.world-map-source a { color: #fff; text-underline-offset: 3px; }
 .home-dashboard .economy-links a { min-height: 135px; }
 .home-dashboard .hero-copy h2 { font-size: clamp(24px, 3vw, 30px); line-height: 1.4; }
 .home-dashboard .hero-copy h2 span { color: #334155; }
