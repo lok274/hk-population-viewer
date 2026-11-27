@@ -64,11 +64,6 @@ jobs:
           if ! git diff --quiet -- "dist/$REGION-society.html"; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Check Smithsonian source availability
-        if: matrix.source == 'reports'
-        continue-on-error: true
-        run: |
-          python -c 'from urllib.request import Request, urlopen; u="https://www.si.edu/newsdesk/about/stats"; s=urlopen(Request(u, headers={"User-Agent": "hk-population-viewer"}), timeout=30).read().decode("utf-8"); print("bytes:", len(s)); i=s.find("Total Visits in 2025"); print("table excerpt:", repr(s[i:i+300]) if i >= 0 else "not found")'
       - name: Keep candidate
         if: steps.refresh.outputs.changed == 'true'
         uses: actions/upload-artifact@v6
