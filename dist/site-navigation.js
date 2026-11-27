@@ -37,6 +37,7 @@ const regions = [
     id: 'us', label: '美國', english: 'United States', summary: '十個主題的全國經濟數據', href: './us-economy.html',
     map: {longitude: -98.58, latitude: 39.83, shape: 'USA'},
     previewTopics: ['GDP', '物價', '就業', '消費', '貿易', '利率', '財政'], previewButton: '進入美國經濟頁 →',
+    previewTargets: {GDP: '經濟產出', 消費: '收入與消費', 財政: '聯邦財政'},
     topics: [
       ['公共衛生', './us-society.html#health', '醫療 健康 壽命'],
       ['交通與基建', './us-society.html#transport', '交通 運輸 基建'],
