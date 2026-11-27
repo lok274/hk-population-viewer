@@ -64,3 +64,80 @@ document.querySelector('[data-world-map]').addEventListener('click', event => {
   event.preventDefault();
   selectRegion(link.dataset.mapRegion);
 });
+
+const mapViewport = document.querySelector('[data-world-map]');
+const mapControls = document.querySelector('[data-map-controls]');
+const mapScaleLabel = document.querySelector('[data-map-scale]');
+const mapPanControls = document.querySelector('[data-map-pan-controls]');
+const zoomLevels = [1, 1.5, 2, 3];
+let zoomIndex = 0, mapX = 0, mapY = 0;
+let drag = null, suppressMapClick = false;
+function paintMap() {
+  const content = mapViewport.querySelector('.world-map-content');
+  if (!content) return;
+  const scale = zoomLevels[zoomIndex], width = mapViewport.clientWidth, height = mapViewport.clientHeight;
+  mapX = Math.max(width * (1 - scale), Math.min(0, mapX));
+  mapY = Math.max(height * (1 - scale), Math.min(0, mapY));
+  content.style.transform = `translate(${mapX}px, ${mapY}px) scale(${scale})`;
+  mapScaleLabel.textContent = `${Math.round(scale * 100)}%`;
+  mapControls.querySelector('[data-map-zoom="out"]').disabled = zoomIndex === 0;
+  mapControls.querySelector('[data-map-zoom="in"]').disabled = zoomIndex === zoomLevels.length - 1;
+  mapControls.querySelector('[data-map-zoom="reset"]').disabled = zoomIndex === 0;
+  mapPanControls.hidden = zoomIndex === 0;
+  document.querySelector('[data-map-hint]').hidden = zoomIndex === 0;
+  mapViewport.classList.toggle('is-zoomed', zoomIndex > 0);
+}
+function centerRegion(id) {
+  const region = window.siteRegions.find(item => item.id === id);
+  if (!region?.map) return;
+  const scale = zoomLevels[zoomIndex];
+  mapX = mapViewport.clientWidth * (0.5 - (region.map.longitude + 180) / 360 * scale);
+  mapY = mapViewport.clientHeight * (0.5 - (90 - region.map.latitude) / 180 * scale);
+  paintMap();
+}
+function initializeMapControls() { mapControls.hidden = false; paintMap(); }
+mapViewport.addEventListener('map-ready', initializeMapControls);
+if (!mapViewport.hidden) initializeMapControls();
+mapControls.addEventListener('click', event => {
+  const zoom = event.target.closest('[data-map-zoom]')?.dataset.mapZoom;
+  const pan = event.target.closest('[data-map-pan]')?.dataset.mapPan;
+  if (zoom) {
+    zoomIndex = zoom === 'reset' ? 0 : Math.max(0, Math.min(zoomLevels.length - 1, zoomIndex + (zoom === 'in' ? 1 : -1)));
+    centerRegion(preview.dataset.selectedRegion);
+  } else if (pan) {
+    const step = mapViewport.clientWidth * 0.25;
+    if (pan === 'left') mapX += step;
+    if (pan === 'right') mapX -= step;
+    if (pan === 'up') mapY += step;
+    if (pan === 'down') mapY -= step;
+    paintMap();
+  }
+});
+mapViewport.addEventListener('focusin', event => {
+  const region = event.target.closest('[data-map-region]');
+  if (region && zoomIndex) centerRegion(region.dataset.mapRegion);
+});
+mapViewport.addEventListener('pointerdown', event => {
+  suppressMapClick = false;
+  if (!zoomIndex || event.button !== 0) return;
+  drag = {id: event.pointerId, x: event.clientX, y: event.clientY, mapX, mapY, moved: false};
+});
+mapViewport.addEventListener('pointermove', event => {
+  if (!drag || drag.id !== event.pointerId) return;
+  const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+  if (!drag.moved && Math.hypot(dx, dy) > 6) {
+    drag.moved = true;
+    mapViewport.setPointerCapture(event.pointerId);
+  }
+  if (drag.moved) { mapX = drag.mapX + dx; mapY = drag.mapY + dy; paintMap(); }
+});
+mapViewport.addEventListener('pointerup', event => {
+  if (drag?.id !== event.pointerId) return;
+  suppressMapClick = drag.moved;
+  drag = null;
+});
+mapViewport.addEventListener('pointercancel', () => { drag = null; });
+mapViewport.addEventListener('click', event => {
+  if (suppressMapClick) { event.preventDefault(); event.stopImmediatePropagation(); suppressMapClick = false; }
+}, true);
+window.addEventListener('resize', paintMap);

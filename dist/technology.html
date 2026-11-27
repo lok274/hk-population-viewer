@@ -2,6 +2,8 @@
 <html lang="zh-Hant-HK">
 <head>
   <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <script>try{const s=localStorage.getItem('economy-color-scheme');if(s==='light'||s==='dark')document.querySelector('meta[name="color-scheme"]').content=s}catch{}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#effaf6">
   <meta name="description" content="用白話認識香港科技的原理、實際應用與生意方式。11 個主題分清香港研發、引入使用、研究、原型、試行及已應用，附原始來源與日期。">
@@ -10,7 +12,9 @@
   <link rel="stylesheet" href="./technology.css?v=20261022-technology">
   <script type="module" src="./technology.js?v=20261022-technology"></script>
   <link rel="stylesheet" href="./site-navigation.css?v=20261126">
-  <script defer src="./site-navigation.js?v=20261127-landing"></script>
+  <script defer src="./site-navigation.js?v=20261127-zoom"></script>
+  <link rel="stylesheet" href="./dark-mode.css?v=20261127">
+  <script defer src="./theme.js?v=20261127"></script>
 </head>
 <body class="technology-page" data-region="hk">
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -21,6 +25,7 @@
         <a href="./index.html#world-economies">各地總覽</a>
         <span data-region-links><a href="./hk-population.html#total">香港</a><a href="./us-economy.html">美國</a></span>
       </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" hidden>深色模式</button>
       <button class="search-trigger" type="button" data-open-search hidden>搜尋<span class="search-label">地區或主題</span></button>
     </div>
   </header>

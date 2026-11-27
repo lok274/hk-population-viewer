@@ -2,6 +2,8 @@
 <html lang="zh-Hant-HK">
 <head>
   <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <script>try{const s=localStorage.getItem('economy-color-scheme');if(s==='light'||s==='dark')document.querySelector('meta[name="color-scheme"]').content=s}catch{}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#effaf6">
   <meta name="description" content="用不同圖表看清香港人口與經濟變化。保留數據期間、單位、狀態及官方來源。">
@@ -11,7 +13,9 @@
   <script>if (['#economy', '#inflation', '#unemployment', '#earnings', '#trade'].includes(location.hash)) location.replace('./hk-economy.html' + location.hash);</script>
   <script type="module" src="./app.js?v=separate-economies"></script>
   <link rel="stylesheet" href="./site-navigation.css?v=20261127-map">
-  <script defer src="./site-navigation.js?v=20261127-landing"></script>
+  <script defer src="./site-navigation.js?v=20261127-zoom"></script>
+  <link rel="stylesheet" href="./dark-mode.css?v=20261127">
+  <script defer src="./theme.js?v=20261127"></script>
 </head>
 <body class="home-dashboard" data-region="hk">
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -22,6 +26,7 @@
         <a href="./index.html#world-economies">各地總覽</a>
         <span data-region-links><a href="./hk-population.html#total">香港</a><a href="./us-economy.html">美國</a></span>
       </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" hidden>深色模式</button>
       <button class="search-trigger" type="button" data-open-search hidden>搜尋<span class="search-label">地區或主題</span></button>
     </div>
   </header>
