@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#effaf6">
+  <meta name="description" content="用不同圖表看清香港人口與經濟變化。保留數據期間、單位、狀態及官方來源。">
+  <title>香港人口與經濟｜用圖表看清變化</title>
+  <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
+  <link rel="stylesheet" href="./dashboard-ui.css">
+  <script>if (['#economy', '#inflation', '#unemployment', '#earnings', '#trade'].includes(location.hash)) location.replace('./hk-economy.html' + location.hash);</script>
+  <script type="module" src="./app.js?v=separate-economies"></script>
+  <link rel="stylesheet" href="./site-navigation.css?v=20261127-map">
+  <script defer src="./site-navigation.js?v=20261127-landing"></script>
+</head>
+<body class="home-dashboard" data-region="hk">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="global-header">
+    <div class="global-header-inner">
+      <a class="global-brand" href="./index.html#world-economies"><span class="global-brand-mark" aria-hidden="true">▥</span><span>各地人口與經濟<small>官方統計圖表總覽</small></span></a>
+      <nav class="global-regions" aria-label="國家與地區">
+        <a href="./index.html#world-economies">各地總覽</a>
+        <span data-region-links><a href="./hk-population.html#total">香港</a><a href="./us-economy.html">美國</a></span>
+      </nav>
+      <button class="search-trigger" type="button" data-open-search hidden>搜尋<span class="search-label">地區或主題</span></button>
+    </div>
+  </header>
+  <dialog class="site-search" id="site-search" aria-labelledby="site-search-title">
+    <div class="search-top"><h1 id="site-search-title">搜尋地區或主題</h1><form method="dialog"><button type="submit" aria-label="關閉搜尋">關閉 ✕</button></form></div>
+    <label for="site-search-input">輸入地區或主題</label>
+    <input type="search" id="site-search-input" placeholder="例如：香港、通脹、利率" autocomplete="off">
+    <p data-search-status role="status"></p>
+    <ul data-search-results></ul>
+  </dialog>
+  <nav class="hk-module-nav" aria-label="香港主題"><span>香港</span><a href="./hk-population.html#total" aria-current="page">人口結構</a><a href="./hk-economy.html">香港經濟</a><a href="./education.html">教育概覽</a><a href="./industry.html">行業概覽</a><a href="./technology.html">科技發展</a></nav>
+  <main id="main">
+    <nav class="page-chapters" aria-label="人口章節"><span>香港人口</span><a href="#total">總人口</a><a href="#age">年齡</a><a href="#sex">性別</a><a href="#residents">居民類別</a></nav>
+    <section class="hero" id="top" aria-labelledby="page-title">
+      <div class="hero-copy"><p class="eyebrow"><span class="live-dot" aria-hidden="true"></span>全港 · 年中人口</p><h1 id="page-title">香港人口結構<br><span>用圖表看清變化</span></h1><p class="hero-intro">從人口規模、年齡和性別認識香港。<br class="desktop-break">每項數字保留年份、單位及官方來源。</p></div>
+      <div class="hero-stat" id="latest-total" aria-live="polite"><p class="hero-stat-label">年中總人口</p><p class="hero-number">載入中…</p></div>
+      <div class="hero-foot"><p id="latest-change">正在整理數據…</p><p>年齡及性別分項截至 2025 年</p></div>
+    </section>
+    <div class="intro-strip"><span class="intro-icon" aria-hidden="true">i</span><p>各圖使用各自有資料的年份。2026 年沒有年齡及性別分項；圖表下方可查看詳細數字、狀態與來源。</p></div>
+    <section class="dashboard-section" id="total" aria-labelledby="total-title">
+      <div class="section-heading"><div><p class="section-kicker">01 / 人口規模</p><h2 id="total-title">年中總人口趨勢 <span class="chart-tag">折線與數值卡</span></h2><p class="section-lead">來源列載的 4 個年份，保留真實時間間距。</p></div><p class="section-note">單位 · 人<br>縱軸未由零開始</p></div>
+      <div class="chart-panel" id="total-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="dashboard-section" id="age" aria-labelledby="age-title">
+      <div class="section-heading"><div><p class="section-kicker">02 / 年齡組成</p><h2 id="age-title">人口年齡分布 <span class="chart-tag blue">分組直條圖</span></h2><p class="section-lead">比較 2020、2024、2025 年各年齡組別佔比。</p></div><p class="section-note">單位 · 人及 %<br>四組共用 0–50% 刻度</p></div>
+      <div id="age-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="dashboard-section" id="sex" aria-labelledby="sex-title">
+      <div class="section-heading"><div><p class="section-kicker">03 / 性別組成</p><h2 id="sex-title">人口性別分布 <span class="chart-tag pink">環形圖</span></h2><p class="section-lead">按所選年份查看女性及男性的數量和比例。</p></div><div class="year-control"><label for="sex-year">資料年份</label><select id="sex-year"></select></div></div>
+      <div id="sex-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="dashboard-section" id="residents" aria-labelledby="residents-title">
+      <div class="section-heading"><div><p class="section-kicker">04 / 居民類別</p><h2 id="residents-title">常住居民與流動居民 <span class="chart-tag">半圓比例圖</span></h2><p class="section-lead">按同年總人口計算，對照兩類居民的結構。</p></div><p class="section-note">單位 · 人及 %<br>2025 · 2026 年中</p></div>
+      <div id="residents-chart" aria-live="polite"><p class="loading">載入圖表…</p></div>
+    </section>
+    <section class="method-note" aria-labelledby="method-title"><span class="method-symbol" aria-hidden="true">▥</span><div><h2 id="method-title">讀圖與數據說明</h2><p>各圖按所列年份及來源顯示，並非即時統計。人口原始單位為千人，圖中換算為人；比例按對應年份總人口計算。不同指標的統計期間、單位及比較基準各自獨立。展開各圖「詳細數據與來源」，可查看每項觀測的資料狀態和官方連結。</p></div></section>
+    <div class="page-end"><span><i class="live-dot" aria-hidden="true"></i> 全香港 · 按來源實際期間顯示</span><a href="#top">回到頁首 ↑</a></div>
+  </main>
+  <footer class="site-footer"><div><strong>香港人口與經濟數據概覽</strong><p>以政府統計處來源認識香港的變化。</p></div><a href="https://www.censtatd.gov.hk/" target="_blank" rel="noreferrer">政府統計處 C&SD ↗</a></footer>
+</body>
+</html>
+

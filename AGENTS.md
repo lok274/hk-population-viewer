@@ -2,12 +2,13 @@
 
 ## 專案用途
 
-呢個網站用繁體中文圖表展示全香港人口及經濟數據。人口部分係全港年中人口儀表板，唔係按區地圖；除非用戶提出，唔好加入地區數據或地圖功能。
+呢個網站用繁體中文圖表展示各地人口及經濟數據。世界地圖用於選擇已上線地區；香港人口圖表只展示全港年中人口，沒有分區資料。
 
 ## 專案結構
 
 - `.openai/hosting.json`：舊有 Sites 專案設定；目前公開網站由 GitHub Pages 發佈。
-- `dist/index.html`：頁面內容、標題、文字說明。
+- `dist/index.html`：世界地圖入口；`dist/hk-population.html`：香港人口圖表。舊首頁人口章節網址轉向新頁。
+- `dist/site-navigation.js`：地區清單、地圖標記和網站搜尋；`dist/landing.js`：地區摘要，直接讀取各自數據來源及期間。
 - `dist/styles.css`：版面、顏色及手機版樣式。
 - `dist/app.js`：圖表繪製及互動。
 - `dist/population-data.js`：人口數字、數據狀態、來源及基本資料驗證。改數字時以此檔案為準。
