@@ -1,0 +1,20 @@
+.society-page .us-hero { margin-bottom: 1.5rem; }
+.society-page .us-topics { margin: 1rem 0 2rem; }
+.society-section { margin: 2.5rem 0; scroll-margin-top: 9rem; }
+.society-section h2 { margin-bottom: .35rem; }
+.society-section > p { max-width: 70ch; line-height: 1.7; }
+.society-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 1rem; }
+.society-card { background: #fff; color: #143e35; border: 1px solid #d4e6dc; border-radius: 18px; padding: 1.2rem; min-width: 0; }
+.society-card h3 { margin: 0 0 .5rem; }
+.society-card p { line-height: 1.6; }
+.society-card a { color: #00654d; text-underline-offset: .2em; }
+.society-bars { list-style: none; padding: 0; display: grid; gap: .8rem; }
+.society-bar-label { display: flex; justify-content: space-between; gap: .75rem; }
+.society-track { height: .7rem; border-radius: 1rem; background: #e3eee9; overflow: hidden; }
+.society-fill { height: 100%; width: var(--width); background: #00775b; border-radius: inherit; }
+.society-table-wrap { overflow-x: auto; }
+.society-card table { width: 100%; border-collapse: collapse; text-align: left; }
+.society-card th, .society-card td { padding: .55rem; border-bottom: 1px solid #d4e6dc; }
+.society-stat { font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 800; color: #00654d; }
+.society-card summary { cursor: pointer; padding: .7rem 0; font-weight: 700; }
+.society-card :focus-visible { outline: 3px solid #1164a0; outline-offset: 3px; }
