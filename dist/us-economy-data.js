@@ -1,4 +1,4 @@
-import snapshot from './us-economy-snapshot.js?v=20261127-phase2';
+import snapshot from './us-economy-snapshot.js?v=20261127-fiscal';
 
 const topics = {
   output: {
@@ -115,6 +115,14 @@ const topics = {
     receiptsIndividual: ['個人所得稅淨收入', 'fiscal', '美元', '年度總量', '現價', '財政年度收入，扣除退款', 'budgetReceipts', 'MTS 表 4／120', 0, -100_000_000_000_000, 100_000_000_000_000],
     receiptsCorporate: ['企業所得稅淨收入', 'fiscal', '美元', '年度總量', '現價', '財政年度收入，扣除退款', 'budgetReceipts', 'MTS 表 4／130', 0, -100_000_000_000_000, 100_000_000_000_000],
     receiptsSocial: ['社會保險及退休金淨收入', 'fiscal', '美元', '年度總量', '現價', '財政年度收入，扣除退款', 'budgetReceipts', 'MTS 表 4／286', 0, -100_000_000_000_000, 100_000_000_000_000],
+    outlayAgriculture: ['農業部支出', 'fiscal', '美元', '年度總量', '現價', '財政年度部門支出', 'budgetOutlays', 'MTS 表 3／210', 0, -100_000_000_000_000, 100_000_000_000_000],
+    outlayDefense: ['國防部軍事計劃支出', 'fiscal', '美元', '年度總量', '現價', '財政年度部門軍事計劃支出，不包括其他國防民事計劃', 'budgetOutlays', 'MTS 表 3／230', 0, -100_000_000_000_000, 100_000_000_000_000],
+    outlayEducation: ['教育部支出', 'fiscal', '美元', '年度總量', '現價', '財政年度部門支出', 'budgetOutlays', 'MTS 表 3／250', 0, -100_000_000_000_000, 100_000_000_000_000],
+    outlayHealth: ['衛生及公共服務部支出', 'fiscal', '美元', '年度總量', '現價', '財政年度部門支出', 'budgetOutlays', 'MTS 表 3／275', 0, -100_000_000_000_000, 100_000_000_000_000],
+    outlayTransport: ['運輸部支出', 'fiscal', '美元', '年度總量', '現價', '財政年度部門支出', 'budgetOutlays', 'MTS 表 3／340', 0, -100_000_000_000_000, 100_000_000_000_000],
+    outlayInterest: ['國債利息支出總額', 'fiscal', '美元', '年度總量', '現價', '財政年度 Treasury 證券利息總額，未扣除抵銷收入', 'budgetOutlays', 'MTS 表 3／360', 0, -100_000_000_000_000, 100_000_000_000_000],
+    outlayVeterans: ['退伍軍人事務部支出', 'fiscal', '美元', '年度總量', '現價', '財政年度部門支出', 'budgetOutlays', 'MTS 表 3／375', 0, -100_000_000_000_000, 100_000_000_000_000],
+    outlaySocial: ['社會保障署支出', 'fiscal', '美元', '年度總量', '現價', '財政年度部門支出', 'budgetOutlays', 'MTS 表 3／423', 0, -100_000_000_000_000, 100_000_000_000_000],
   },
 };
 
@@ -134,6 +142,7 @@ const sources = {
   industry: ['Federal Reserve', 'https://www.federalreserve.gov/releases/g17/current/default.htm', 'https://www.federalreserve.gov/releases/g17/data/FRB_g17_xml.zip'],
   budget: ['Treasury', 'https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/', 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_1'],
   budgetReceipts: ['Treasury', 'https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/receipts-of-the-u-s-government/', 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_4'],
+  budgetOutlays: ['Treasury', 'https://fiscaldata.treasury.gov/datasets/monthly-treasury-statement/', 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_3'],
   debt: ['Treasury', 'https://fiscaldata.treasury.gov/datasets/debt-to-the-penny/', 'https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny'],
 };
 
@@ -236,7 +245,7 @@ function readSeries(id, definition, data) {
 
   return {
     id, labelZh, geography: '美國全國', frequency, unit, seasonalAdjustment, priceBasis, annualization,
-    source: {...source, retrievedAt: data.checkedAt}, observations, context,
+    source: {...source, retrievedAt: sourceId === 'budgetOutlays' && data.checkedAt < '2026-11-27' ? '2026-11-27' : data.checkedAt}, observations, context,
   };
 }
 
