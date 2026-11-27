@@ -87,6 +87,8 @@ if (worldMap) {
       const svg = new DOMParser().parseFromString(text, 'image/svg+xml').documentElement;
       if (svg.localName !== 'svg') throw new Error('Invalid map');
       const svgNs = 'http://www.w3.org/2000/svg';
+      const mapContent = document.createElement('div');
+      mapContent.className = 'world-map-content';
       for (const region of regions) {
         if (!region.map) continue;
         if (region.map.shape) {
@@ -110,9 +112,10 @@ if (worldMap) {
         marker.textContent = region.label;
         marker.setAttribute('aria-label', `查看${region.label}`);
         marker.dataset.mapRegion = region.id;
-        worldMap.append(marker);
+        mapContent.append(marker);
       }
-      worldMap.prepend(document.importNode(svg, true));
+      mapContent.prepend(document.importNode(svg, true));
+      worldMap.append(mapContent);
       worldMap.hidden = false;
       const mapStatus = document.querySelector('[data-map-status]');
       if (mapStatus) mapStatus.hidden = true;

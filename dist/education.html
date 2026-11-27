@@ -2,6 +2,8 @@
 <html lang="zh-Hant-HK">
 <head>
   <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <script>try{const s=localStorage.getItem('economy-color-scheme');if(s==='light'||s==='dark')document.querySelector('meta[name="color-scheme"]').content=s}catch{}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#effaf6">
   <meta name="description" content="用圖表認識香港的學生人數、學校數目、人口教育程度、師生比例及政府教育開支。各項數字附期間、單位、狀態與官方來源。">
@@ -9,7 +11,9 @@
   <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
   <script type="module" src="./education.js?v=20261022-resources"></script>
   <link rel="stylesheet" href="./site-navigation.css?v=20261126">
-  <script defer src="./site-navigation.js?v=20261127-landing"></script>
+  <script defer src="./site-navigation.js?v=20261127-zoom"></script>
+  <link rel="stylesheet" href="./dark-mode.css?v=20261127">
+  <script defer src="./theme.js?v=20261127"></script>
 </head>
 <body class="education-page" data-region="hk">
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -20,6 +24,7 @@
         <a href="./index.html#world-economies">各地總覽</a>
         <span data-region-links><a href="./hk-population.html#total">香港</a><a href="./us-economy.html">美國</a></span>
       </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" hidden>深色模式</button>
       <button class="search-trigger" type="button" data-open-search hidden>搜尋<span class="search-label">地區或主題</span></button>
     </div>
   </header>

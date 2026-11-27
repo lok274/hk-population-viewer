@@ -2,6 +2,8 @@
 <html lang="zh-Hant-HK">
 <head>
   <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <script>try{const s=localStorage.getItem('economy-color-scheme');if(s==='light'||s==='dark')document.querySelector('meta[name="color-scheme"]').content=s}catch{}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f7f9">
   <meta name="description" content="選擇地區，探索官方人口及經濟數據。">
@@ -9,9 +11,11 @@
   <script>function redirectLegacy(){const h=location.hash;if(['#total','#age','#sex','#residents','#top'].includes(h))location.replace('./hk-population.html'+h);else if(['#economy','#inflation','#unemployment','#earnings','#trade'].includes(h))location.replace('./hk-economy.html'+h)}redirectLegacy();window.addEventListener('hashchange',redirectLegacy);</script>
   <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
   <link rel="stylesheet" href="./site-navigation.css?v=20261127-map">
-  <link rel="stylesheet" href="./landing.css?v=20261127">
-  <script defer src="./site-navigation.js?v=20261127-landing"></script>
-  <script type="module" src="./landing.js?v=20261127"></script>
+  <link rel="stylesheet" href="./landing.css?v=20261127-zoom">
+  <script defer src="./site-navigation.js?v=20261127-zoom"></script>
+  <script type="module" src="./landing.js?v=20261127-zoom"></script>
+  <link rel="stylesheet" href="./dark-mode.css?v=20261127">
+  <script defer src="./theme.js?v=20261127"></script>
 </head>
 <body class="landing-page" data-region="hub">
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -22,6 +26,7 @@
         <a href="./index.html#world-economies" aria-current="page">各地總覽</a>
         <span data-region-links><a href="./hk-population.html#total">香港</a><a href="./us-economy.html">美國</a></span>
       </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" hidden>深色模式</button>
       <button class="search-trigger" type="button" data-open-search hidden>搜尋<span class="search-label">地區或主題</span></button>
     </div>
   </header>
@@ -44,7 +49,17 @@
         <section class="map-stage" aria-labelledby="map-title">
           <div class="map-toolbar"><h2 id="map-title">◎ 世界經濟地圖</h2><span>點選地區查看摘要</span></div>
           <p class="map-status" data-map-status>正在載入地圖；你亦可使用下方地區卡片。</p>
+          <div class="map-controls" data-map-controls hidden aria-label="地圖縮放及移動">
+            <button type="button" data-map-zoom="in" aria-label="放大地圖">＋</button>
+            <button type="button" data-map-zoom="out" aria-label="縮小地圖">−</button>
+            <button type="button" data-map-zoom="reset">重設</button>
+            <span data-map-scale role="status" aria-live="polite">100%</span>
+            <span class="map-pan-controls" data-map-pan-controls hidden>
+              <button type="button" data-map-pan="left" aria-label="向左查看地圖">←</button><button type="button" data-map-pan="up" aria-label="向上查看地圖">↑</button><button type="button" data-map-pan="down" aria-label="向下查看地圖">↓</button><button type="button" data-map-pan="right" aria-label="向右查看地圖">→</button>
+            </span>
+          </div>
           <div class="world-map" data-world-map hidden></div>
+          <p class="map-hint" data-map-hint hidden>放大後可拖動地圖，或用箭嘴移動；在地圖外滑動可捲動頁面。</p>
           <p class="map-credit">地圖資料：<a href="https://www.naturalearthdata.com/downloads/110m-cultural-vectors/">Natural Earth ↗</a></p>
         </section>
         <aside class="region-preview" aria-labelledby="preview-title" data-region-preview>
