@@ -5,13 +5,13 @@
 <meta name="color-scheme" content="light dark">
 <script>try{const s=localStorage.getItem('economy-color-scheme');if(s==='light'||s==='dark')document.querySelector('meta[name="color-scheme"]').content=s}catch{}</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="美國環境、能源與人口家庭官方數據。">
-<title>美國環境、能源與人口家庭</title>
+<meta name="description" content="美國社會與環境概覽官方數據。">
+<title>美國社會與環境概覽</title>
 <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
 <link rel="stylesheet" href="./us-economy.css">
 <link rel="stylesheet" href="./society.css">
 <link rel="stylesheet" href="./site-navigation.css?v=20261127-map">
-<script defer src="./site-navigation.js?v=20261127-society">
+<script defer src="./site-navigation.js?v=20261127-more">
 </script>
 <link rel="stylesheet" href="./dark-mode.css?v=20261127">
 <script defer src="./theme.js?v=20261127">
@@ -56,15 +56,21 @@
 <section class="us-hero" id="top">
 <div class="us-hero-copy">
 <p class="us-kicker">美國 · 官方統計</p>
-<h1>美國環境、能源與人口家庭</h1>
-<p>從氣候、用電和家庭結構認識美國。每項數據保留自己的年份、口徑與官方來源。</p>
-<p class="us-version">固定快照 · 2026 年 11 月 27 日核對 · 不會自動更新</p>
+<h1>美國社會與環境概覽</h1>
+<p>從環境、人口、健康及公共服務等主題認識美國。每項數據保留自己的年份、口徑與官方來源。</p>
+<p class="us-version">自動檢查：美國本土氣溫、發電來源、全國人口及住戶；其他系列為手動快照。手動數據於 2026 年 11 月 27 日核對。</p>
 </div>
 </section>
 <nav class="us-topics" aria-label="主題">
 <a href="#environment">環境與氣候</a>
 <a href="#energy">能源</a>
 <a href="#population">人口與家庭</a>
+<a href="#health">公共衛生</a>
+<a href="#transport">交通與基建</a>
+<a href="#safety">公共安全</a>
+<a href="#government">政府與公共服務</a>
+<a href="#culture">文化與休閒</a>
+
 </nav>
 <section class="society-section" id="environment" aria-labelledby="environment-title">
 <p class="us-kicker">ENVIRONMENT</p>
@@ -167,14 +173,7 @@
 <a href="https://www.epa.gov/system/files/documents/2025-04/us-ghg-inventory-2025-main-text.pdf" target="_blank" rel="noopener noreferrer">美國環保署 · 排放清單表 2-1 ↗</a>
 </p>
 </article>
-<article class="society-card">
-<h3>美國本土 48 州全年平均氣溫</h3>
-<p class="society-stat">54.6 °F</p>
-<p>2025 年 · 較 20 世紀平均高 2.6 °F；此數字不包括阿拉斯加及夏威夷。</p>
-<p>
-<a href="https://www.ncei.noaa.gov/news/national-climate-202513" target="_blank" rel="noopener noreferrer">NOAA · 2025 氣候報告 ↗</a>
-</p>
-</article>
+<article class="society-card" data-observed-period="2025"><h3>美國本土 48 州全年平均氣溫</h3><p class="society-stat">54.6 °F</p><p>2025 年 · 本土 48 州，不包括阿拉斯加及夏威夷。</p><p><a href="https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/national/time-series/110/tavg/12/12/2019-2026.csv" target="_blank" rel="noopener noreferrer">NOAA · 本土氣溫數據 ↗</a></p><p>官方資料定期檢查；更新需經審核。</p></article>
 </div>
 </section>
 <section class="society-section" id="energy" aria-labelledby="energy-title">
@@ -182,102 +181,7 @@
 <h2 id="energy-title">能源</h2>
 <p>電力數據要分清發電來源和用電量。</p>
 <div class="society-grid">
-<article class="society-card">
-<h3>發電來源比例</h3>
-<p>2025 年 · 電力事業規模發電設施；不包括小型屋頂太陽能發電。各數字按官方圖表四捨五入。</p>
-<p>橫條從零開始，最長橫條代表該圖最大數值。</p>
-<ul class="society-bars" aria-label="發電來源比例">
-<li>
-<div class="society-bar-label">
-<span>天然氣</span>
-<strong>40.8 %</strong>
-</div>
-<div class="society-track" aria-hidden="true">
-<div class="society-fill" style="--width:100.000%">
-</div>
-</div>
-</li>
-<li>
-<div class="society-bar-label">
-<span>煤</span>
-<strong>16.6 %</strong>
-</div>
-<div class="society-track" aria-hidden="true">
-<div class="society-fill" style="--width:40.686%">
-</div>
-</div>
-</li>
-<li>
-<div class="society-bar-label">
-<span>核能</span>
-<strong>17.7 %</strong>
-</div>
-<div class="society-track" aria-hidden="true">
-<div class="society-fill" style="--width:43.382%">
-</div>
-</div>
-</li>
-<li>
-<div class="society-bar-label">
-<span>可再生能源</span>
-<strong>24.1 %</strong>
-</div>
-<div class="society-track" aria-hidden="true">
-<div class="society-fill" style="--width:59.069%">
-</div>
-</div>
-</li>
-<li>
-<div class="society-bar-label">
-<span>石油及其他</span>
-<strong>0.7 %</strong>
-</div>
-<div class="society-track" aria-hidden="true">
-<div class="society-fill" style="--width:1.716%">
-</div>
-</div>
-</li>
-</ul>
-<details>
-<summary>查看數據表及來源</summary>
-<div class="society-table-wrap" tabindex="0" role="region" aria-label="發電來源比例數據表">
-<table>
-<caption>發電來源比例數據表</caption>
-<thead>
-<tr>
-<th scope="col">項目</th>
-<th scope="col">數值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th scope="row">天然氣</th>
-<td>40.8 %</td>
-</tr>
-<tr>
-<th scope="row">煤</th>
-<td>16.6 %</td>
-</tr>
-<tr>
-<th scope="row">核能</th>
-<td>17.7 %</td>
-</tr>
-<tr>
-<th scope="row">可再生能源</th>
-<td>24.1 %</td>
-</tr>
-<tr>
-<th scope="row">石油及其他</th>
-<td>0.7 %</td>
-</tr>
-</tbody>
-</table>
-</div>
-</details>
-<p>
-<a href="https://www.eia.gov/kids/energy-sources/electricity/electricity-in-the-us.php" target="_blank" rel="noopener noreferrer">美國能源資訊署 · 電力來源 ↗</a>
-</p>
-</article>
+<article class="society-card" data-observed-period="2025"><h3>發電來源比例</h3><p>2025 年 · 電力事業規模發電設施；不包括小型屋頂太陽能發電。各數字按官方圖表四捨五入。</p><p>橫條從零開始，最長橫條代表該圖最大數值。</p><ul class="society-bars" aria-label="發電來源比例"><li><div class="society-bar-label"><span>天然氣</span><strong>40.8 %</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:100.000%"></div></div></li><li><div class="society-bar-label"><span>煤</span><strong>16.6 %</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:40.686%"></div></div></li><li><div class="society-bar-label"><span>核能</span><strong>17.7 %</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:43.382%"></div></div></li><li><div class="society-bar-label"><span>可再生能源</span><strong>24.1 %</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:59.069%"></div></div></li><li><div class="society-bar-label"><span>石油及其他</span><strong>0.7 %</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:1.716%"></div></div></li></ul><details><summary>查看數據表及來源</summary><div class="society-table-wrap" tabindex="0" role="region" aria-label="發電來源比例數據表"><table><caption>發電來源比例數據表</caption><thead><tr><th scope="col">項目</th><th scope="col">數值</th></tr></thead><tbody><tr><th scope="row">天然氣</th><td>40.8 %</td></tr><tr><th scope="row">煤</th><td>16.6 %</td></tr><tr><th scope="row">核能</th><td>17.7 %</td></tr><tr><th scope="row">可再生能源</th><td>24.1 %</td></tr><tr><th scope="row">石油及其他</th><td>0.7 %</td></tr></tbody></table></div></details><p><a href="https://www.eia.gov/kids/energy-sources/electricity/electricity-in-the-us.php" target="_blank" rel="noopener noreferrer">美國能源資訊署 · 電力來源 ↗</a></p><p>官方資料定期檢查；更新需經審核。</p></article>
 </div>
 </section>
 <section class="society-section" id="population" aria-labelledby="population-title">
@@ -285,78 +189,17 @@
 <h2 id="population-title">人口與家庭</h2>
 <p>人口估計與住戶調查的時間和對象可能不同。</p>
 <div class="society-grid">
-<article class="society-card">
-<h3>全國人口</h3>
-<p class="society-stat">341,784,857 人</p>
-<p>2025 年 7 月 1 日 · V2025 人口估計。</p>
-<p>
-<a href="https://www.census.gov/quickfacts/fact/table/US/POP715223" target="_blank" rel="noopener noreferrer">美國人口普查局 · QuickFacts ↗</a>
-</p>
-</article>
-<article class="society-card">
-<h3>平均住戶人數</h3>
-<p class="society-stat">2.53 人</p>
-<p>2020–2024 年美國社區調查五年期估計，並非 2024 年單年數字。</p>
-<p>
-<a href="https://www.census.gov/quickfacts/fact/table/US/POP715223" target="_blank" rel="noopener noreferrer">美國人口普查局 · QuickFacts ↗</a>
-</p>
-</article>
-<article class="society-card">
-<h3>人口年齡組別</h3>
-<p>2025 年人口估計 · 只展示兩個年齡組，並非完整年齡分布。</p>
-<p>橫條從零開始，最長橫條代表該圖最大數值。</p>
-<ul class="society-bars" aria-label="人口年齡組別">
-<li>
-<div class="society-bar-label">
-<span>18 歲以下</span>
-<strong>21.1 %</strong>
-</div>
-<div class="society-track" aria-hidden="true">
-<div class="society-fill" style="--width:100.000%">
-</div>
-</div>
-</li>
-<li>
-<div class="society-bar-label">
-<span>65 歲或以上</span>
-<strong>18.9 %</strong>
-</div>
-<div class="society-track" aria-hidden="true">
-<div class="society-fill" style="--width:89.573%">
-</div>
-</div>
-</li>
-</ul>
-<details>
-<summary>查看數據表及來源</summary>
-<div class="society-table-wrap" tabindex="0" role="region" aria-label="人口年齡組別數據表">
-<table>
-<caption>人口年齡組別數據表</caption>
-<thead>
-<tr>
-<th scope="col">項目</th>
-<th scope="col">數值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<th scope="row">18 歲以下</th>
-<td>21.1 %</td>
-</tr>
-<tr>
-<th scope="row">65 歲或以上</th>
-<td>18.9 %</td>
-</tr>
-</tbody>
-</table>
-</div>
-</details>
-<p>
-<a href="https://www.census.gov/quickfacts/fact/table/US/POP715223" target="_blank" rel="noopener noreferrer">美國人口普查局 · QuickFacts ↗</a>
-</p>
-</article>
+<article class="society-card" data-observed-period="2025"><h3>全國人口</h3><p class="society-stat">341,784,857 人</p><p>2025 年 7 月 1 日 · V2025 人口估計。</p><p><a href="https://www2.census.gov/programs-surveys/popest/datasets/2020-2025/national/asrh/nc-est2025-agesex-res.csv" target="_blank" rel="noopener noreferrer">美國人口普查局 · 全國人口估計 ↗</a></p><p>官方資料定期檢查；更新需經審核。</p></article>
+<article class="society-card" data-observed-period="2024"><h3>平均住戶人數</h3><p class="society-stat">2.53 人</p><p>2020–2024 年美國社區調查五年期估計，並非 2024 年單年數字。</p><p><a href="https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/5YRData/acsdt5y2024-b25010.dat" target="_blank" rel="noopener noreferrer">美國人口普查局 · ACS 表 B25010 ↗</a></p><p>官方資料定期檢查；更新需經審核。</p></article>
+<article class="society-card" data-observed-period="2025"><h3>人口年齡組別</h3><p>2025 年 7 月 1 日人口估計 · 按官方年齡人數計算比例；只展示兩個年齡組，並非完整年齡分布。</p><p>橫條從零開始，最長橫條代表該圖最大數值。</p><ul class="society-bars" aria-label="人口年齡組別"><li><div class="society-bar-label"><span>18 歲以下</span><strong>21.1 %</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:100.000%"></div></div></li><li><div class="society-bar-label"><span>65 歲或以上</span><strong>18.9 %</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:89.719%"></div></div></li></ul><details><summary>查看數據表及來源</summary><div class="society-table-wrap" tabindex="0" role="region" aria-label="人口年齡組別數據表"><table><caption>人口年齡組別數據表</caption><thead><tr><th scope="col">項目</th><th scope="col">數值</th></tr></thead><tbody><tr><th scope="row">18 歲以下</th><td>21.1 %</td></tr><tr><th scope="row">65 歲或以上</th><td>18.9 %</td></tr></tbody></table></div></details><p><a href="https://www2.census.gov/programs-surveys/popest/datasets/2020-2025/national/asrh/nc-est2025-agesex-res.csv" target="_blank" rel="noopener noreferrer">美國人口普查局 · 全國人口估計 ↗</a></p><p>官方資料定期檢查；更新需經審核。</p></article>
 </div>
 </section>
+<section class="society-section" id="health" aria-labelledby="health-title"><h2 id="health-title">公共衛生</h2><p>用預期壽命了解人口死亡率。</p><div class="society-grid"><article class="society-card"><h3>出生時預期壽命</h3><p>2024 年美國最終死亡統計 · 反映當年死亡率，並非對個人壽命的預測。</p><p>橫條從零開始，最長橫條代表該圖最大數值。</p><ul class="society-bars" aria-label="出生時預期壽命"><li><div class="society-bar-label"><span>男性</span><strong>76.5 歲</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:93.980%"></div></div></li><li><div class="society-bar-label"><span>女性</span><strong>81.4 歲</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:100.000%"></div></div></li></ul><details><summary>查看數據表及來源</summary><div class="society-table-wrap" tabindex="0" role="region" aria-label="出生時預期壽命數據表"><table><caption>出生時預期壽命數據表</caption><thead><tr><th scope="col">項目</th><th scope="col">數值</th></tr></thead><tbody><tr><th scope="row">男性</th><td>76.5 歲</td></tr><tr><th scope="row">女性</th><td>81.4 歲</td></tr></tbody></table></div></details><p><a href="https://www.cdc.gov/nchs/products/databriefs/db548.htm" target="_blank" rel="noopener noreferrer">CDC · 2024 年死亡統計 ↗</a></p></article></div></section>
+<section class="society-section" id="transport" aria-labelledby="transport-title"><h2 id="transport-title">交通與基建</h2><p>公共交通人次反映使用量，統計範圍因地區而異。</p><div class="society-grid"><article class="society-card"><h3>公共交通乘客人次</h3><p class="society-stat">約 81 億人次</p><p>2025 報告年度 · 各機構按自身財政年度報告；轉乘可計作多次。</p><p><a href="https://www.transit.dot.gov/sites/fta.dot.gov/files/2026-11/2025_National_Transit_Summaries_%26_Trends_1.pdf" target="_blank" rel="noopener noreferrer">聯邦運輸管理局 · 全國交通統計 ↗</a></p></article></div></section>
+<section class="society-section" id="safety" aria-labelledby="safety-title"><h2 id="safety-title">公共安全</h2><p>罪案數字依賴報案、記錄及統計方式。</p><div class="society-grid"><article class="society-card"><h3>暴力罪案估計</h3><p class="society-stat">1,119,768 宗</p><p>2025 年 · FBI 根據參與機構的報案資料作全國估計；口徑與香港不同。</p><p><a href="https://www.fbi.gov/news/stories/violent-crime-falls-at-historic-rate-new-fbi-data-show" target="_blank" rel="noopener noreferrer">FBI · 罪案統計 ↗</a></p></article></div></section>
+<section class="society-section" id="government" aria-labelledby="government-title"><h2 id="government-title">政府與公共服務</h2><p>政府財政年度與曆年不同，須留意金額口徑。</p><div class="society-grid"><article class="society-card"><h3>聯邦財政</h3><p class="society-stat">查看收入、支出及債務</p><p>美國財政年度截至 9 月 30 日；更多數字及來源載於經濟頁。</p><p><a href="./us-economy.html#fiscal" target="_blank" rel="noopener noreferrer">美國聯邦財政圖表 ↗</a></p></article></div></section>
+<section class="society-section" id="culture" aria-labelledby="culture-title"><h2 id="culture-title">文化與休閒</h2><p>了解圖書館、博物館及文化設施的使用。</p><div class="society-grid"><article class="society-card"><h3>史密森學會設施入場人次</h3><p>曆年總人次，包括國家動物園；一人到訪多個設施會重複計算，不代表全美所有博物館。</p><p>橫條從零開始，最長橫條代表該圖最大數值。</p><ul class="society-bars" aria-label="史密森學會設施入場人次"><li><div class="society-bar-label"><span>2024</span><strong>16.8 百萬人次</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:100.000%"></div></div></li><li><div class="society-bar-label"><span>2025</span><strong>14.9 百萬人次</strong></div><div class="society-track" aria-hidden="true"><div class="society-fill" style="--width:88.690%"></div></div></li></ul><details><summary>查看數據表及來源</summary><div class="society-table-wrap" tabindex="0" role="region" aria-label="史密森學會設施入場人次數據表"><table><caption>史密森學會設施入場人次數據表</caption><thead><tr><th scope="col">項目</th><th scope="col">數值</th></tr></thead><tbody><tr><th scope="row">2024</th><td>16.8 百萬人次</td></tr><tr><th scope="row">2025</th><td>14.9 百萬人次</td></tr></tbody></table></div></details><p><a href="https://www.si.edu/newsdesk/about/stats" target="_blank" rel="noopener noreferrer">史密森學會 · 到訪統計 ↗</a></p></article></div></section>
+<p class="us-lead">新加入的公共衛生、交通、公共安全、政府與文化數據是 2026 年 11 月 27 日核對的固定快照，暫不自動更新。</p>
 <p class="us-lead">各地的統計方法、涵蓋範圍及年份不同，不宜直接比較。官方數字可能修訂。</p>
 <p class="us-lead">
 <a href="./us-economy.html">返回美國數據頁 →</a> · <a href="#top">回到頁首 ↑</a>

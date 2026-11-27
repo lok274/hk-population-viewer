@@ -4,6 +4,11 @@ const regions = [
     map: {longitude: 114.17, latitude: 22.32},
     previewTopics: ['人口', '經濟', '教育', '行業', '科技'], previewButton: '進入香港人口頁 →',
     topics: [
+      ['公共衛生', './hk-society.html#health', '醫療 健康 壽命'],
+      ['交通與基建', './hk-society.html#transport', '交通 運輸 基建'],
+      ['公共安全', './hk-society.html#safety', '罪案 安全'],
+      ['政府與公共服務', './hk-society.html#government', '財政 公共開支'],
+      ['文化與休閒', './hk-society.html#culture', '圖書館 博物館 文化'],
       ['環境、能源與人口家庭', './hk-society.html', '環境 氣候 能源 住戶 家庭'],
       ['環境與氣候', './hk-society.html#environment', '污染 氣溫 排放'],
       ['能源', './hk-society.html#energy', '用電 電力'],
@@ -33,6 +38,11 @@ const regions = [
     map: {longitude: -98.58, latitude: 39.83, shape: 'USA'},
     previewTopics: ['GDP', '物價', '就業', '消費', '貿易', '利率', '財政'], previewButton: '進入美國經濟頁 →',
     topics: [
+      ['公共衛生', './us-society.html#health', '醫療 健康 壽命'],
+      ['交通與基建', './us-society.html#transport', '交通 運輸 基建'],
+      ['公共安全', './us-society.html#safety', '罪案 安全'],
+      ['政府與公共服務', './us-society.html#government', '財政 公共開支'],
+      ['文化與休閒', './us-society.html#culture', '圖書館 博物館 文化'],
       ['環境、能源與人口家庭', './us-society.html', '環境 氣候 能源 人口 住戶 家庭'],
       ['環境與氣候', './us-society.html#environment', '污染 氣溫 排放'],
       ['能源', './us-society.html#energy', '發電 電力'],
