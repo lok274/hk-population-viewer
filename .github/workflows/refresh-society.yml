@@ -1,0 +1,75 @@
+name: Refresh society data
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/refresh-society.yml'
+  schedule:
+    - cron: '57 23 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  refresh:
+    if: github.ref_name == github.event.repository.default_branch
+    strategy:
+      fail-fast: false
+      matrix:
+        region: [hk, us]
+    concurrency:
+      group: society-${{ matrix.region }}
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+      - name: Refresh official data
+        id: refresh
+        env:
+          REGION: ${{ matrix.region }}
+        run: |
+          python scripts/update_society.py --region "$REGION" --write
+          if ! git diff --quiet -- "dist/$REGION-society.html"; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Keep candidate
+        if: steps.refresh.outputs.changed == 'true'
+        uses: actions/upload-artifact@v6
+        with:
+          name: society-${{ matrix.region }}-candidate
+          path: dist/${{ matrix.region }}-society.html
+          if-no-files-found: error
+      - name: Propose update
+        if: steps.refresh.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+          REGION: ${{ matrix.region }}
+        run: |
+          existing=$(gh pr list --base "$BASE_BRANCH" --state open --json headRefName,url \
+            --jq ".[] | select(.headRefName | startswith(\"automation/society/$REGION/\")) | .url")
+          if [[ -n "$existing" ]]; then
+            printf 'A data PR is already open: %s\n' "$existing"
+            exit 0
+          fi
+          branch="automation/society/$REGION/$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- "dist/$REGION-society.html"
+          git commit -m "Refresh $REGION society observations"
+          gh auth setup-git
+          git push origin "HEAD:refs/heads/$branch"
+          gh pr create --base "$BASE_BRANCH" --head "$branch" \
+            --title "Refresh $REGION society observations" \
+            --body 'Updates selected official data. Review the period, values and source before merging.'
