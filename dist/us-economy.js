@@ -235,7 +235,7 @@ function headline(id, value, period) {
   document.getElementById('period-' + id).textContent = period;
 }
 
-function renderOutput({gdpNominal, gdpAnnual, gdpQuarter, gdpConsumption, gdpInvestment, gdpGovernment, gdpNetExports}) {
+function renderOutput({gdpNominal, gdpAnnual, gdpQuarter, gdpConsumption, gdpInvestment, gdpGovernment, gdpNetExports, contributionConsumption, contributionInvestment, contributionGovernment, contributionNetExports}) {
   const latest = gdpQuarter.observations.at(-1);
   headline('gdp', formatted(latest.value, '%'), periodLabel(latest.period, gdpQuarter.frequency) + ' · 按季年率化 · ' + statusLabels[latest.status]);
   return topicContent([
@@ -245,7 +245,9 @@ function renderOutput({gdpNominal, gdpAnnual, gdpQuarter, gdpConsumption, gdpInv
     lineChart('GDP 組成：個人消費', [levels(gdpConsumption, '萬億美元／年', 1_000_000)]),
     lineChart('GDP 組成：私人投資及政府支出', [levels(gdpInvestment, '萬億美元／年', 1_000_000), levels(gdpGovernment, '萬億美元／年', 1_000_000)]),
     signedBars('GDP 組成：商品及服務淨出口', levels(gdpNetExports, '萬億美元／年', 1_000_000)),
-  ], [gdpQuarter, gdpAnnual, gdpNominal, gdpConsumption, gdpInvestment, gdpGovernment, gdpNetExports]);
+    lineChart('實質 GDP 增長貢獻：消費及私人投資', [levels(contributionConsumption), levels(contributionInvestment)]),
+    lineChart('實質 GDP 增長貢獻：政府及淨出口', [levels(contributionGovernment), levels(contributionNetExports)]),
+  ], [gdpQuarter, gdpAnnual, gdpNominal, gdpConsumption, gdpInvestment, gdpGovernment, gdpNetExports, contributionConsumption, contributionInvestment, contributionGovernment, contributionNetExports]);
 }
 
 function renderPrices({cpi, coreCpi, cpiFood, cpiShelter, cpiEnergy, cpiFoodHome, cpiFoodAway, cpiTransport, cpiMedical, pcePrices, corePcePrices}) {
@@ -292,45 +294,51 @@ function renderLabour({unemployment, participation, unemploymentMen, unemploymen
   ], [unemployment, participation, [payroll, payrollChange], [earnings, wageChange], [jobsManufacturing, manufacturingChange], [jobsEducationHealth, educationHealthChange], [jobsProfessional, professionalChange], [jobsGovernment, governmentChange], unemploymentMen, unemploymentWomen, unemploymentYouth, [jobsConstruction, changes(jobsConstruction, 1)], [jobsLeisure, changes(jobsLeisure, 1)], [wageManufacturing, changes(wageManufacturing, 12)], [wageLeisure, changes(wageLeisure, 12)]]);
 }
 
-function renderHouseholds({consumption, disposableIncome, saving, pceDurable, pceNondurable, pceServices}) {
+function renderHouseholds({consumption, disposableIncome, saving, pceDurable, pceNondurable, pceServices, incomeWages, incomeTransfers}) {
   return topicContent([
     lineChart('實質消費與可支配收入 · 季調年率', [levels(consumption, '萬億鏈式美元（2017 年）', 1_000_000), levels(disposableIncome, '萬億鏈式美元（2017 年）', 1_000_000)]),
     lineChart('個人儲蓄率', [levels(saving)]),
     lineChart('實質消費與可支配收入 · 按年變動', [changes(consumption, 12), changes(disposableIncome, 12)]),
     lineChart('耐用品及非耐用品 · 實質消費季調年率', [levels(pceDurable, '萬億鏈式美元（2017 年）', 1_000_000), levels(pceNondurable, '萬億鏈式美元（2017 年）', 1_000_000)]),
     lineChart('服務 · 實質消費季調年率', [levels(pceServices, '萬億鏈式美元（2017 年）', 1_000_000)]),
-  ], [[consumption, changes(consumption, 12)], [disposableIncome, changes(disposableIncome, 12)], saving, pceDurable, pceNondurable, pceServices]);
+    lineChart('個人收入：工資與經常轉移收入 · 現價季調年率', [levels(incomeWages, '萬億美元／年', 1_000_000), levels(incomeTransfers, '萬億美元／年', 1_000_000)]),
+  ], [[consumption, changes(consumption, 12)], [disposableIncome, changes(disposableIncome, 12)], saving, pceDurable, pceNondurable, pceServices, incomeWages, incomeTransfers]);
 }
 
-function renderRetail({retailSales, retailAuto, retailFood, retailNonstore, retailDining}) {
+function renderRetail({retailSales, retailAuto, retailFood, retailNonstore, retailDining, retailClothing, retailHealth, retailGas}) {
   return topicContent([
     lineChart('零售及餐飲服務銷售', [levels(retailSales, '十億美元', 1_000)]),
     lineChart('名義零售及餐飲銷售 · 按年變動', [changes(retailSales, 12)]),
     lineChart('汽車零售與食品飲料商店', [levels(retailAuto, '十億美元', 1_000), levels(retailFood, '十億美元', 1_000)]),
     lineChart('非店舖零售與餐飲服務', [levels(retailNonstore, '十億美元', 1_000), levels(retailDining, '十億美元', 1_000)]),
-  ], [[retailSales, changes(retailSales, 12)], retailAuto, retailFood, retailNonstore, retailDining]);
+    lineChart('服裝與健康及個人護理商店', [levels(retailClothing, '十億美元', 1_000), levels(retailHealth, '十億美元', 1_000)]),
+    lineChart('加油站銷售', [levels(retailGas, '十億美元', 1_000)]),
+  ], [[retailSales, changes(retailSales, 12)], retailAuto, retailFood, retailNonstore, retailDining, retailClothing, retailHealth, retailGas]);
 }
 
-function renderHousing({starts, permits, startsOne, startsFive, permitsOne, permitsFive}) {
+function renderHousing({starts, permits, startsOne, startsFive, permitsOne, permitsFive, permitsTwoToFour}) {
   return topicContent([
     lineChart('私人住宅動工與建築許可 · 季調年率', [levels(starts), levels(permits)]),
     lineChart('住宅動工與建築許可 · 按年變動', [changes(starts, 12), changes(permits, 12)]),
     lineChart('單一住宅單位 · 動工與許可季調年率', [levels(startsOne), levels(permitsOne)]),
+    lineChart('兩至四個單位住宅 · 建築許可季調年率', [levels(permitsTwoToFour)]),
     lineChart('五個或以上單位住宅 · 動工與許可季調年率', [levels(startsFive), levels(permitsFive)]),
-  ], [[starts, changes(starts, 12)], [permits, changes(permits, 12)], startsOne, permitsOne, startsFive, permitsFive]);
+  ], [[starts, changes(starts, 12)], [permits, changes(permits, 12)], startsOne, permitsOne, permitsTwoToFour, startsFive, permitsFive]);
 }
 
-function renderTrade({exports, imports, tradeBalance, goodsExports, goodsImports, servicesExports, servicesImports}) {
+function renderTrade({exports, imports, tradeBalance, goodsExports, goodsImports, servicesExports, servicesImports, exportCapital, exportConsumer, importCapital, importConsumer}) {
   return topicContent([
     lineChart('商品及服務進出口', [levels(exports, '十億美元', 1_000), levels(imports, '十億美元', 1_000)]),
     signedBars('官方貿易差額', levels(tradeBalance, '十億美元', 1_000)),
     lineChart('商品及服務進出口 · 按年變動', [changes(exports, 12), changes(imports, 12)]),
     lineChart('商品進出口', [levels(goodsExports, '十億美元', 1_000), levels(goodsImports, '十億美元', 1_000)]),
     lineChart('服務進出口', [levels(servicesExports, '十億美元', 1_000), levels(servicesImports, '十億美元', 1_000)]),
-  ], [[exports, changes(exports, 12)], [imports, changes(imports, 12)], tradeBalance, goodsExports, goodsImports, servicesExports, servicesImports]);
+    lineChart('資本商品 · Census 貿易基礎', [levels(exportCapital, '十億美元', 1_000), levels(importCapital, '十億美元', 1_000)]),
+    lineChart('消費商品 · Census 貿易基礎', [levels(exportConsumer, '十億美元', 1_000), levels(importConsumer, '十億美元', 1_000)]),
+  ], [[exports, changes(exports, 12)], [imports, changes(imports, 12)], tradeBalance, goodsExports, goodsImports, servicesExports, servicesImports, exportCapital, exportConsumer, importCapital, importConsumer]);
 }
 
-function renderRates({targetLow, targetHigh, yield1, yield2, yield10, yield30}, cutoffAt) {
+function renderRates({targetLow, targetHigh, yieldThreeMonths, yield1, yield2, yieldFive, yield10, yield30}, cutoffAt) {
   const low = targetLow.observations.at(-1);
   const high = targetHigh.observations.at(-1);
   headline('policy', dollar.format(low.value) + '–' + dollar.format(high.value) + '%', low.period + ' 生效');
@@ -339,8 +347,9 @@ function renderRates({targetLow, targetHigh, yield1, yield2, yield10, yield30}, 
     lineChart('兩年期與十年期國債收益率 · 月平均', [levels(yield2), levels(yield10)]),
     signedBars('十年期減兩年期收益率 · 月平均差距', pairedDifference(yield10, yield2, '十年期減兩年期', '百分點')),
     lineChart('一年期與兩年期國債收益率 · 月平均', [levels(yield1), levels(yield2)]),
+    lineChart('三個月期與五年期國債收益率 · 月平均', [levels(yieldThreeMonths), levels(yieldFive)]),
     lineChart('十年期與三十年期國債收益率 · 月平均', [levels(yield10), levels(yield30)]),
-  ], [targetLow, targetHigh, yield1, yield2, yield10, yield30]);
+  ], [targetLow, targetHigh, yieldThreeMonths, yield1, yield2, yieldFive, yield10, yield30]);
 }
 
 function renderProduction({industry, utilization, productivity, industrialManufacturing, industrialMining, industrialUtilities}) {
@@ -383,7 +392,7 @@ async function showDashboard() {
   let data;
   let meta;
   try {
-    data = await import('./us-economy-data.js?v=20261127-livelihood');
+    data = await import('./us-economy-data.js?v=20261127-phase2');
     meta = data.getSnapshotMeta();
   } catch (error) {
     console.error('Unable to load the U.S. economy snapshot', error);

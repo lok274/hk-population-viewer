@@ -1,4 +1,4 @@
-import snapshot from './us-economy-snapshot.js?v=20261127-livelihood';
+import snapshot from './us-economy-snapshot.js?v=20261127-phase2';
 
 const topics = {
   output: {
@@ -9,6 +9,10 @@ const topics = {
     gdpInvestment: ['私人國內總投資', 'quarterly', '百萬美元／年', '經季節性調整', '現價', '季度估算的年率水平', 'gdpQuarter', 'NIPA 1.1.5／A006RC', 0, 0, 100_000_000],
     gdpGovernment: ['政府消費及總投資', 'quarterly', '百萬美元／年', '經季節性調整', '現價', '季度估算的年率水平', 'gdpQuarter', 'NIPA 1.1.5／A822RC', 0, 0, 100_000_000],
     gdpNetExports: ['商品及服務淨出口', 'quarterly', '百萬美元／年', '經季節性調整', '現價', '出口減進口，季度估算的年率水平', 'gdpQuarter', 'NIPA 1.1.5／A019RC', 0, -100_000_000, 100_000_000],
+    contributionConsumption: ['消費對實質 GDP 增長的貢獻', 'quarterly', '百分點', '經季節性調整', '實質', '按季增長貢獻，年率化', 'gdpQuarter', 'NIPA 1.1.2／DPCERY', 0, -100, 100],
+    contributionInvestment: ['私人投資對實質 GDP 增長的貢獻', 'quarterly', '百分點', '經季節性調整', '實質', '按季增長貢獻，年率化', 'gdpQuarter', 'NIPA 1.1.2／A006RY', 0, -100, 100],
+    contributionGovernment: ['政府消費及投資對實質 GDP 增長的貢獻', 'quarterly', '百分點', '經季節性調整', '實質', '按季增長貢獻，年率化', 'gdpQuarter', 'NIPA 1.1.2／A822RY', 0, -100, 100],
+    contributionNetExports: ['淨出口對實質 GDP 增長的貢獻', 'quarterly', '百分點', '經季節性調整', '實質', '按季增長貢獻，年率化', 'gdpQuarter', 'NIPA 1.1.2／A019RY', 0, -100, 100],
   },
   prices: {
     cpi: ['整體 CPI-U', 'monthly', '指數（1982–84 = 100）', '未經季節性調整', '城市消費者物價', '月度指數', 'cpi', 'CUUR0000SA0', 12, 1, 1_000],
@@ -44,6 +48,8 @@ const topics = {
     consumption: ['實質個人消費開支', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DPCERX', 0, 0, 100_000_000],
     disposableIncome: ['實質可支配個人收入', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.6／A067RX', 0, 0, 100_000_000],
     saving: ['個人儲蓄率', 'monthly', '%', '經季節性調整', '不適用', '個人儲蓄佔可支配個人收入比例', 'income', 'NIPA 2.6／A072RC', 0, -100, 100],
+    incomeWages: ['工資及薪金收入', 'monthly', '百萬美元／年', '經季節性調整', '現價', '月度收入，按年率表示', 'income', 'NIPA 2.6／A034RC', 0, 0, 100_000_000],
+    incomeTransfers: ['個人經常轉移收入', 'monthly', '百萬美元／年', '經季節性調整', '現價', '月度收入，按年率表示', 'income', 'NIPA 2.6／A577RC', 0, 0, 100_000_000],
     pceDurable: ['耐用品實質消費', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DDURRX', 0, 0, 100_000_000],
     pceNondurable: ['非耐用品實質消費', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DNDGRX', 0, 0, 100_000_000],
     pceServices: ['服務實質消費', 'monthly', '百萬鏈式美元（2017 年）', '經季節性調整', '實質，2017 年鏈式美元', '月度水平，按年率表示', 'income', 'NIPA 2.8.6／DSERRX', 0, 0, 100_000_000],
@@ -54,6 +60,9 @@ const topics = {
     retailFood: ['食品及飲料商店', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／445', 0, 0, 5_000_000],
     retailNonstore: ['非店舖零售', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／454', 0, 0, 5_000_000],
     retailDining: ['餐飲服務及飲食場所', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／722', 0, 0, 5_000_000],
+    retailClothing: ['服裝及配飾商店', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／448', 0, 0, 5_000_000],
+    retailHealth: ['健康及個人護理商店', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／446', 0, 0, 5_000_000],
+    retailGas: ['加油站', 'monthly', '百萬美元', '經季節性調整', '現價', '當月銷售額', 'retail', 'MRTS/MARTS／447', 0, 0, 5_000_000],
   },
   housing: {
     starts: ['私人住宅動工', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Starts／美國總數', 0, 0, 10_000],
@@ -61,6 +70,7 @@ const topics = {
     startsOne: ['單一住宅單位動工', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Starts／1 unit', 0, 0, 10_000],
     startsFive: ['五個或以上單位住宅動工', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Starts／5 units or more', 0, 0, 10_000],
     permitsOne: ['單一住宅單位建築許可', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Permits／1 unit', 0, 0, 10_000],
+    permitsTwoToFour: ['兩至四個單位住宅建築許可', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Permits／2 to 4 units', 0, 0, 10_000],
     permitsFive: ['五個或以上單位住宅建築許可', 'monthly', '千個單位／年', '經季節性調整', '不適用', '月度估算，按年率表示', 'housing', 'NRC Permits／5 units or more', 0, 0, 10_000],
   },
   trade: {
@@ -71,6 +81,10 @@ const topics = {
     servicesExports: ['服務出口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月金額', 'trade', 'FT900 Exhibit 1／ServicesExports', 0, 0, 2_000_000],
     goodsImports: ['商品進口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月金額', 'trade', 'FT900 Exhibit 1／GoodsImports', 0, 0, 2_000_000],
     servicesImports: ['服務進口', 'monthly', '百萬美元', '經季節性調整', '現價，國際收支基礎', '當月金額', 'trade', 'FT900 Exhibit 1／ServicesImports', 0, 0, 2_000_000],
+    exportCapital: ['資本商品出口', 'monthly', '百萬美元', '經季節性調整', '現價，Census 貨品貿易基礎', '當月金額，按最終用途分類', 'tradeEndUse', 'SAEXP／Capital Goods', 0, 0, 2_000_000],
+    exportConsumer: ['消費商品出口', 'monthly', '百萬美元', '經季節性調整', '現價，Census 貨品貿易基礎', '當月金額，按最終用途分類', 'tradeEndUse', 'SAEXP／Consumer Goods', 0, 0, 2_000_000],
+    importCapital: ['資本商品進口', 'monthly', '百萬美元', '經季節性調整', '現價，Census 貨品貿易基礎', '當月金額，按最終用途分類', 'tradeEndUse', 'SAIMP／Capital Goods', 0, 0, 2_000_000],
+    importConsumer: ['消費商品進口', 'monthly', '百萬美元', '經季節性調整', '現價，Census 貨品貿易基礎', '當月金額，按最終用途分類', 'tradeEndUse', 'SAIMP／Consumer Goods', 0, 0, 2_000_000],
   },
   rates: {
     targetLow: ['聯邦基金目標下限', 'effective', '%', '不適用', '不適用', 'FOMC 政策設定，按年報價', 'policy', 'FOMC／目標下限', 0, 0, 30],
@@ -78,6 +92,8 @@ const topics = {
     yield2: ['兩年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY02_N.M', 0, -10, 30],
     yield10: ['十年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY10_N.M', 0, -10, 30],
     yield1: ['一年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY01_N.M', 0, -10, 30],
+    yieldThreeMonths: ['三個月期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCM03_N.M', 0, -10, 30],
+    yieldFive: ['五年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY05_N.M', 0, -10, 30],
     yield30: ['三十年期美國國債收益率', 'monthly', '%', '不適用', '名義收益率', '固定到期收益率月平均，按年報價', 'yields', 'H.15／RIFLGFCY30_N.M', 0, -10, 30],
   },
   production: {
@@ -112,6 +128,7 @@ const sources = {
   retail: ['Census', 'https://www.census.gov/retail/index.html', 'https://www.census.gov/econ_getzippedfile/?programCode=MRTS', 'https://www.census.gov/econ_getzippedfile/?programCode=MARTS'],
   housing: ['Census', 'https://www.census.gov/construction/nrc/data/series.html'],
   trade: ['Census／BEA', 'https://www.bea.gov/data/intl-trade-investment/international-trade-goods-and-services', 'https://www.census.gov/foreign-trade/statistics/historical/exhibit_history.xlsx'],
+  tradeEndUse: ['Census', 'https://www.census.gov/foreign-trade/statistics/historical/seas.html'],
   policy: ['Federal Reserve', 'https://www.federalreserve.gov/monetarypolicy/openmarket.htm'],
   yields: ['Federal Reserve', 'https://www.federalreserve.gov/releases/h15/', 'https://www.federalreserve.gov/releases/h15/data/FRB_h15_xml.zip'],
   industry: ['Federal Reserve', 'https://www.federalreserve.gov/releases/g17/current/default.htm', 'https://www.federalreserve.gov/releases/g17/data/FRB_g17_xml.zip'],
@@ -163,7 +180,9 @@ function ordinal(period, frequency) {
 
 function seriesSource(id, sourceId, code) {
   const [agency, url, download] = sources[sourceId];
-  const dataUrl = sourceId === 'housing'
+  const dataUrl = sourceId === 'tradeEndUse'
+    ? 'https://www.census.gov/foreign-trade/statistics/historical/' + (id.startsWith('export') ? 'SAEXP.xlsx' : 'SAIMP.xlsx')
+    : sourceId === 'housing'
     ? 'https://www.census.gov/construction/nrc/xls/' + (id.startsWith('starts') ? 'starts' : 'permits') + '_cust.xlsx'
     : sourceId === 'cpi' || sourceId === 'employment' || sourceId === 'productivity'
       ? 'https://data.bls.gov/timeseries/' + code
