@@ -1,0 +1,19 @@
+.state-controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; margin: 1.5rem 0; }
+.state-controls label { display: grid; gap: .4rem; font-weight: 700; }
+.state-controls select { min-height: 44px; min-width: min(18rem, 80vw); padding: .6rem; border: 1px solid var(--us-muted); border-radius: .5rem; color: var(--us-ink); background: var(--us-paper); font: inherit; }
+.state-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); gap: 1rem; }
+.state-card { min-width: 0; border: 1px solid var(--us-line); border-radius: 1rem; background: var(--us-paper); padding: 1rem; color: var(--us-ink); }
+.state-card h3 { margin: 0; }
+.state-card p { color: var(--us-muted); line-height: 1.5; }
+.state-card .state-value { margin: .7rem 0 .2rem; color: var(--us-ink); font-size: 1.55rem; font-weight: 700; }
+.state-value small { font-size: .75rem; font-weight: 500; }
+.state-chart { width: 100%; height: 105px; overflow: visible; }
+.state-chart path { fill: none; stroke: var(--us-primary); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.state-range { display: flex; justify-content: space-between; font-size: .8rem; }
+.state-card summary { cursor: pointer; padding: .65rem 0; font-weight: 700; }
+.state-table { overflow: auto; max-width: 100%; max-height: 28rem; }
+.state-table table { border-collapse: collapse; width: 100%; text-align: left; }
+.state-table caption { text-align: left; padding: .5rem 0; font-weight: 700; }
+.state-table th, .state-table td { padding: .6rem; border-bottom: 1px solid var(--us-line); white-space: nowrap; }
+.state-table thead { position: sticky; top: 0; background: var(--us-paper); }
+.state-comparison { border: 1px solid var(--us-line); border-radius: 1rem; background: var(--us-paper); padding: 1rem; color: var(--us-ink); }
