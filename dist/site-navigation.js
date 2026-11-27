@@ -1,6 +1,7 @@
 const regions = [
   {
     id: 'hk', label: '香港', english: 'Hong Kong', summary: '人口、經濟、教育、行業及科技', href: './index.html#total',
+    map: {longitude: 114.17, latitude: 22.32},
     topics: [
       ['人口結構', './index.html#total', '人口 總人口 population'],
       ['年齡分布', './index.html#age', '年齡'],
@@ -24,6 +25,7 @@ const regions = [
   },
   {
     id: 'us', label: '美國', english: 'United States', summary: '十個主題的全國經濟數據', href: './us-economy.html',
+    map: {longitude: -98.58, latitude: 39.83, shape: 'USA'},
     topics: [
       ['美國經濟', './us-economy.html', '經濟'],
       ['經濟產出', './us-economy.html#output', 'GDP 消費 投資 政府 淨出口'],
@@ -69,6 +71,46 @@ if (regionCards) {
     link.append(title, description, action);
     regionCards.append(link);
   }
+}
+
+const worldMap = document.querySelector('[data-world-map]');
+if (worldMap) {
+  fetch('./world-map.svg?v=20261127')
+    .then(response => {
+      if (!response.ok) throw new Error('Map unavailable');
+      return response.text();
+    })
+    .then(text => {
+      const svg = new DOMParser().parseFromString(text, 'image/svg+xml').documentElement;
+      if (svg.localName !== 'svg') throw new Error('Invalid map');
+      const svgNs = 'http://www.w3.org/2000/svg';
+      for (const region of regions) {
+        if (!region.map) continue;
+        if (region.map.shape) {
+          const shape = [...svg.querySelectorAll('[data-map-code]')].find(path => path.dataset.mapCode === region.map.shape);
+          if (shape) {
+            const link = document.createElementNS(svgNs, 'a');
+            link.setAttribute('href', region.href);
+            link.setAttribute('aria-label', `查看${region.label}`);
+            link.classList.add('world-region');
+            shape.removeAttribute('aria-hidden');
+            shape.before(link);
+            link.append(shape);
+          }
+        }
+        const marker = document.createElement('a');
+        marker.href = region.href;
+        marker.className = 'world-marker';
+        marker.style.left = `${(region.map.longitude + 180) / 360 * 100}%`;
+        marker.style.top = `${(90 - region.map.latitude) / 180 * 100}%`;
+        marker.textContent = region.label;
+        marker.setAttribute('aria-label', `查看${region.label}`);
+        worldMap.append(marker);
+      }
+      worldMap.prepend(document.importNode(svg, true));
+      worldMap.hidden = false;
+    })
+    .catch(() => { /* The region cards remain available if the map cannot load. */ });
 }
 
 const dialog = document.querySelector('#site-search');

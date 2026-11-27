@@ -10,8 +10,8 @@
   <link rel="stylesheet" href="./dashboard-ui.css">
   <script>if (['#economy', '#inflation', '#unemployment', '#earnings', '#trade'].includes(location.hash)) location.replace('./hk-economy.html' + location.hash);</script>
   <script type="module" src="./app.js?v=separate-economies"></script>
-  <link rel="stylesheet" href="./site-navigation.css?v=20261126">
-  <script defer src="./site-navigation.js?v=20261126-stage2"></script>
+  <link rel="stylesheet" href="./site-navigation.css?v=20261127-map">
+  <script defer src="./site-navigation.js?v=20261127-map"></script>
 </head>
 <body class="home-dashboard" data-region="hub">
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -38,6 +38,8 @@
       <p class="section-kicker">官方統計 · 按地區探索</p>
       <h1 id="world-economies-title">香港人口與各地經濟</h1>
       <p>選擇地區，查看各自的數據、統計期間及官方來源。</p>
+      <div class="world-map" data-world-map hidden></div>
+      <p class="world-map-source">地圖資料：<a href="https://www.naturalearthdata.com/downloads/110m-cultural-vectors/">Natural Earth ↗</a> · 點選已上線的地區，或使用下方地區卡片。</p>
       <div class="economy-links" data-region-cards>
         <a href="./index.html#total"><strong>香港 Hong Kong</strong><span>人口、經濟、教育、行業及科技</span><span aria-hidden="true">查看香港 →</span></a>
         <a href="./us-economy.html"><strong>美國 United States</strong><span>十個主題的全國經濟數據</span><span aria-hidden="true">查看美國 →</span></a>
