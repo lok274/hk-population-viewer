@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/refresh-society.yml'
+      - 'scripts/update_society.py'
   schedule:
     - cron: '57 23 * * *'
   workflow_dispatch:

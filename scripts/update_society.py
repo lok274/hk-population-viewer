@@ -3,6 +3,7 @@ import argparse
 import csv
 from datetime import datetime, timezone
 from html import escape, unescape
+from html.parser import HTMLParser
 from io import StringIO
 import json
 import math
@@ -77,16 +78,123 @@ def stat_card(title, value, desc, period, url, source):
     return f'''<article class="society-card" data-observed-period="{period}"><h3>{title}</h3><p class="society-stat">{value}</p><p>{desc}</p><p><a href="{url}" target="_blank" rel="noopener noreferrer">{source} ↗</a></p><p>官方資料定期檢查；更新需經審核。</p></article>'''
 
 
-def replace_card(html, title, replacement, year, initial):
+def replace_card(html, title, replacement, year, initial, fiscal=False):
     pattern = r'<article class="society-card"(?: data-observed-period="(\d{4})")?>\s*<h3>' + re.escape(title) + r'</h3>.*?</article>'
     matches = list(re.finditer(pattern, html, flags=re.S))
     if len(matches) != 1:
         raise ValueError(f'Expected exactly one card: {title}')
     match = matches[0]
     previous = match.group(1) or initial
-    if int(year) < int(previous) or int(year) >= datetime.now(timezone.utc).year:
+    now = datetime.now(timezone.utc)
+    complete = int(year) < now.year or (fiscal and int(year) == now.year and now.month >= 4)
+    if int(year) < int(previous) or not complete:
         raise ValueError(f'Invalid or older period for {title}: {year}')
     return html[:match.start()] + replacement + html[match.end():]
+
+
+class Tables(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.tables, self.table, self.row, self.cell = [], None, None, None
+
+    def handle_starttag(self, tag, attrs):
+        if tag == 'table':
+            if self.table is not None:
+                raise ValueError('Nested source tables are not supported')
+            self.table = []
+        elif tag == 'tr' and self.table is not None:
+            self.row = []
+        elif tag in ('td', 'th') and self.row is not None:
+            self.cell = []
+
+    def handle_data(self, data):
+        if self.cell is not None:
+            self.cell.append(data)
+
+    def handle_endtag(self, tag):
+        if tag in ('td', 'th') and self.cell is not None:
+            self.row.append(' '.join(''.join(self.cell).split()))
+            self.cell = None
+        elif tag == 'tr' and self.row is not None:
+            self.table.append(self.row)
+            self.row = None
+        elif tag == 'table' and self.table is not None:
+            self.tables.append(self.table)
+            self.table = None
+
+
+def source_table(url, label):
+    document = fetch(url).decode('utf-8-sig')
+    fragments = re.findall(r'<table\b[^>]*>(?:(?!<table\b).)*?</table\s*>', document, flags=re.I | re.S)
+    tables = []
+    for fragment in fragments:
+        parser = Tables()
+        parser.feed(fragment)
+        tables.extend(parser.tables)
+    found = [table for table in tables if any(label == cell for row in table for cell in row)]
+    if len(found) != 1:
+        raise ValueError(f'Expected one official table for {label}')
+    return found[0]
+
+
+def refresh_hk_social(html):
+    url = 'https://www.chp.gov.hk/en/statistics/data/10/27/110.html'
+    table = source_table(url, 'Life expectancy at birth (years)')
+    header = table[0]
+    if len(header) != 3 or header[0] != 'Major health indicator' or not all(re.fullmatch(r'\d{4}', y) for y in header[1:]):
+        raise ValueError('Unexpected health table years')
+    matching = [i for i, row in enumerate(table) if row and row[0] == 'Life expectancy at birth (years)']
+    if len(matching) != 1:
+        raise ValueError('Unexpected life expectancy row')
+    i = matching[0]
+    male, female = table[i], table[i + 1]
+    if len(male) != 4 or len(female) != 3 or male[1] != 'Male' or female[0] != 'Female':
+        raise ValueError('Unexpected life expectancy categories')
+    values = [float(male[-1]), float(female[-1])]
+    if any(not 40 <= value <= 110 for value in values):
+        raise ValueError('Invalid life expectancy')
+    year = header[-1]
+    card = bar_card('出生時預期壽命', f'{year} 年 · 反映當年死亡率的估算，並非對個人壽命的預測。', '歲', list(zip(['男性', '女性'], values)), year, url, '衞生防護中心 · 主要健康指標')
+    html = replace_card(html, '出生時預期壽命', card, year, '2025')
+
+    url = 'https://www.lcsd.gov.hk/en/aboutlcsd/ppr/statistics/cultural.html'
+    label = 'Books, periodicals, audio-cassettes, compact audio disc and CD-ROMs borrowed'
+    table = source_table(url, label)
+    if len(table) < 3 or table[0] != ['Usage of Public Libraries', "no. ('000)"]:
+        raise ValueError('Unexpected library table or unit')
+    periods = table[1]
+    rows = [row for row in table if row and row[0] == label]
+    if len(rows) != 1 or len(rows[0]) != len(periods) + 1 or not all(re.fullmatch(r'\d{2}/\d{2}', p) for p in periods):
+        raise ValueError('Unexpected library periods')
+    entries = []
+    for period, raw in zip(periods, rows[0][1:]):
+        first, last = map(int, period.split('/'))
+        if last != (first + 1) % 100 or not re.fullmatch(r'[\d ]+', raw):
+            raise ValueError('Invalid library observation')
+        entries.append((f'20{first:02d}–{last:02d}', float(raw.replace(' ', ''))))
+    year = str(2000 + int(periods[-1][-2:]))
+    card = bar_card('公共圖書館借出資料', '包括書籍、期刊及所列多媒體資料；以截至 3 月 31 日的財政年度計算。', '千件', entries, year, url, '康文署 · 文化服務統計')
+    html = replace_card(html, '公共圖書館借出資料', card, year, '2026', fiscal=True)
+
+    for police_year in range(datetime.now(timezone.utc).year - 1, 2024, -1):
+        url = f'https://www.police.gov.hk/info/doc/police_in_figure/{police_year}/{police_year}_en.html'
+        try:
+            table = source_table(url, 'CRIMES')
+            break
+        except ValueError as error:
+            if 'HTTP Error 404' not in str(error):
+                raise
+    else:
+        raise ValueError('No Police in Figures report available')
+    periods = table[0][1:]
+    rows = [row for row in table if row and row[0] == 'Overall crime']
+    if (table[0][0] != 'CRIMES' or len(rows) != 1 or len(rows[0]) != len(periods) + 1
+            or not all(re.fullmatch(r'\d{4}', p) for p in periods) or periods != sorted(set(periods))
+            or periods[-1] != str(police_year) or not all(re.fullmatch(r'[\d ]+', v) for v in rows[0][1:])):
+        raise ValueError('Unexpected annual crime table')
+    entries = [(p, float(v.replace(' ', ''))) for p, v in zip(periods, rows[0][1:])]
+    card = bar_card('警方記錄的整體罪案', '記錄數字受報案和分類方式影響，不能直接與其他地區比較。', '宗', entries, periods[-1], url, '香港警務處 · 警方統計數字')
+    return replace_card(html, '警方記錄的整體罪案', card, periods[-1], '2025')
 
 
 def refresh_hk(html):
@@ -133,7 +241,8 @@ def refresh_hk(html):
     if not 99 <= sum(values) <= 101:
         raise ValueError('Household distribution does not add up')
     card = bar_card('家庭住戶按人數分布', f'{year} 年 · 百分比為官方表列，四捨五入後合計可能有差異。', '%', list(zip(['1 人', '2 人', '3 人', '4 人', '5 人或以上'], values)), year, 'https://www.censtatd.gov.hk/en/web_table.html?id=130-06601', '政府統計處 · 家庭住戶人數')
-    return replace_card(html, '家庭住戶按人數分布', card, year, '2025')
+    html = replace_card(html, '家庭住戶按人數分布', card, year, '2025')
+    return refresh_hk_social(html)
 
 
 def refresh_us(html):
