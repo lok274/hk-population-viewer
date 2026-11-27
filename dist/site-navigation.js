@@ -1,12 +1,13 @@
 const regions = [
   {
-    id: 'hk', label: '香港', english: 'Hong Kong', summary: '人口、經濟、教育、行業及科技', href: './index.html#total',
+    id: 'hk', label: '香港', english: 'Hong Kong', summary: '人口、經濟、教育、行業及科技', href: './hk-population.html#total',
     map: {longitude: 114.17, latitude: 22.32},
+    previewTopics: ['人口', '經濟', '教育', '行業', '科技'], previewButton: '進入香港人口頁 →',
     topics: [
-      ['人口結構', './index.html#total', '人口 總人口 population'],
-      ['年齡分布', './index.html#age', '年齡'],
-      ['性別分布', './index.html#sex', '性別'],
-      ['居民類別', './index.html#residents', '常住 流動'],
+      ['人口結構', './hk-population.html#total', '人口 總人口 population'],
+      ['年齡分布', './hk-population.html#age', '年齡'],
+      ['性別分布', './hk-population.html#sex', '性別'],
+      ['居民類別', './hk-population.html#residents', '常住 流動'],
       ['香港經濟', './hk-economy.html', '經濟'],
       ['本地生產總值', './hk-economy.html#economy', 'GDP 經濟產出'],
       ['通脹', './hk-economy.html#inflation', '物價 CPI'],
@@ -26,6 +27,7 @@ const regions = [
   {
     id: 'us', label: '美國', english: 'United States', summary: '十個主題的全國經濟數據', href: './us-economy.html',
     map: {longitude: -98.58, latitude: 39.83, shape: 'USA'},
+    previewTopics: ['GDP', '物價', '就業', '消費', '貿易', '利率', '財政'], previewButton: '進入美國經濟頁 →',
     topics: [
       ['美國經濟', './us-economy.html', '經濟'],
       ['經濟產出', './us-economy.html#output', 'GDP 消費 投資 政府 淨出口'],
@@ -42,6 +44,7 @@ const regions = [
   }
 ];
 
+window.siteRegions = regions;
 const regionNav = document.querySelector('[data-region-links]');
 const currentRegion = document.body.dataset.region;
 if (regionNav) {
@@ -92,6 +95,7 @@ if (worldMap) {
             const link = document.createElementNS(svgNs, 'a');
             link.setAttribute('href', region.href);
             link.setAttribute('aria-label', `查看${region.label}`);
+            link.dataset.mapRegion = region.id;
             link.classList.add('world-region');
             shape.removeAttribute('aria-hidden');
             shape.before(link);
@@ -105,12 +109,19 @@ if (worldMap) {
         marker.style.top = `${(90 - region.map.latitude) / 180 * 100}%`;
         marker.textContent = region.label;
         marker.setAttribute('aria-label', `查看${region.label}`);
+        marker.dataset.mapRegion = region.id;
         worldMap.append(marker);
       }
       worldMap.prepend(document.importNode(svg, true));
       worldMap.hidden = false;
+      const mapStatus = document.querySelector('[data-map-status]');
+      if (mapStatus) mapStatus.hidden = true;
+      worldMap.dispatchEvent(new Event('map-ready'));
     })
-    .catch(() => { /* The region cards remain available if the map cannot load. */ });
+    .catch(() => {
+      const mapStatus = document.querySelector('[data-map-status]');
+      if (mapStatus) mapStatus.textContent = '地圖暫時未能載入，請使用下方地區卡片。';
+    });
 }
 
 const dialog = document.querySelector('#site-search');
