@@ -344,6 +344,32 @@ def budget_receipts(specs, cutoff):
     return result
 
 
+def budget_outlays(specs, cutoff):
+    names = {
+        "210": "Department of Agriculture",
+        "230": "Department of Defense--Military Programs",
+        "250": "Department of Education",
+        "275": "Department of Health and Human Services",
+        "340": "Department of Transportation",
+        "360": "Interest on Treasury Debt Securities (Gross)",
+        "375": "Department of Veterans Affairs",
+        "423": "Social Security Administration",
+    }
+    ids = {code(spec): key for key, spec in specs.items()}
+    if set(ids) != set(names):
+        raise ValueError("Unexpected Treasury outlay series")
+    url = next(iter(specs.values()))["dataUrl"]
+    records = treasury(url, filter=f"record_calendar_month:eq:09,record_date:gte:{cutoff.year - 12}-09-30,record_date:lte:{cutoff},line_code_nbr:in:({','.join(names)})", sort="record_date", **{"page[size]": 1000})
+    result = {key: {} for key in specs}
+    for row in records:
+        line = row["line_code_nbr"]
+        if (line not in ids or row["classification_desc"] != names[line]
+                or row["record_date"] != row["record_fiscal_year"] + "-09-30"):
+            raise ValueError("Unrecognized Treasury outlay classification")
+        add(result[ids[line]], row["record_fiscal_year"], observation(row["current_fytd_rcpt_outly_amt"]))
+    return result
+
+
 def debt(specs, cutoff):
     url = specs["totalDebt"]["dataUrl"]
     fields = {"publicDebt": "debt_held_public_amt", "totalDebt": "tot_pub_debt_out_amt"}
@@ -380,6 +406,7 @@ def fetch_all(specs, cutoff, baseline):
         "policy": lambda: policy(specs["targetLow"]["url"], baseline["targetLow"][0][0], cutoff),
         "budget": lambda: budget(groups["budget"], cutoff),
         "budgetReceipts": lambda: budget_receipts(groups["budgetReceipts"], cutoff),
+        "budgetOutlays": lambda: budget_outlays(groups["budgetOutlays"], cutoff),
         "debt": lambda: debt(groups["debt"], cutoff),
     }
     result = {}

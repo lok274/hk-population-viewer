@@ -363,7 +363,7 @@ function renderProduction({industry, utilization, productivity, industrialManufa
   ], [[industry, changes(industry, 12)], utilization, productivity, industrialManufacturing, industrialMining, industrialUtilities]);
 }
 
-function renderFiscal({receipts, outlays, fiscalBalance, publicDebt, totalDebt, publicDebtDaily, totalDebtDaily, receiptsIndividual, receiptsCorporate, receiptsSocial}) {
+function renderFiscal({receipts, outlays, fiscalBalance, publicDebt, totalDebt, publicDebtDaily, totalDebtDaily, receiptsIndividual, receiptsCorporate, receiptsSocial, outlayAgriculture, outlayDefense, outlayEducation, outlayHealth, outlayTransport, outlayInterest, outlayVeterans, outlaySocial}) {
   const daily = [totalDebtDaily, publicDebtDaily].map(series => {
     const plot = levels(series, '萬億美元', 1_000_000_000_000);
     return '<li><strong>' + escapeHtml(plot.label) + '</strong><span>' + lastValue(plot) + '</span></li>';
@@ -375,8 +375,12 @@ function renderFiscal({receipts, outlays, fiscalBalance, publicDebt, totalDebt, 
     lineChart('財政年度末債務', [levels(totalDebt, '萬億美元', 1_000_000_000_000), levels(publicDebt, '萬億美元', 1_000_000_000_000)]),
     lineChart('個人所得稅與社會保險及退休金淨收入', [levels(receiptsIndividual, '萬億美元', 1_000_000_000_000), levels(receiptsSocial, '萬億美元', 1_000_000_000_000)]),
     lineChart('企業所得稅淨收入', [levels(receiptsCorporate, '萬億美元', 1_000_000_000_000)]),
+    lineChart('衛生及公共服務部與社會保障署支出', [levels(outlayHealth, '萬億美元', 1_000_000_000_000), levels(outlaySocial, '萬億美元', 1_000_000_000_000)]),
+    lineChart('國防部軍事計劃支出與國債利息總額', [levels(outlayDefense, '萬億美元', 1_000_000_000_000), levels(outlayInterest, '萬億美元', 1_000_000_000_000)]),
+    lineChart('農業部與退伍軍人事務部支出', [levels(outlayAgriculture, '萬億美元', 1_000_000_000_000), levels(outlayVeterans, '萬億美元', 1_000_000_000_000)]),
+    lineChart('教育部與運輸部支出', [levels(outlayEducation, '萬億美元', 1_000_000_000_000), levels(outlayTransport, '萬億美元', 1_000_000_000_000)]),
     '<div class="us-chart"><h3>最新每日債務</h3><ul class="us-legend">' + daily + '</ul></div>',
-  ], [receipts, outlays, fiscalBalance, totalDebt, publicDebt, totalDebtDaily, publicDebtDaily, receiptsIndividual, receiptsCorporate, receiptsSocial]);
+  ], [receipts, outlays, fiscalBalance, totalDebt, publicDebt, totalDebtDaily, publicDebtDaily, receiptsIndividual, receiptsCorporate, receiptsSocial, outlayAgriculture, outlayDefense, outlayEducation, outlayHealth, outlayTransport, outlayInterest, outlayVeterans, outlaySocial]);
 }
 
 const renderers = {
@@ -392,13 +396,13 @@ async function showDashboard() {
   let data;
   let meta;
   try {
-    data = await import('./us-economy-data.js?v=20261127-phase2');
+    data = await import('./us-economy-data.js?v=20261127-fiscal');
     meta = data.getSnapshotMeta();
   } catch (error) {
     console.error('Unable to load the U.S. economy snapshot', error);
   }
   if (meta) {
-    document.getElementById('snapshot-version').textContent = '固定快照 · 資料核對於 ' + meta.checkedAt + ' · 各指標按實際發布期間顯示';
+    document.getElementById('snapshot-version').textContent = '固定快照 · 主要資料核對於 ' + meta.checkedAt + ' · 個別系列核對日期見資料表';
   }
   for (const [id, render] of Object.entries(renderers)) {
     const target = document.querySelector('#' + id + ' [data-topic-content]');
