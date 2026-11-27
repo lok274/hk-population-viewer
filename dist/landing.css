@@ -31,7 +31,10 @@
 .preview-metric strong { color: #064e3b; font-size: 17px; line-height: 1.3; }
 .preview-metric a { color: #087354; }
 .preview-topics { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-.preview-topics span { padding: 4px 9px; background: #f1f6f3; border-radius: 7px; color: #36594a; font-size: 12px; }
+.preview-topics span, .preview-topics a { padding: 6px 9px; background: #f1f6f3; border-radius: 7px; color: #36594a; font-size: 12px; }
+.preview-topics a { min-height: 36px; display: inline-flex; align-items: center; font-weight: 700; text-decoration: none; }
+.preview-topics a:hover { background: #d4efdf; color: #064e3b; }
+.preview-topics a:focus-visible { outline: 3px solid #087e5e; outline-offset: 2px; }
 .preview-enter { display: block; margin-top: auto; padding: 12px; border-radius: 10px; background: #066348; color: #fff; text-decoration: none; text-align: center; font-weight: 700; }
 .preview-enter:hover { background: #034632; }
 .preview-secondary { display: block; text-align: center; margin-top: 10px; color: #066348; font-weight: 700; }
