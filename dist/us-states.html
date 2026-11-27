@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-Hant-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="color-scheme" content="light dark">
+  <script>try{const s=localStorage.getItem('economy-color-scheme');if(s==='light'||s==='dark')document.querySelector('meta[name="color-scheme"]').content=s}catch{}</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#effaf6">
+  <meta name="description" content="查看美國各州及華盛頓特區的 GDP、行業、就業、收入、消費、價格水平和住宅許可，並比較各地官方數據。">
+  <title>美國各州經濟｜官方數據比較</title>
+  <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
+  <link rel="stylesheet" href="./us-economy.css">
+  <link rel="stylesheet" href="./us-states.css">
+  <script type="module" src="./us-states.js"></script>
+  <link rel="stylesheet" href="./site-navigation.css?v=20261126">
+  <script defer src="./site-navigation.js?v=20261127-states"></script>
+  <link rel="stylesheet" href="./dark-mode.css?v=20261127">
+  <script defer src="./theme.js?v=20261127"></script>
+</head>
+<body class="us-economy-page" data-region="us">
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="global-header">
+    <div class="global-header-inner">
+      <a class="global-brand" href="./index.html#world-economies"><span class="global-brand-mark" aria-hidden="true">▥</span><span>各地人口與經濟<small>官方統計圖表總覽</small></span></a>
+      <nav class="global-regions" aria-label="國家與地區">
+        <a href="./index.html#world-economies">各地總覽</a>
+        <span data-region-links><a href="./hk-population.html#total">香港</a><a href="./us-economy.html">美國</a></span>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" hidden>深色模式</button>
+      <button class="search-trigger" type="button" data-open-search hidden>搜尋<span class="search-label">地區或主題</span></button>
+    </div>
+  </header>
+  <dialog class="site-search" id="site-search" aria-labelledby="site-search-title">
+    <div class="search-top"><h1 id="site-search-title">搜尋地區或主題</h1><form method="dialog"><button type="submit" aria-label="關閉搜尋">關閉 ✕</button></form></div>
+    <label for="site-search-input">輸入地區或主題</label>
+    <input type="search" id="site-search-input" placeholder="例如：香港、通脹、利率" autocomplete="off">
+    <p data-search-status role="status"></p>
+    <ul data-search-results></ul>
+  </dialog>
+  <main id="main" tabindex="-1">
+    <section class="us-hero" aria-labelledby="page-title">
+      <div class="us-hero-copy"><p class="us-kicker">美國 · 50 州及華盛頓特區</p><h1 id="page-title">美國各州經濟</h1><p>選擇地區查看產出、行業、就業、收入、消費、價格水平和住宅許可的走勢，或選擇一項指標比較各地。</p><a href="./us-economy.html">← 返回美國全國經濟</a></div>
+      <p class="us-version" id="snapshot-date">固定快照</p>
+    </section>
+    <noscript><p class="us-notice">開啟 JavaScript 才可選擇州份及查看圖表。</p></noscript>
+    <section class="us-topic" aria-labelledby="state-title">
+      <div class="state-controls"><label for="state-select">選擇州份或華盛頓特區<select id="state-select"></select></label></div>
+      <h2 id="state-title">各州經濟走勢</h2><p class="us-lead">各項指標有自己的統計期間及單位；展開圖表下方的資料表可查看原始數值及官方來源。缺數不作推算，折線會斷開。</p>
+      <p class="us-lead">地區價格水平比較同一年各地與全國的物價水平，並非按年通脹率。住戶調查的就業人數與僱主調查的職位數不同；住宅許可為實際年度估計單位，不是季調年率。</p>
+      <div id="state-charts" class="state-grid"></div>
+    </section>
+    <section class="us-topic" aria-labelledby="compare-heading"><h2 id="compare-heading">各州比較</h2>
+      <div class="state-controls"><label for="metric-select">選擇比較指標<select id="metric-select"></select></label></div>
+      <div class="state-comparison"><h3 id="comparison-title">各州比較</h3><p id="comparison-description"></p><p><a id="comparison-source" href="https://www.bea.gov/">官方資料及定義 ↗</a></p>
+      <div class="state-table" tabindex="0" role="region" aria-labelledby="comparison-title"><table><caption>50 州及華盛頓特區</caption><thead><tr><th scope="col">地區</th><th scope="col">數值</th><th scope="col">狀態</th></tr></thead><tbody id="comparison-body"></tbody></table></div></div>
+    </section>
+  </main>
+</body>
+</html>

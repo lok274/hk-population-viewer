@@ -11,3 +11,9 @@ GitHub Actions 每日按香港時間上午 7:17 排程檢查。亦可以在 Acti
 來源下載失敗、回傳過時資料或格式不符，程式會報錯並保留目前快照。若已有更新 PR，新的候選檔仍會保留在該次 Actions 執行的 **Artifacts**，不會再開一個 PR。
 
 若 GitHub 拒絕建立 PR，從該次執行的 **Artifacts** 下載 `us-economy-snapshot`，或到 **Settings → Actions → General → Workflow permissions** 檢查 GitHub Actions 是否獲准建立 PR。排程不需要額外的 API key 或個人存取權杖。
+
+## 更新美國各州快照
+
+GitHub Actions 的 **Refresh U.S. state data** 每日香港時間上午 7:37 執行，也可手動執行。有變化時建立 PR，經審核合併後發布。州份排程與全國及財政部來源分開，失敗時不改寫快照。
+
+在專案根目錄執行 `python scripts/update_us_states.py --check` 檢查目前快照；`--dry-run` 下載及驗證候選資料但不寫檔；`--write` 在所有來源成功且資料改變時更新快照。BEA 和 Census 使用官方下載檔，BLS 使用公開 API；BLS 可能限制每日請求數，配額不足時重試排程，不可用舊數字冒充新數字。

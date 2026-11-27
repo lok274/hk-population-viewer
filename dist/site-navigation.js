@@ -30,6 +30,7 @@ const regions = [
     previewTopics: ['GDP', '物價', '就業', '消費', '貿易', '利率', '財政'], previewButton: '進入美國經濟頁 →',
     topics: [
       ['美國經濟', './us-economy.html', '經濟'],
+      ['美國各州經濟', './us-states.html', '州份 州 GDP 失業 價格 住宅 比較'],
       ['經濟產出', './us-economy.html#output', 'GDP 消費 投資 政府 淨出口'],
       ['物價', './us-economy.html#prices', '通脹 CPI PCE 食品 居住 住房 能源'],
       ['就業與工資', './us-economy.html#labour', '失業 就業 工資 製造業 醫療 教育 專業 商業 政府'],
