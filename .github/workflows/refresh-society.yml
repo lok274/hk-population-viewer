@@ -6,6 +6,9 @@ on:
     paths:
       - '.github/workflows/refresh-society.yml'
       - 'scripts/update_society.py'
+      - 'scripts/update_us_ghg.py'
+      - 'scripts/update_us_crime.py'
+      - 'scripts/update_us_health.py'
   schedule:
     - cron: '57 23 * * *'
   workflow_dispatch:
@@ -19,7 +22,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        region: [hk, us]
+        include:
+          - region: hk
+            source: society
+          - region: us
+            source: society
+          - region: us
+            source: reports
+    name: refresh (${{ matrix.region }}, ${{ matrix.source }})
     concurrency:
       group: society-${{ matrix.region }}
       cancel-in-progress: false
@@ -35,15 +45,30 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
+      - name: Install PDF reader
+        if: matrix.source == 'reports'
+        run: python -m pip install pypdf==6.1.0
       - name: Refresh official data
         id: refresh
         env:
           REGION: ${{ matrix.region }}
+          SOURCE: ${{ matrix.source }}
         run: |
-          python scripts/update_society.py --region "$REGION" --write
+          if [[ "$SOURCE" == 'reports' ]]; then
+            python scripts/update_us_ghg.py --write
+            python scripts/update_us_crime.py --write
+            python scripts/update_us_health.py --write
+          else
+            python scripts/update_society.py --region "$REGION" --write
+          fi
           if ! git diff --quiet -- "dist/$REGION-society.html"; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+      - name: Check Smithsonian source availability
+        if: matrix.source == 'reports'
+        continue-on-error: true
+        run: |
+          python -c 'from urllib.request import Request, urlopen; u="https://www.si.edu/newsdesk/about/stats"; s=urlopen(Request(u, headers={"User-Agent": "hk-population-viewer"}), timeout=30).read().decode("utf-8"); print("bytes:", len(s)); i=s.find("Total Visits in 2025"); print("table excerpt:", repr(s[i:i+300]) if i >= 0 else "not found")'
       - name: Keep candidate
         if: steps.refresh.outputs.changed == 'true'
         uses: actions/upload-artifact@v6
