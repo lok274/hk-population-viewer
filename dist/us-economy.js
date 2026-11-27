@@ -248,7 +248,7 @@ function renderOutput({gdpNominal, gdpAnnual, gdpQuarter, gdpConsumption, gdpInv
   ], [gdpQuarter, gdpAnnual, gdpNominal, gdpConsumption, gdpInvestment, gdpGovernment, gdpNetExports]);
 }
 
-function renderPrices({cpi, coreCpi, cpiFood, cpiShelter, cpiEnergy, pcePrices, corePcePrices}) {
+function renderPrices({cpi, coreCpi, cpiFood, cpiShelter, cpiEnergy, cpiFoodHome, cpiFoodAway, cpiTransport, cpiMedical, pcePrices, corePcePrices}) {
   const cpiChange = changes(cpi, 12);
   const coreCpiChange = changes(coreCpi, 12);
   const pceChange = changes(pcePrices, 12);
@@ -263,10 +263,12 @@ function renderPrices({cpi, coreCpi, cpiFood, cpiShelter, cpiEnergy, pcePrices, 
     lineChart('PCE 物價 · 按年變動', [pceChange, corePceChange]),
     lineChart('食品及居住物價 · 按年變動', [foodChange, shelterChange]),
     lineChart('能源物價 · 按年變動', [energyChange]),
-  ], [[cpi, cpiChange], [coreCpi, coreCpiChange], [cpiFood, foodChange], [cpiShelter, shelterChange], [cpiEnergy, energyChange], [pcePrices, pceChange], [corePcePrices, corePceChange]]);
+    lineChart('家用食品及外出用餐 · 按年變動', [changes(cpiFoodHome, 12), changes(cpiFoodAway, 12)]),
+    lineChart('交通及醫療 · 按年變動', [changes(cpiTransport, 12), changes(cpiMedical, 12)]),
+  ], [[cpi, cpiChange], [coreCpi, coreCpiChange], [cpiFood, foodChange], [cpiShelter, shelterChange], [cpiEnergy, energyChange], [cpiFoodHome, changes(cpiFoodHome, 12)], [cpiFoodAway, changes(cpiFoodAway, 12)], [cpiTransport, changes(cpiTransport, 12)], [cpiMedical, changes(cpiMedical, 12)], [pcePrices, pceChange], [corePcePrices, corePceChange]]);
 }
 
-function renderLabour({unemployment, participation, payroll, earnings, jobsManufacturing, jobsEducationHealth, jobsProfessional, jobsGovernment}) {
+function renderLabour({unemployment, participation, unemploymentMen, unemploymentWomen, unemploymentYouth, payroll, earnings, jobsManufacturing, jobsEducationHealth, jobsProfessional, jobsGovernment, jobsConstruction, jobsLeisure, wageManufacturing, wageLeisure}) {
   const payrollChange = changes(payroll, 1);
   const wageChange = changes(earnings, 12);
   const manufacturingChange = changes(jobsManufacturing, 1);
@@ -278,12 +280,16 @@ function renderLabour({unemployment, participation, payroll, earnings, jobsManuf
   return topicContent([
     lineChart('失業率 U-3', [levels(unemployment)]),
     lineChart('勞動人口參與率', [levels(participation)]),
+    lineChart('按性別劃分的失業率', [levels(unemploymentMen), levels(unemploymentWomen)]),
+    lineChart('16 至 19 歲失業率', [levels(unemploymentYouth)]),
     signedBars('非農就業職位 · 按月變化', payrollChange),
     lineChart('私營非農平均時薪', [levels(earnings)]),
     lineChart('平均時薪 · 按年變動', [wageChange]),
     lineChart('製造業及政府職位 · 按月變化', [manufacturingChange, governmentChange]),
     lineChart('私營教育醫療及專業服務職位 · 按月變化', [educationHealthChange, professionalChange]),
-  ], [unemployment, participation, [payroll, payrollChange], [earnings, wageChange], [jobsManufacturing, manufacturingChange], [jobsEducationHealth, educationHealthChange], [jobsProfessional, professionalChange], [jobsGovernment, governmentChange]]);
+    lineChart('建造業及休閒酒店餐飲職位 · 按月變化', [changes(jobsConstruction, 1), changes(jobsLeisure, 1)]),
+    lineChart('製造業及休閒酒店餐飲平均時薪', [levels(wageManufacturing), levels(wageLeisure)]),
+  ], [unemployment, participation, [payroll, payrollChange], [earnings, wageChange], [jobsManufacturing, manufacturingChange], [jobsEducationHealth, educationHealthChange], [jobsProfessional, professionalChange], [jobsGovernment, governmentChange], unemploymentMen, unemploymentWomen, unemploymentYouth, [jobsConstruction, changes(jobsConstruction, 1)], [jobsLeisure, changes(jobsLeisure, 1)], [wageManufacturing, changes(wageManufacturing, 12)], [wageLeisure, changes(wageLeisure, 12)]]);
 }
 
 function renderHouseholds({consumption, disposableIncome, saving, pceDurable, pceNondurable, pceServices}) {
@@ -377,7 +383,7 @@ async function showDashboard() {
   let data;
   let meta;
   try {
-    data = await import('./us-economy-data.js?v=20261126-stage2');
+    data = await import('./us-economy-data.js?v=20261127-livelihood');
     meta = data.getSnapshotMeta();
   } catch (error) {
     console.error('Unable to load the U.S. economy snapshot', error);
