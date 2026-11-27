@@ -10,7 +10,7 @@
   <title>美國經濟概覽｜十個主題看清變化</title>
   <link rel="stylesheet" href="./styles.css?v=20261022-tech-nav">
   <link rel="stylesheet" href="./us-economy.css">
-  <script type="module" src="./us-economy.js?v=20261127-livelihood"></script>
+  <script type="module" src="./us-economy.js?v=20261127-phase2"></script>
   <link rel="stylesheet" href="./site-navigation.css?v=20261126">
   <script defer src="./site-navigation.js?v=20261127-zoom"></script>
   <link rel="stylesheet" href="./dark-mode.css?v=20261127">
@@ -70,6 +70,7 @@
       <h2 id="output-title">經濟產出</h2>
       <p class="us-lead">GDP 衡量在美國境內生產的商品和服務價值。現價金額使用當年價格，實質增長扣除了價格變動。季度增長以年率表示，意思是這個季度的速度若持續一年，全年會變動多少。</p>
       <p class="us-lead">GDP 組成列出個人消費、私人投資、政府消費及投資和淨出口。這些是現價季度年率水平，並非實質增長或對增長的貢獻；淨出口為負表示進口大於出口。</p>
+      <p class="us-lead">增長貢獻圖另用 BEA 直接公布的實質數據，單位是百分點，表示各部分對整體 GDP 按季年率化增長的影響；負數代表拖低增長。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.bea.gov/data/gdp/gross-domestic-product">BEA · GDP 統計 ↗</a></p>
     </section>
@@ -97,6 +98,7 @@
       <h2 id="households-title">收入與消費</h2>
       <p class="us-lead">實質消費和實質可支配收入扣除物價影響。兩項以季調年率顯示，可比較每月的消費和收入速度。儲蓄率是個人儲蓄佔可支配個人收入的比例。</p>
       <p class="us-lead">消費分為耐用品、非耐用品和服務。鏈式美元用來衡量扣除價格變化後的數量；各類別的金額一般不能直接相加得到總額。</p>
+      <p class="us-lead">工資及個人經常轉移收入是個人收入的部分來源，按現價及季調年率顯示，並非每月實際收取的金額。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.bea.gov/data/income-saving/personal-income">BEA · 個人收入與支出 ↗</a></p>
     </section>
@@ -106,6 +108,7 @@
       <h2 id="retail-title">零售</h2>
       <p class="us-lead">零售和餐飲銷售額以當月價格計算，反映價格和銷量的共同變化。Census 先用部分樣本公布初值，再用較完整的調查修訂。</p>
       <p class="us-lead">另列汽車、食品飲料商店、非店舖零售和餐飲服務；這些只是部分行業。非店舖零售包含網購，但不等於所有網購。</p>
+      <p class="us-lead">服裝、健康及個人護理商店和加油站銷售額同樣按現價計算，變化可能同時反映價格與銷售數量。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.census.gov/retail/index.html">Census · 零售及餐飲服務 ↗</a></p>
     </section>
@@ -114,7 +117,7 @@
       <p class="us-kicker">06 / 建築</p>
       <h2 id="housing-title">住宅</h2>
       <p class="us-lead">住宅動工反映已開始興建的單位，建築許可反映獲批的單位。季調年率把當月速度換算成全年水平，當月實際動工或獲批的數量另有統計。</p>
-      <p class="us-lead">細分圖按建築物的單位數分為單一單位，以及五個或以上單位；兩至四個單位的建築物不在這兩組之內。數字計算住宅單位，而非建築物數量。</p>
+      <p class="us-lead">細分圖按建築物的單位數列出單一單位和五個或以上單位；許可另列兩至四個單位。動工的兩至四單位季調數字未達發布可靠性標準。數字計算住宅單位，而非建築物數量。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.census.gov/construction/nrc/data/series.html">Census · 住宅建築原表 ↗</a></p>
     </section>
@@ -123,6 +126,7 @@
       <p class="us-kicker">07 / 進出口</p>
       <h2 id="trade-title">對外貿易</h2>
       <p class="us-lead">出口及進口涵蓋商品與服務，按國際收支口徑和當月價格計算。貿易差額為負代表逆差。圖中使用官方公布的差額，四捨五入後的進出口金額相減可能略有不同。</p>
+      <p class="us-lead">資本商品及消費商品分項按 Census 貨品貿易基礎分類，與上方國際收支基礎總額口徑不同，不能直接相加比較。</p>
       <p class="us-lead">商品及服務分開顯示各自的出口和進口，金額同樣按月計算。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.census.gov/foreign-trade/Press-Release/current_press_release/index.html">Census／BEA · 商品及服務貿易 ↗</a></p>
@@ -131,7 +135,7 @@
     <section class="us-topic" id="rates" aria-labelledby="rates-title">
       <p class="us-kicker">08 / 貨幣政策</p>
       <h2 id="rates-title">利率</h2>
-      <p class="us-lead">聯邦基金目標區間由聯儲局設定，按生效日期改變。國債收益率反映市場定價，這裏使用聯儲局公布的一、二、十及三十年期固定到期收益率月平均。</p>
+      <p class="us-lead">聯邦基金目標區間由聯儲局設定，按生效日期改變。國債收益率反映市場定價，這裏使用聯儲局公布的三個月、一、二、五、十及三十年期固定到期收益率月平均。</p>
       <p class="us-lead">收益率差距由同月十年期減兩年期計算，以百分點表示。差距為負時，十年期收益率低於兩年期；單靠這個數字不能確定未來經濟走勢。</p>
       <div class="us-content" data-topic-content></div>
       <p class="us-sources"><a href="https://www.federalreserve.gov/monetarypolicy/openmarket.htm">聯儲局 · 目標利率記錄 ↗</a> <a href="https://www.federalreserve.gov/releases/h15/">聯儲局 · H.15 利率 ↗</a></p>
@@ -149,6 +153,7 @@
     <section class="us-topic" id="fiscal" aria-labelledby="fiscal-title">
       <p class="us-kicker">10 / 政府收支</p>
       <h2 id="fiscal-title">聯邦財政</h2>
+      <p class="us-lead">財政部資料目前保留 2026 年 11 月 26 日核對的快照；各項數字的實際期間列於圖表及數據表。財政部資料服務恢復後，仍需驗證自動更新。</p>
       <p class="us-lead">美國聯邦財政年度於 9 月 30 日結束。當年支出多於收入便有赤字。總公共債務由公眾持有債務和政府內部持有債務組成，年度收支與某日的債務餘額分開顯示。</p>
       <p class="us-lead">赤字佔支出以官方全年赤字除以同財年支出計算；若有盈餘，圖上會顯示負數。這個比例不是赤字佔 GDP。</p>
       <p class="us-lead">收入細分列出個人所得稅、企業所得稅，以及社會保險和退休金收入，均為扣除退款後的全年淨收入；其他收入來源並未在細分圖列出。</p>

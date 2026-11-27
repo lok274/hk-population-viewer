@@ -192,9 +192,10 @@ def housing(specs):
                 or [row.get("A") for row in table[2:4]] != ["Seasonally adjusted annual rate", "Month"]
                 or [row.get("B") for row in table[3:5]] != ["United States", "Total"]
                 or " ".join(table[4].get("C", "").split()) != "1 unit"
+                or " ".join(table[4].get("D", "").split()) != "2 to 4 units"
                 or " ".join(table[4].get("E", "").split()) != "5 units or more"):
             raise ValueError("Unrecognized Census housing table")
-        columns = {group: "B", group + "One": "C", group + "Five": "E"}
+        columns = {group: "B", group + "One": "C", group + "TwoToFour": "D", group + "Five": "E"}
         for row in table[5:]:
             if row.get("A", "").isdigit():
                 period = (date(1899, 12, 30) + timedelta(days=int(row["A"]))).isoformat()[:7]
@@ -225,6 +226,33 @@ def trade(specs):
             period = f"{year}-{MONTHS.index(label) + 1:02}"
             for key, col in {"tradeBalance": "B", "exports": "E", "imports": "H", "goodsExports": "F", "servicesExports": "G", "goodsImports": "I", "servicesImports": "J"}.items():
                 add(result[key], period, observation(row[col]))
+    return result
+
+
+def trade_end_use(specs):
+    result = {key: {} for key in specs}
+    for direction, name in [('export', 'Exports'), ('import', 'Imports')]:
+        keys = [key for key in specs if key.startswith(direction)]
+        table = sheet(download(specs[keys[0]]['dataUrl']), 1)
+        if (table[0].get('A') != 'Part A: Seasonally Adjusted'
+                or table[1].get('A') != name + ' of Goods by Principal End-Use Category'
+                or not table[2].get('A', '').startswith('In millions of dollars')
+                or table[4].get('E') != 'Capital Goods' or table[4].get('G') != 'Consumer Goods'):
+            raise ValueError('Unrecognized Census end-use table')
+        year = None
+        for row in table[5:]:
+            label = row.get('A', '')
+            if label.startswith('Part B:'):
+                break
+            if re.fullmatch(r'\d{4}\*?', label):
+                year = label[:4]
+            elif label in MONTHS and year:
+                if not row.get('E') and not row.get('G'):
+                    continue
+                period = f'{year}-{MONTHS.index(label) + 1:02}'
+                for key in keys:
+                    column = 'E' if key.endswith('Capital') else 'G'
+                    add(result[key], period, observation(row[column]))
     return result
 
 
@@ -346,6 +374,7 @@ def fetch_all(specs, cutoff, baseline):
         "retail": lambda: retail(groups["retail"]),
         "housing": lambda: housing(groups["housing"]),
         "trade": lambda: trade(groups["trade"]),
+        "tradeEndUse": lambda: trade_end_use(groups["tradeEndUse"]),
         "yields": lambda: fed_xml(groups["yields"], "H15", cutoff),
         "industry": lambda: fed_xml(groups["industry"], "G17", cutoff),
         "policy": lambda: policy(specs["targetLow"]["url"], baseline["targetLow"][0][0], cutoff),
