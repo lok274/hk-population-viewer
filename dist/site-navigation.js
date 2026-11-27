@@ -64,6 +64,82 @@ const regions = [
 ];
 
 window.siteRegions = regions;
+const modules = {
+  hk: [
+    ['人口結構', './hk-population.html#total'], ['經濟', './hk-economy.html'],
+    ['教育', './education.html'], ['行業', './industry.html'], ['科技', './technology.html'],
+    ['社會與環境', './hk-society.html']
+  ],
+  us: [
+    ['全國經濟', './us-economy.html'], ['各州經濟', './us-states.html'],
+    ['社會與環境', './us-society.html']
+  ]
+};
+const pageRegion = document.body.dataset.region;
+const pageModules = modules[pageRegion];
+const regionBar = document.querySelector('.global-regions');
+if (regionBar) {
+  const badge = document.createElement('span');
+  badge.className = 'level-badge';
+  badge.textContent = 'L1';
+  badge.setAttribute('aria-hidden', 'true');
+  regionBar.prepend(badge);
+}
+if (pageModules) {
+  const page = location.pathname.split('/').pop();
+  const activeModule = pageModules.find(([, href]) => new URL(href, location.href).pathname.split('/').pop() === page);
+  const currentRegion = regions.find(region => region.id === pageRegion);
+  const breadcrumb = document.createElement('nav');
+  breadcrumb.className = 'level-breadcrumb';
+  breadcrumb.setAttribute('aria-label', '所在位置');
+  const trail = document.createElement('ol');
+  const crumbs = [['各地總覽', './index.html#world-economies'], [currentRegion.label, currentRegion.href]];
+  if (activeModule) crumbs.push(activeModule);
+  for (const [index, [name, href]] of crumbs.entries()) {
+    const item = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = name;
+    if (index === crumbs.length - 1) link.setAttribute('aria-current', 'page');
+    item.append(link);
+    trail.append(item);
+  }
+  breadcrumb.append(trail);
+  const nav = document.createElement('nav');
+  nav.className = 'hk-module-nav';
+  nav.setAttribute('aria-label', `${currentRegion.label}主題`);
+  const label = document.createElement('span');
+  label.textContent = 'L2 主題';
+  nav.append(label);
+  for (const [name, href] of pageModules) {
+    const link = document.createElement('a');
+    link.href = href;
+    link.textContent = name;
+    if (activeModule && href === activeModule[1]) link.setAttribute('aria-current', 'page');
+    nav.append(link);
+  }
+  const oldNav = document.querySelector('.hk-module-nav');
+  if (oldNav) oldNav.replaceWith(nav);
+  else document.querySelector('.global-header').after(nav);
+  nav.before(breadcrumb);
+}
+for (const chapterNav of document.querySelectorAll('.page-chapters, .us-topics')) {
+  if (chapterNav.classList.contains('page-chapters')) {
+    const label = chapterNav.querySelector(':scope > span');
+    if (label) label.textContent = 'L3 指標';
+  } else {
+    const label = document.createElement('span');
+    label.className = 'level-chapter-label';
+    label.textContent = 'L3 指標';
+    chapterNav.prepend(label);
+  }
+  const updateCurrent = () => chapterNav.querySelectorAll('a[href^="#"]').forEach(link => {
+    if (location.hash && link.getAttribute('href') === location.hash) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+  updateCurrent();
+  window.addEventListener('hashchange', updateCurrent);
+}
 const regionNav = document.querySelector('[data-region-links]');
 const currentRegion = document.body.dataset.region;
 if (regionNav) {

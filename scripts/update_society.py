@@ -11,7 +11,7 @@ from pathlib import Path
 import re
 import time
 from urllib.error import HTTPError
-from urllib.parse import urlsplit
+from urllib.parse import urlencode, urlsplit
 from urllib.request import Request, urlopen
 
 from update_us_economy import download
@@ -246,6 +246,19 @@ def refresh_hk(html):
 
 
 def refresh_us(html):
+    transit_url = 'https://data.transportation.gov/resource/wwdp-t4re.json'
+    query = urlencode({'$select': 'report_year,count(*) as rows,count(unlinked_passenger_trips_upt) as reported,sum(unlinked_passenger_trips_upt) as trips', '$where': "time_period='Annual Total'", '$group': 'report_year', '$order': 'report_year DESC'})
+    observations = json.loads(fetch(f'{transit_url}?{query}'))
+    if not observations:
+        raise ValueError('No annual transit observations')
+    row = observations[0]
+    year = str(row['report_year'])
+    if (not re.fullmatch(r'\d{4}', year) or int(row['rows']) < 1000
+            or row['rows'] != row['reported'] or not 1_000_000_000 < int(row['trips']) < 100_000_000_000):
+        raise ValueError('Invalid transit annual total')
+    card = stat_card('公共交通乘客人次', f"{int(row['trips']):,} 人次", f'{year} 報告年度 · 各機構按自身財政年度報告；每次登車計一次，轉乘可計作多次。由交通部年度數據的 Annual Total 記錄加總。', year, 'https://data.transportation.gov/d/wwdp-t4re', '美國運輸部 · 全國交通數據庫')
+    html = replace_card(html, '公共交通乘客人次', card, year, '2025')
+
     text = fetch(NOAA.format(datetime.now(timezone.utc).year)).decode('utf-8-sig')
     if 'Contiguous U.S. January-December Average Temperature' not in text or 'Degrees Fahrenheit' not in text:
         raise ValueError('Unexpected NOAA geography or units')

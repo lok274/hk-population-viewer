@@ -47,7 +47,14 @@ function selectRegion(id) {
   const entry = document.querySelector('#preview-enter'); entry.href = region.href; entry.textContent = region.previewButton || `進入${region.label}資料頁 →`;
   document.querySelector('#preview-secondary').hidden = id !== 'hk';
   const topics = document.querySelector('#preview-topics');
-  topics.replaceChildren(...(region.previewTopics || []).map(topic => { const chip = document.createElement('span'); chip.textContent = topic; return chip; }));
+  topics.replaceChildren(...(region.previewTopics || []).map(topic => {
+    const target = region.topics.find(([name, , keywords]) => name === topic || keywords.split(' ').includes(topic))
+      || region.topics.find(([name]) => name.includes(topic));
+    const chip = document.createElement(target ? 'a' : 'span');
+    if (target) chip.href = target[1];
+    chip.textContent = topic;
+    return chip;
+  }));
   try { metrics.replaceChildren(...(id === 'hk' ? hkMetrics() : id === 'us' ? usMetrics() : [])); }
   catch { const p = document.createElement('p'); p.textContent = '摘要暫未能載入，可進入資料頁查看。'; metrics.replaceChildren(p); }
   document.querySelectorAll('[data-map-region]').forEach(link => {
