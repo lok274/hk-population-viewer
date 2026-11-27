@@ -4,6 +4,10 @@ const regions = [
     map: {longitude: 114.17, latitude: 22.32},
     previewTopics: ['人口', '經濟', '教育', '行業', '科技'], previewButton: '進入香港人口頁 →',
     topics: [
+      ['環境、能源與人口家庭', './hk-society.html', '環境 氣候 能源 住戶 家庭'],
+      ['環境與氣候', './hk-society.html#environment', '污染 氣溫 排放'],
+      ['能源', './hk-society.html#energy', '用電 電力'],
+      ['人口與家庭', './hk-society.html#population', '住戶 家庭'],
       ['人口結構', './hk-population.html#total', '人口 總人口 population'],
       ['年齡分布', './hk-population.html#age', '年齡'],
       ['性別分布', './hk-population.html#sex', '性別'],
@@ -29,6 +33,10 @@ const regions = [
     map: {longitude: -98.58, latitude: 39.83, shape: 'USA'},
     previewTopics: ['GDP', '物價', '就業', '消費', '貿易', '利率', '財政'], previewButton: '進入美國經濟頁 →',
     topics: [
+      ['環境、能源與人口家庭', './us-society.html', '環境 氣候 能源 人口 住戶 家庭'],
+      ['環境與氣候', './us-society.html#environment', '污染 氣溫 排放'],
+      ['能源', './us-society.html#energy', '發電 電力'],
+      ['人口與家庭', './us-society.html#population', '住戶 家庭'],
       ['美國經濟', './us-economy.html', '經濟'],
       ['美國各州經濟', './us-states.html', '州份 州 GDP 失業 價格 住宅 比較'],
       ['經濟產出', './us-economy.html#output', 'GDP 消費 投資 政府 淨出口'],
